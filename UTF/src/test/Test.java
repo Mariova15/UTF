@@ -5,41 +5,23 @@
  */
 package test;
 
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.LowLevelHttpRequest;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.JsonGenerator;
-import com.google.api.client.json.JsonParser;
-import com.google.api.services.webfonts.Webfonts;
-import com.google.api.services.webfonts.Webfonts.WebfontsOperations;
-import com.google.api.services.webfonts.WebfontsRequest;
-import com.google.api.services.webfonts.WebfontsRequestInitializer;
-import com.google.api.services.webfonts.model.Webfont;
-import com.google.api.services.webfonts.model.WebfontList;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.Reader;
-import java.io.Writer;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import logica.OperacionesFicheros;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
+import utils.DescargaRecursos;
 
 /**
  *
@@ -111,23 +93,20 @@ public class Test {
         fileOutputStream.write(dataBuffer, 0, bytesRead);
         }*/
         //WebfontsRequestInitializer init = new WebfontsRequestInitializer("AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0");
-        
-        
         byte[] response = null;
-        
+
         String archivodescargar = "http://fonts.gstatic.com/s/abeezee/v12/esDR31xSG-6AGleN6tKukbcHCpE.ttf";
         String googlefontsJson = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";
-        
-        
-        InputStream in = new BufferedInputStream(
-                new URL(archivodescargar).openStream());
+
+        /*InputStream in = new BufferedInputStream(
+        new URL(archivodescargar).openStream());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
         byte[] buf = new byte[1024];
         int n = 0;
         
         while (-1 != (n = in.read(buf))) {
-            out.write(buf, 0, n);
+        out.write(buf, 0, n);
         }
         
         out.close();
@@ -135,10 +114,51 @@ public class Test {
         response = out.toByteArray();
         
         FileOutputStream fos = new FileOutputStream("ABeeZee-Regular.ttf");
-        fos.write(response);
-        
+        fos.write(response);*/
+        //DescargaRecursos.descargarArchivo(googlefontsJson, "pruebaMetodo.json", "nada");
+        JsonReader jsonReader;
+        JsonObject pruebaFonts = null;
+        try {
+            InputStream fis = new FileInputStream("googleFonts.json");
+            jsonReader = Json.createReader(fis);
+            pruebaFonts = jsonReader.readObject();
+            jsonReader.close();
+            fis.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        System.out.println(pruebaFonts.getJsonString("kind").getString());
+
+        JsonArray fuentes = pruebaFonts.getJsonArray("items");
+
+        JsonObject fuente = (JsonObject) fuentes.get(0);
+
+        System.out.println(fuente.getJsonString("kind").getString());
+        System.out.println(fuente.getJsonString("family").getString());
+        System.out.println(fuente.getJsonString("category").getString());
+
+        JsonArray variants = fuente.getJsonArray("variants");
+        for (JsonValue variant : variants) {
+            System.out.println(variant.toString());
+        }
+
+        JsonArray subsets = fuente.getJsonArray("subsets");
+        for (JsonValue subset : subsets) {
+            System.out.println(subset.toString());
+        }
+
+        System.out.println(fuente.getJsonString("version"));
+        System.out.println(fuente.getJsonString("lastModified"));
+
+        JsonObject files = fuente.getJsonObject("files");
+        for (int i = 0; i < variants.size(); i++) {
+            System.out.println(files.getString(variants.getString(i)));
+            
+        }
+
     }
-    
+
     public static boolean isAdmin() {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe");
@@ -148,7 +168,7 @@ public class Test {
             printStream.println("@echo off");
             printStream.println(">nul 2>&1 \"%SYSTEMROOT%\\system32\\cacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\"");
             printStream.println("echo %errorlevel%");
-            
+
             boolean printedErrorlevel = false;
             while (true) {
                 String nextLine = scanner.nextLine();
@@ -163,5 +183,5 @@ public class Test {
             return false;
         }
     }
-    
+
 }
