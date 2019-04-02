@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import logica.OperacionesFicheros;
+import controlador.OperacionesFicheros;
 import utils.DescargaRecursos;
 import utils.WinRegistry;
 
@@ -50,9 +50,14 @@ public class PruebaReal {
 
         try {
 
-            //WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, key, name, valor);
-            WinRegistry.deleteKey(WinRegistry.HKEY_LOCAL_MACHINE, key + "\\" + valor);
+            WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, key, name, valor);
 
+            String readString = WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE, key, name);
+            System.out.println(readString);
+            
+           //WinRegistry.deleteKey(WinRegistry.HKEY_LOCAL_MACHINE, key);
+            
+            //WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, key + "\\" + name, valor);
             //https://stackoverflow.com/questions/62289/read-write-to-windows-registry-using-java
             //dir.delete();
             /* System.out.println(dir.delete());
