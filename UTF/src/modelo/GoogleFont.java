@@ -5,7 +5,9 @@
  */
 package modelo;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,18 +15,23 @@ import java.util.List;
  */
 public class GoogleFont {
 
-    private String kind, family, category;
-    private List<String> urls;
+    private String kind, family, category, version;
+    private Date lastModified;
+    private Map<String, String> files;
 
-    public GoogleFont(String kind, String family, String category) {
+    public GoogleFont(String kind, String family, String category, String version, Map<String, String> files) {
         this.kind = kind;
         this.family = family;
         this.category = category;
+        this.version = version;
+        this.files = files;
     }
 
     @Override
     public String toString() {
-        return "GoogleFont{" + "kind=" + kind + ", family=" + family + ", category=" + category + '}';
+        return "GoogleFont{" + "kind=" + kind + ", family=" + family + ", category=" + category + ", version=" + version + ", lastModified=" + lastModified + ", files=" + files + '}';
     }
+
+   
 
 }

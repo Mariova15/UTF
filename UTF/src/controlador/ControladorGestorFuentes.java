@@ -9,8 +9,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -55,8 +57,18 @@ public class ControladorGestorFuentes {
 
         for (Iterator<JsonValue> it = jsonFuentes.getJsonArray("items").iterator(); it.hasNext();) {
             JsonObject fuente = (JsonObject) it.next();
+            
+            Map<String, String> mapaFuentes = new HashMap<>();
+            JsonArray variants = fuente.getJsonArray("variants");            
+            JsonObject files = fuente.getJsonObject("files");
+            
+            for (int i = 0; i < variants.size(); i++) {
+                mapaFuentes.put(variants.getString(i), files.getString(variants.getString(i)));
+            }
+            
             listaFuentes.add(new GoogleFont(fuente.getJsonString("kind").getString(),
-                    fuente.getJsonString("family").getString(), fuente.getJsonString("category").getString()));
+                    fuente.getJsonString("family").getString(), fuente.getJsonString("category").getString(),
+           fuente.getJsonString("version").getString(), mapaFuentes));
         }
     }
     

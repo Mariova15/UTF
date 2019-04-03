@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -154,11 +156,15 @@ public class Test {
         System.out.println(fuente.getJsonString("version"));
         System.out.println(fuente.getJsonString("lastModified"));
 
+        Map<String, String> mapaFuentes = new HashMap<>();
+        
         JsonObject files = fuente.getJsonObject("files");
         for (int i = 0; i < variants.size(); i++) {
-            System.out.println(files.getString(variants.getString(i)));
-            
+            //System.out.println(files.getString(variants.getString(i)));
+            mapaFuentes.put(variants.getString(i), files.getString(variants.getString(i)));
         }
+        
+        System.out.println(mapaFuentes);
 
     }
 
