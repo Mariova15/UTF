@@ -8,11 +8,15 @@ package vista;
 import controlador.ControladorGestorFuentes;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import test.TestControlador;
 import vista.tablemodels.TableModelGoogleFonts;
 
@@ -21,7 +25,7 @@ import vista.tablemodels.TableModelGoogleFonts;
  * @author Mario
  */
 public class PruebaVista extends javax.swing.JFrame {
-
+    
     private ControladorGestorFuentes cgf;
     private Font createFont = null;
 
@@ -32,18 +36,26 @@ public class PruebaVista extends javax.swing.JFrame {
         initComponents();
         cgf = new ControladorGestorFuentes();
         cgf.descargaJsonFuentes();
-        rellenarTablaGoogleFonts();
-        pruebaFuente();
+        rellenarTablaGoogleFonts();        
+        jTableGoogleFonts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFamily());                
+                jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
+            }                                
+        });
+        
     }
-
+    
     private void rellenarTablaGoogleFonts() {
         jTableGoogleFonts.setModel(new TableModelGoogleFonts(cgf.getListaFuentes()));
     }
-
-    private void pruebaFuente() {
+    
+    private void pruebaFuente(String dirGoogleFont) {
         try {
             //createFont = Font.createFont(Font.TRUETYPE_FONT, new File("AGaramondPro-Regular.otf"));
-            createFont = Font.createFont(Font.TRUETYPE_FONT, new URL("https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf").openStream());
+            //createFont = Font.createFont(Font.TRUETYPE_FONT, new URL("https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf").openStream());
+            createFont = Font.createFont(Font.TRUETYPE_FONT, new URL(dirGoogleFont).openStream());
         } catch (FontFormatException ex) {
             Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -67,6 +79,7 @@ public class PruebaVista extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaLorem = new javax.swing.JTextArea();
         jButtonPreview = new javax.swing.JButton();
+        jComboBoxStyles = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,6 +116,8 @@ public class PruebaVista extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxStyles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanelFondoLayout = new javax.swing.GroupLayout(jPanelFondo);
         jPanelFondo.setLayout(jPanelFondoLayout);
         jPanelFondoLayout.setHorizontalGroup(
@@ -110,14 +125,16 @@ public class PruebaVista extends javax.swing.JFrame {
             .addGroup(jPanelFondoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFondoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2)
                     .addGroup(jPanelFondoLayout.createSequentialGroup()
-                        .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonPreview)
+                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelFondoLayout.createSequentialGroup()
+                                .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonPreview)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -129,7 +146,8 @@ public class PruebaVista extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPreview))
+                    .addComponent(jButtonPreview)
+                    .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                 .addContainerGap())
@@ -156,6 +174,9 @@ public class PruebaVista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviewActionPerformed
+        
+        pruebaFuente(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
+        
         jLabel1TituloPrueba.setFont(createFont.deriveFont(24F));
         jTextAreaLorem.setFont(createFont.deriveFont(14F));
     }//GEN-LAST:event_jButtonPreviewActionPerformed
@@ -197,6 +218,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonPreview;
+    private javax.swing.JComboBox<String> jComboBoxStyles;
     private javax.swing.JLabel jLabel1TituloPrueba;
     private javax.swing.JPanel jPanelFondo;
     private javax.swing.JScrollPane jScrollPane1;

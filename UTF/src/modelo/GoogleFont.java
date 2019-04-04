@@ -42,7 +42,11 @@ public class GoogleFont {
     public String getVersion() {
         return version;
     }
-        
+
+    public Map<String, String> getFiles() {
+        return files;
+    }
+                
     @Override
     public String toString() {
         return "GoogleFont{" + "kind=" + kind + ", family=" + family + ", category=" + category + ", version=" + version + ", lastModified=" + lastModified + ", files=" + files + '}';
