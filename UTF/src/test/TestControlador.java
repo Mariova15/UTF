@@ -10,6 +10,9 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,6 +42,14 @@ public class TestControlador {
         }
         
         System.out.println(createFont.toString());
+        
+        try {
+            InputStream openStream = new URL("https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf").openStream();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
