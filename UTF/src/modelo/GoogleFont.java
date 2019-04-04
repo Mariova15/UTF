@@ -27,6 +27,22 @@ public class GoogleFont {
         this.files = files;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+        
     @Override
     public String toString() {
         return "GoogleFont{" + "kind=" + kind + ", family=" + family + ", category=" + category + ", version=" + version + ", lastModified=" + lastModified + ", files=" + files + '}';

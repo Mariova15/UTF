@@ -37,6 +37,10 @@ public class ControladorGestorFuentes {
         listaFuentes = new ArrayList<>();
     }
 
+    public List<GoogleFont> getListaFuentes() {
+        return listaFuentes;
+    }
+        
     public void descargaJsonFuentes() {
         DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "Fonts.json", "nada");
         lecturaJson();
