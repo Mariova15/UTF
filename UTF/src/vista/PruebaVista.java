@@ -148,25 +148,26 @@ public class PruebaVista extends javax.swing.JFrame {
                 try {
                     List<File> transferData = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
 
+                    //HACER METODO
+                    
+                    if (dirDestino == null) {
+                        JOptionPane.showMessageDialog(PruebaVista.this, "Elija el directorio donde importar las fuentes");
+                        String seleccionarDirectorio = seleccionarDirectorio(PruebaVista.this);
+                        dirDestino = new File(seleccionarDirectorio);
+                    }
+
                     for (File file : transferData) {
 
-                        if (dirDestino == null) {
-                            JOptionPane.showMessageDialog(PruebaVista.this, "Elija el directorio donde importar las fuentes");
-                            String seleccionarDirectorio = seleccionarDirectorio(PruebaVista.this);
-                            dirDestino = new File(seleccionarDirectorio + File.separator + file.getName());
-                        } else {
-                            String dirDestinoCadena = dirDestino.getAbsolutePath();
-                            dirDestinoCadena = dirDestinoCadena + File.separator + file.getName();
-                            dirDestino = new File(dirDestinoCadena);
-                        }
+                        String dirDestinoCadena = dirDestino.getAbsolutePath();
+                        dirDestinoCadena = dirDestinoCadena + File.separator + file.getName();
+                        File dirTemp = new File(dirDestinoCadena);
 
-                        /* System.out.println(file.getAbsolutePath());
-                        System.out.println(dirDestino.getAbsolutePath());*/
-                        Files.copy(file.toPath(), dirDestino.toPath());
-                        dirDestino = null;
+                        Files.copy(file.toPath(), dirTemp.toPath());
 
+                        dirTemp = null;
                         actualizarNodos();
                     }
+                    dirDestino = null;
                 } catch (UnsupportedFlavorException ex) {
                     Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -415,6 +416,8 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private void jButtonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportarActionPerformed
 
+        //HACER METODO
+        
         if (dirDestino == null) {
             JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
             String seleccionarDirectorio = seleccionarDirectorio(this);
@@ -426,17 +429,19 @@ public class PruebaVista extends javax.swing.JFrame {
             try {
                 String dirDestinoCadena = dirDestino.getAbsolutePath();
                 dirDestinoCadena = dirDestinoCadena + File.separator + selectedFile.getName();
-                dirDestino = new File(dirDestinoCadena);
+                File dirTemp = new File(dirDestinoCadena);
 
-                Files.copy(selectedFile.toPath(), dirDestino.toPath());
+                Files.copy(selectedFile.toPath(), dirTemp.toPath());
 
-                dirDestino = null;
+                dirTemp = null;
                 actualizarNodos();
             } catch (IOException ex) {
                 Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
+
+        dirDestino = null;
 
     }//GEN-LAST:event_jButtonImportarActionPerformed
 
