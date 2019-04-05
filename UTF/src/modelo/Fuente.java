@@ -11,6 +11,6 @@ package modelo;
  */
 public class Fuente {
     
-    private String nombre, familia, style;
+    private String nombre, familia, estilo;
     
 }
