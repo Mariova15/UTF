@@ -56,19 +56,25 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPaneTextArea" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jScrollPaneTree" max="32767" attributes="0"/>
-                              <Component id="jLabel1TituloPrueba" max="32767" attributes="0"/>
-                              <Component id="jLabelDragDrop" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jScrollPaneTree" alignment="1" max="32767" attributes="0"/>
+                              <Component id="jLabel1TituloPrueba" alignment="1" max="32767" attributes="0"/>
+                              <Component id="jLabelDragDrop" alignment="1" max="32767" attributes="0"/>
+                              <Component id="jButtonImportar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jButtonBorrar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jButtonCrear" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                                   <Component id="jButtonPreview" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jComboBoxStyles" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPaneTable" min="-2" pref="375" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jScrollPaneTable" min="-2" pref="383" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -82,21 +88,27 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jScrollPaneTable" min="-2" pref="275" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="jScrollPaneTree" min="-2" pref="140" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabelDragDrop" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonCrear" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonBorrar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonImportar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelDragDrop" min="-2" pref="66" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="jScrollPaneTable" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1TituloPrueba" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
                       <Component id="jButtonPreview" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBoxStyles" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPaneTextArea" pref="200" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneTextArea" pref="177" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -200,6 +212,27 @@
               </Border>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonImportar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Importar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonBorrar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Borrar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBorrarActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonCrear">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Crear"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCrearActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
