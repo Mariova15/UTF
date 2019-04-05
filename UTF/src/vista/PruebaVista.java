@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.datatransfer.DataFlavor;
@@ -22,11 +23,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import modelo.GoogleFont;
 import test.TestControlador;
+import utils.DescargaRecursos;
 import vista.tablemodels.TableModelGoogleFonts;
 
 /**
@@ -49,6 +53,7 @@ public class PruebaVista extends javax.swing.JFrame {
      */
     public PruebaVista() {
         initComponents();
+        this.setLocationRelativeTo(null);
         cgf = new ControladorGestorFuentes();
         cgf.descargaJsonFuentes();
         rellenarTablaGoogleFonts();
@@ -66,10 +71,6 @@ public class PruebaVista extends javax.swing.JFrame {
         misFuentes = new File("Mis fuentes");
         root = new DefaultMutableTreeNode(misFuentes);
 
-        //Hacer metodo para refrescar?
-        /*createChildNodes(misFuentes, root);
-        treeModel = new DefaultTreeModel(root);
-        jTreeUserDir.setModel(treeModel);*/
         actualizarNodos();
 
         jTreeUserDir.addMouseListener(new MouseAdapter() {
@@ -81,11 +82,8 @@ public class PruebaVista extends javax.swing.JFrame {
                     ruta = ruta.replace("[/", "");
                     ruta = ruta.replace(", ", File.separator);
                     ruta = ruta.substring(1, ruta.length() - 1);
-
-                    //Crear dir
-                    /*File algo = new File(ruta + File.separator +"algo");
-                algo.mkdir();*/
                     dirDestino = new File(ruta);
+                    //System.out.println(dirDestino.getAbsolutePath());
                 }
 
             }
@@ -152,20 +150,21 @@ public class PruebaVista extends javax.swing.JFrame {
 
                     for (File file : transferData) {
 
-                        String dirDestinoCadena = dirDestino.getAbsolutePath();
+                        if (dirDestino == null) {
+                            JOptionPane.showMessageDialog(PruebaVista.this, "Elija el directorio donde importar las fuentes");
+                            String seleccionarDirectorio = seleccionarDirectorio(PruebaVista.this);
+                            dirDestino = new File(seleccionarDirectorio + File.separator + file.getName());
+                        } else {
+                            String dirDestinoCadena = dirDestino.getAbsolutePath();
+                            dirDestinoCadena = dirDestinoCadena + File.separator + file.getName();
+                            dirDestino = new File(dirDestinoCadena);
+                        }
 
-                        dirDestinoCadena = dirDestinoCadena + File.separator + file.getName();
-
-                        dirDestino = new File(dirDestinoCadena);
-
+                        /* System.out.println(file.getAbsolutePath());
+                        System.out.println(dirDestino.getAbsolutePath());*/
                         Files.copy(file.toPath(), dirDestino.toPath());
-                        System.out.println("copiado");
+                        dirDestino = null;
 
-                        /*root = new DefaultMutableTreeNode(misFuentes);
-
-                        createChildNodes(misFuentes, root);
-                        treeModel = new DefaultTreeModel(root);
-                        jTreeUserDir.setModel(treeModel);*/
                         actualizarNodos();
                     }
                 } catch (UnsupportedFlavorException ex) {
@@ -178,6 +177,43 @@ public class PruebaVista extends javax.swing.JFrame {
 
         };
         jLabelDragDrop.setTransferHandler(th);
+    }
+
+    /**
+     * Método que devuelve una ruta escogida por un JFileChooser.
+     *
+     * @param pantalla Componente padre.
+     * @return String con una ruta.
+     */
+    public String seleccionarDirectorio(Component pantalla) {
+        File file = null;
+        JFileChooser jc = new JFileChooser();
+        jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        File temp = new File("Mis fuentes");
+        jc.setCurrentDirectory(temp);
+        int seleccion = jc.showOpenDialog(pantalla);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            file = jc.getSelectedFile();
+        }
+        return file.getAbsolutePath();
+    }
+
+    /**
+     * Método que devuelve una ruta escogida por un JFileChooser.
+     *
+     * @param pantalla Componente padre.
+     * @return String con una ruta.
+     */
+    public File[] seleccionarArchivos(Component pantalla) {
+        File[] selectedFiles = null;
+        JFileChooser jc = new JFileChooser();
+        jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jc.setMultiSelectionEnabled(true);
+        int seleccion = jc.showOpenDialog(pantalla);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            selectedFiles = jc.getSelectedFiles();
+        }
+        return selectedFiles;
     }
 
     /**
@@ -203,6 +239,7 @@ public class PruebaVista extends javax.swing.JFrame {
         jButtonImportar = new javax.swing.JButton();
         jButtonBorrar = new javax.swing.JButton();
         jButtonCrear = new javax.swing.JButton();
+        jButtonDescargar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -249,6 +286,11 @@ public class PruebaVista extends javax.swing.JFrame {
         jLabelDragDrop.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButtonImportar.setText("Importar");
+        jButtonImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonImportarActionPerformed(evt);
+            }
+        });
 
         jButtonBorrar.setText("Borrar");
         jButtonBorrar.addActionListener(new java.awt.event.ActionListener() {
@@ -261,6 +303,13 @@ public class PruebaVista extends javax.swing.JFrame {
         jButtonCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCrearActionPerformed(evt);
+            }
+        });
+
+        jButtonDescargar.setText("Descargar fuente");
+        jButtonDescargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDescargarActionPerformed(evt);
             }
         });
 
@@ -285,11 +334,13 @@ public class PruebaVista extends javax.swing.JFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(jButtonPreview)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonDescargar))
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanelFondoLayout.setVerticalGroup(
@@ -312,9 +363,10 @@ public class PruebaVista extends javax.swing.JFrame {
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonPreview)
-                    .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonDescargar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -346,7 +398,10 @@ public class PruebaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPreviewActionPerformed
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-        dirDestino.delete();
+        System.out.println(dirDestino.getAbsolutePath());
+        //dirDestino.delete();
+        System.out.println(dirDestino.delete());
+        //dirDestino = null;
         actualizarNodos();
     }//GEN-LAST:event_jButtonBorrarActionPerformed
 
@@ -357,6 +412,50 @@ public class PruebaVista extends javax.swing.JFrame {
         nuevoDirectorio.mkdir();
         actualizarNodos();
     }//GEN-LAST:event_jButtonCrearActionPerformed
+
+    private void jButtonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportarActionPerformed
+
+        if (dirDestino == null) {
+            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
+            String seleccionarDirectorio = seleccionarDirectorio(this);
+            dirDestino = new File(seleccionarDirectorio);
+        }
+
+        JOptionPane.showMessageDialog(this, "Elija las fuentes a importar");
+        for (File selectedFile : seleccionarArchivos(this)) {
+            try {
+                String dirDestinoCadena = dirDestino.getAbsolutePath();
+                dirDestinoCadena = dirDestinoCadena + File.separator + selectedFile.getName();
+                dirDestino = new File(dirDestinoCadena);
+
+                Files.copy(selectedFile.toPath(), dirDestino.toPath());
+
+                dirDestino = null;
+                actualizarNodos();
+            } catch (IOException ex) {
+                Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+    }//GEN-LAST:event_jButtonImportarActionPerformed
+
+    private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
+        if (dirDestino == null) {
+            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
+            String seleccionarDirectorio = seleccionarDirectorio(this);
+            dirDestino = new File(seleccionarDirectorio);
+        }
+
+        String url = cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
+
+        GoogleFont fontDescargar = cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow());
+
+        DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
+
+        actualizarNodos();
+
+    }//GEN-LAST:event_jButtonDescargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,6 +495,7 @@ public class PruebaVista extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBorrar;
     private javax.swing.JButton jButtonCrear;
+    private javax.swing.JButton jButtonDescargar;
     private javax.swing.JButton jButtonImportar;
     private javax.swing.JButton jButtonPreview;
     private javax.swing.JComboBox<String> jComboBoxStyles;

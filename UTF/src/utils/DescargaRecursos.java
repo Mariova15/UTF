@@ -7,6 +7,7 @@ package utils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +47,7 @@ public class DescargaRecursos {
             in.close();
             response = out.toByteArray();
 
-            FileOutputStream fos = new FileOutputStream(nombreArchivo);
+            FileOutputStream fos = new FileOutputStream(rutaDestino + File.separator + nombreArchivo);
             fos.write(response);
         } catch (IOException ex) {
             Logger.getLogger(DescargaRecursos.class.getName()).log(Level.SEVERE, null, ex);

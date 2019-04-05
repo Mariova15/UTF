@@ -43,7 +43,10 @@ public class ControladorGestorFuentes {
     }
 
     public void descargaJsonFuentes() {
-        DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "Fonts.json", "nada");
+        //APPDATA
+        File destino = new File("");
+        //System.out.println(destino.getAbsolutePath());
+        DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "Fonts.json", destino.getAbsolutePath());
         lecturaJson();
     }
 

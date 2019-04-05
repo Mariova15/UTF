@@ -16,7 +16,7 @@ import modelo.GoogleFont;
 public class TableModelGoogleFonts extends AbstractTableModel {
 
     private final List<GoogleFont> listaGoogleFonts;
-    private final String[] columnas = {"Kind", "Family", "Category", "Version"};
+    private final String[] columnas = {"Family", "Category", "Version"};
 
     public TableModelGoogleFonts(List<GoogleFont> listaGoogleFonts) {
         this.listaGoogleFonts = listaGoogleFonts;
@@ -41,12 +41,10 @@ public class TableModelGoogleFonts extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return listaGoogleFonts.get(rowIndex).getKind();
-            case 1:
                 return listaGoogleFonts.get(rowIndex).getFamily();
-            case 2:
+            case 1:
                 return listaGoogleFonts.get(rowIndex).getCategory();
-            case 3:
+            case 2:
                 return listaGoogleFonts.get(rowIndex).getVersion();
         }
         return null;
