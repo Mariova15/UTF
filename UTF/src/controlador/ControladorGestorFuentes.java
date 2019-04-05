@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +41,7 @@ public class ControladorGestorFuentes {
     public List<GoogleFont> getListaFuentes() {
         return listaFuentes;
     }
-        
+
     public void descargaJsonFuentes() {
         DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "Fonts.json", "nada");
         lecturaJson();
@@ -61,25 +62,48 @@ public class ControladorGestorFuentes {
 
         for (Iterator<JsonValue> it = jsonFuentes.getJsonArray("items").iterator(); it.hasNext();) {
             JsonObject fuente = (JsonObject) it.next();
-            
+
             Map<String, String> mapaFuentes = new HashMap<>();
-            JsonArray variants = fuente.getJsonArray("variants");            
+            JsonArray variants = fuente.getJsonArray("variants");
             JsonObject files = fuente.getJsonObject("files");
-            
+
             for (int i = 0; i < variants.size(); i++) {
                 mapaFuentes.put(variants.getString(i), files.getString(variants.getString(i)));
             }
-            
+
             listaFuentes.add(new GoogleFont(fuente.getJsonString("kind").getString(),
                     fuente.getJsonString("family").getString(), fuente.getJsonString("category").getString(),
-           fuente.getJsonString("version").getString(), mapaFuentes));
+                    fuente.getJsonString("version").getString(), mapaFuentes));
         }
     }
-    
-    public void verFuentes(){
+
+    public void verFuentes() {
         for (GoogleFont fuente : listaFuentes) {
             System.out.println(fuente.toString());
         }
+    }
+
+    public List<File> generarListaFuentesLocales(File raiz) {
+        List<File> listaFuenteLocales = new ArrayList<>();
+
+        buscarArchivos(listaFuenteLocales, raiz);
+
+        return listaFuenteLocales;
+
+    }
+
+    private void buscarArchivos(List<File> listaFuenteLocales, File raiz) {
+
+        if (raiz.isDirectory()) {
+            for (File archivo : raiz.listFiles()) {
+                if (archivo.isDirectory()) {
+                    buscarArchivos(listaFuenteLocales, archivo);
+                } else {
+                    listaFuenteLocales.add(archivo);
+                }
+            }
+        }
+
     }
 
 }
