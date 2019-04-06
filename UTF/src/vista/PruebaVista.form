@@ -63,6 +63,7 @@
                               <Component id="jButtonImportar" alignment="0" max="32767" attributes="0"/>
                               <Component id="jButtonBorrar" alignment="0" max="32767" attributes="0"/>
                               <Component id="jButtonCrear" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jButtonMover" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -98,26 +99,29 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <Component id="jScrollPaneTable" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jButtonVerFuentesLocales" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonVerGoogleFonts" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <Component id="jScrollPaneTree" min="-2" pref="140" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonCrear" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonMover" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonBorrar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonImportar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabelDragDrop" min="-2" pref="66" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="jScrollPaneTable" min="-2" pref="265" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButtonVerGoogleFonts" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonVerFuentesLocales" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1TituloPrueba" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
                       <Component id="jButtonPreview" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -125,7 +129,7 @@
                       <Component id="jButtonDescargar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPaneTextArea" pref="171" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneTextArea" pref="161" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -276,6 +280,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVerFuentesLocalesActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonMover">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Mover"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMoverActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

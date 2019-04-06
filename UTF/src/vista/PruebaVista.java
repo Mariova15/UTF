@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -175,7 +176,6 @@ public class PruebaVista extends javax.swing.JFrame {
                 }
 
                 System.out.println(transferData.size());*/
-                
                 File[] toArray = (File[]) transferData.toArray();
 
                 PruebaVista.this.coiparArchivos(toArray);
@@ -311,6 +311,7 @@ public class PruebaVista extends javax.swing.JFrame {
         jButtonDescargar = new javax.swing.JButton();
         jButtonVerGoogleFonts = new javax.swing.JButton();
         jButtonVerFuentesLocales = new javax.swing.JButton();
+        jButtonMover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -398,6 +399,13 @@ public class PruebaVista extends javax.swing.JFrame {
             }
         });
 
+        jButtonMover.setText("Mover");
+        jButtonMover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMoverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFondoLayout = new javax.swing.GroupLayout(jPanelFondo);
         jPanelFondo.setLayout(jPanelFondoLayout);
         jPanelFondoLayout.setHorizontalGroup(
@@ -413,7 +421,8 @@ public class PruebaVista extends javax.swing.JFrame {
                             .addComponent(jLabelDragDrop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButtonImportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButtonBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButtonCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonMover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
                                 .addGap(26, 26, 26)
@@ -439,29 +448,32 @@ public class PruebaVista extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFondoLayout.createSequentialGroup()
+                        .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonVerFuentesLocales, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonVerGoogleFonts, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(jPanelFondoLayout.createSequentialGroup()
                         .addComponent(jScrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonCrear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonMover)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonBorrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonImportar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelDragDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelFondoLayout.createSequentialGroup()
-                        .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonVerGoogleFonts)
-                            .addComponent(jButtonVerFuentesLocales))))
-                .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(jLabelDragDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonPreview)
                     .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonDescargar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -496,6 +508,7 @@ public class PruebaVista extends javax.swing.JFrame {
         System.out.println(dirDestino.getAbsolutePath());
         //dirDestino.delete();
         System.out.println(dirDestino.delete());
+
         dirDestino = null;
         actualizarNodos();
     }//GEN-LAST:event_jButtonBorrarActionPerformed
@@ -527,7 +540,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
         DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
 
-        dirDestino = null;        
+        dirDestino = null;
         actualizarNodos();
 
     }//GEN-LAST:event_jButtonDescargarActionPerformed
@@ -546,6 +559,25 @@ public class PruebaVista extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
+
+    private void jButtonMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoverActionPerformed
+
+        if (dirDestino == null) {
+            JOptionPane.showMessageDialog(this, "Elija el directorio a mover");
+            String seleccionarDirectorio = seleccionarDirectorio(this);
+            dirDestino = new File(seleccionarDirectorio);
+        }
+        
+        try {
+            Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this)+File.separator+dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        dirDestino = null;
+        actualizarNodos();
+
+    }//GEN-LAST:event_jButtonMoverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -587,6 +619,7 @@ public class PruebaVista extends javax.swing.JFrame {
     private javax.swing.JButton jButtonCrear;
     private javax.swing.JButton jButtonDescargar;
     private javax.swing.JButton jButtonImportar;
+    private javax.swing.JButton jButtonMover;
     private javax.swing.JButton jButtonPreview;
     private javax.swing.JButton jButtonVerFuentesLocales;
     private javax.swing.JButton jButtonVerGoogleFonts;
