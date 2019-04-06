@@ -33,10 +33,12 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
+import modelo.LocalFont;
 import test.TestControlador;
 import utils.DescargaRecursos;
 import utils.Filtros;
 import vista.tablemodels.TableModelGoogleFonts;
+import vista.tablemodels.TableModelLocalFonts;
 
 /**
  *
@@ -53,7 +55,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private File dirDestino;
 
-    private List<File> listaFuentesLocales;
+    private List<LocalFont> listaFuentesLocales;
 
     /**
      * Creates new form PruebaVista
@@ -100,6 +102,10 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private void rellenarTablaGoogleFonts() {
         jTableGoogleFonts.setModel(new TableModelGoogleFonts(cgf.getListaFuentes()));
+    }
+
+    private void rellenarTablaLocalFonts() {
+        jTableGoogleFonts.setModel(new TableModelLocalFonts(listaFuentesLocales));
     }
 
     private void crearFuente(String dirGoogleFont) {
@@ -271,14 +277,7 @@ public class PruebaVista extends javax.swing.JFrame {
                 if (file.isDirectory()) {
                     this.buscarFuentesLocales(file);
                 } else {
-                    listaFuentesLocales.add(file);
-                    /*try {
-                    listaFuentesLocales.add(Font.createFont(Font.TRUETYPE_FONT, file));
-                } catch (FontFormatException ex) {
-                    Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                    listaFuentesLocales.add(new LocalFont(file));
                 }
             }
         }
@@ -319,13 +318,13 @@ public class PruebaVista extends javax.swing.JFrame {
 
         jTableGoogleFonts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3"
             }
         ));
         jTableGoogleFonts.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -498,10 +497,18 @@ public class PruebaVista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviewActionPerformed
-        crearFuente(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
 
-        jLabel1TituloPrueba.setFont(createFont.deriveFont(24F));
-        jTextAreaLorem.setFont(createFont.deriveFont(14F));
+        if (listaFuentesLocales == null) {
+            crearFuente(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
+
+            jLabel1TituloPrueba.setFont(createFont.deriveFont(24F));
+            jTextAreaLorem.setFont(createFont.deriveFont(14F));
+        } else {
+            jLabel1TituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
+            jTextAreaLorem.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
+        }
+
+
     }//GEN-LAST:event_jButtonPreviewActionPerformed
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
@@ -546,17 +553,26 @@ public class PruebaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDescargarActionPerformed
 
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
+        listaFuentesLocales = null;
         rellenarTablaGoogleFonts();
     }//GEN-LAST:event_jButtonVerGoogleFontsActionPerformed
 
     private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
 
+        jComboBoxStyles.setVisible(false);
+        jButtonDescargar.setVisible(false);
+
         listaFuentesLocales = new ArrayList<>();
+
+        if (dirDestino == null) {
+            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
+            String seleccionarDirectorio = seleccionarDirectorio(this);
+            dirDestino = new File(seleccionarDirectorio);
+        }
+
         buscarFuentesLocales(dirDestino);
 
-        for (File fuenteLocal : listaFuentesLocales) {
-            System.out.println(fuenteLocal.toString());
-        }
+        rellenarTablaLocalFonts();
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
 
@@ -567,13 +583,13 @@ public class PruebaVista extends javax.swing.JFrame {
             String seleccionarDirectorio = seleccionarDirectorio(this);
             dirDestino = new File(seleccionarDirectorio);
         }
-        
+
         try {
-            Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this)+File.separator+dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
             Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         dirDestino = null;
         actualizarNodos();
 
