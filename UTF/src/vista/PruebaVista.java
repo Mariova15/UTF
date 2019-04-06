@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -134,6 +135,7 @@ public class PruebaVista extends javax.swing.JFrame {
     }
 
     private void actualizarNodos() {
+        //dirDestino = null;
         root = new DefaultMutableTreeNode(misFuentes);
 
         createChildNodes(misFuentes, root);
@@ -152,6 +154,7 @@ public class PruebaVista extends javax.swing.JFrame {
             public boolean importData(JComponent comp, Transferable t) {
 
                 List<File> transferData = null;
+
                 try {
                     transferData = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                 } catch (UnsupportedFlavorException ex) {
@@ -160,6 +163,19 @@ public class PruebaVista extends javax.swing.JFrame {
                     Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                //FALTA FILTRAR (parado en bucle)
+                /*for (Iterator<File> iterator = transferData.iterator(); iterator.hasNext();) {
+                    File next = iterator.next();
+                    
+                    if (!next.getName().endsWith(".otf")) {
+                        JOptionPane.showMessageDialog(PruebaVista.this,next.getName() + " no es compatible");
+                        iterator.remove();
+                    }
+                    
+                }
+
+                System.out.println(transferData.size());*/
+                
                 File[] toArray = (File[]) transferData.toArray();
 
                 PruebaVista.this.coiparArchivos(toArray);
@@ -207,12 +223,10 @@ public class PruebaVista extends javax.swing.JFrame {
         /*for (FileFilter fileFilter : Filtros.fontFilterFileChooser()) {
             jc.addChoosableFileFilter(fileFilter);
         }*/
-        
         for (int i = 1; i > -1; i--) {
             jc.setFileFilter(Filtros.fontFilterFileChooser().get(i));
         }
 
-        
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             selectedFiles = jc.getSelectedFiles();
@@ -482,7 +496,7 @@ public class PruebaVista extends javax.swing.JFrame {
         System.out.println(dirDestino.getAbsolutePath());
         //dirDestino.delete();
         System.out.println(dirDestino.delete());
-        //dirDestino = null;
+        dirDestino = null;
         actualizarNodos();
     }//GEN-LAST:event_jButtonBorrarActionPerformed
 
@@ -513,6 +527,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
         DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
 
+        dirDestino = null;        
         actualizarNodos();
 
     }//GEN-LAST:event_jButtonDescargarActionPerformed

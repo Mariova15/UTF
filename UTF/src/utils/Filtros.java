@@ -33,42 +33,46 @@ public class Filtros {
         return imgFilter;
     }
 
+    /**
+     * Método que devuelve una lista de FileFilter para usar en un JFileChooser.
+     * 
+     * @return listaFiltros
+     */
     public static List<FileFilter> fontFilterFileChooser() {
 
         List<FileFilter> listaFiltros = new ArrayList<>();
-
-        FileFilter ttf = new FileFilter() {
-            public String getDescription() {
-                return "TrueType Fonts (*.ttf)";
-            }
-
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                } else {
-                    return f.getName().toLowerCase().endsWith(".ttf");
-                }
-            }
-        };
-
-        FileFilter otf = new FileFilter() {
-            public String getDescription() {
-                return "OpenType Fonts (*.otf)";
-            }
-
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                } else {
-                    return f.getName().toLowerCase().endsWith(".otf");
-                }
-            }
-        };
-
-        listaFiltros.add(ttf);
-        listaFiltros.add(otf);
         
+        listaFiltros.add(crearFiltro("TrueType Fonts (*.ttf)", ".ttf"));
+        listaFiltros.add(crearFiltro("OpenType Fonts (*.otf)", ".otf"));
+                
         return listaFiltros;
+
+    }
+
+    /**
+     * Método que crea un filtro para usar en JFileChooser.
+     * 
+     * @param descripcion del filtro.
+     * @param extension del archivo.
+     * @return 
+     */
+    private static FileFilter crearFiltro(String descripcion, String extension) {
+
+        FileFilter filtro = new FileFilter() {
+            public String getDescription() {
+                return descripcion;
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(extension);
+                }
+            }
+        };
+
+        return filtro;
 
     }
 

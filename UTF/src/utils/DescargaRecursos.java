@@ -49,6 +49,7 @@ public class DescargaRecursos {
 
             FileOutputStream fos = new FileOutputStream(rutaDestino + File.separator + nombreArchivo);
             fos.write(response);
+            fos.close();
         } catch (IOException ex) {
             Logger.getLogger(DescargaRecursos.class.getName()).log(Level.SEVERE, null, ex);
         }
