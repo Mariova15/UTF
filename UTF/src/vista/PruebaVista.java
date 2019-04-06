@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,8 @@ public class PruebaVista extends javax.swing.JFrame {
     private DefaultTreeModel treeModel;
 
     private File dirDestino;
+
+    private List<File> listaFuentesLocales;
 
     /**
      * Creates new form PruebaVista
@@ -145,34 +148,20 @@ public class PruebaVista extends javax.swing.JFrame {
 
             @Override
             public boolean importData(JComponent comp, Transferable t) {
+
+                List<File> transferData = null;
                 try {
-                    List<File> transferData = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-
-                    //HACER METODO
-                    
-                    if (dirDestino == null) {
-                        JOptionPane.showMessageDialog(PruebaVista.this, "Elija el directorio donde importar las fuentes");
-                        String seleccionarDirectorio = seleccionarDirectorio(PruebaVista.this);
-                        dirDestino = new File(seleccionarDirectorio);
-                    }
-
-                    for (File file : transferData) {
-
-                        String dirDestinoCadena = dirDestino.getAbsolutePath();
-                        dirDestinoCadena = dirDestinoCadena + File.separator + file.getName();
-                        File dirTemp = new File(dirDestinoCadena);
-
-                        Files.copy(file.toPath(), dirTemp.toPath());
-
-                        dirTemp = null;
-                        actualizarNodos();
-                    }
-                    dirDestino = null;
+                    transferData = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                 } catch (UnsupportedFlavorException ex) {
                     Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                File[] toArray = (File[]) transferData.toArray();
+
+                PruebaVista.this.coiparArchivos(toArray);
+
                 return true;
             }
 
@@ -200,12 +189,13 @@ public class PruebaVista extends javax.swing.JFrame {
     }
 
     /**
-     * Método que devuelve una ruta escogida por un JFileChooser.
+     * Método que devuelve una o varias rutas escogida por un JFileChooser.
      *
      * @param pantalla Componente padre.
      * @return String con una ruta.
      */
     public File[] seleccionarArchivos(Component pantalla) {
+        JOptionPane.showMessageDialog(this, "Elija las fuentes a importar");
         File[] selectedFiles = null;
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -215,6 +205,57 @@ public class PruebaVista extends javax.swing.JFrame {
             selectedFiles = jc.getSelectedFiles();
         }
         return selectedFiles;
+    }
+
+    public void coiparArchivos(File[] archivosCopiar) {
+        if (dirDestino == null) {
+            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
+            String seleccionarDirectorio = seleccionarDirectorio(this);
+            dirDestino = new File(seleccionarDirectorio);
+        }
+
+        for (File selectedFile : archivosCopiar) {
+            try {
+                String dirDestinoCadena = dirDestino.getAbsolutePath();
+                dirDestinoCadena = dirDestinoCadena + File.separator + selectedFile.getName();
+                File dirTemp = new File(dirDestinoCadena);
+
+                Files.copy(selectedFile.toPath(), dirTemp.toPath());
+
+                dirTemp = null;
+                actualizarNodos();
+            } catch (IOException ex) {
+                Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        dirDestino = null;
+    }
+
+    public void buscarFuentesLocales(File dirBusqueda) {
+
+        File[] files = dirBusqueda.listFiles();
+
+        //comprueba que files tenga archivos o directorios
+        if (files != null) {
+            for (File file : files) {
+
+                if (file.isDirectory()) {
+                    this.buscarFuentesLocales(file);
+                } else {
+                    listaFuentesLocales.add(file);
+                    /*try {
+                    listaFuentesLocales.add(Font.createFont(Font.TRUETYPE_FONT, file));
+                } catch (FontFormatException ex) {
+                    Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
+                }
+            }
+        }
+
     }
 
     /**
@@ -241,6 +282,8 @@ public class PruebaVista extends javax.swing.JFrame {
         jButtonBorrar = new javax.swing.JButton();
         jButtonCrear = new javax.swing.JButton();
         jButtonDescargar = new javax.swing.JButton();
+        jButtonVerGoogleFonts = new javax.swing.JButton();
+        jButtonVerFuentesLocales = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -314,6 +357,20 @@ public class PruebaVista extends javax.swing.JFrame {
             }
         });
 
+        jButtonVerGoogleFonts.setText("Ver google fonts");
+        jButtonVerGoogleFonts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVerGoogleFontsActionPerformed(evt);
+            }
+        });
+
+        jButtonVerFuentesLocales.setText("Ver fuentes locales");
+        jButtonVerFuentesLocales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVerFuentesLocalesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFondoLayout = new javax.swing.GroupLayout(jPanelFondo);
         jPanelFondo.setLayout(jPanelFondoLayout);
         jPanelFondoLayout.setHorizontalGroup(
@@ -340,7 +397,12 @@ public class PruebaVista extends javax.swing.JFrame {
                                 .addComponent(jButtonDescargar))
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelFondoLayout.createSequentialGroup()
+                                        .addComponent(jButtonVerGoogleFonts)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonVerFuentesLocales))
+                                    .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -348,7 +410,7 @@ public class PruebaVista extends javax.swing.JFrame {
             jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFondoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFondoLayout.createSequentialGroup()
                         .addComponent(jScrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -359,7 +421,12 @@ public class PruebaVista extends javax.swing.JFrame {
                         .addComponent(jButtonImportar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelDragDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelFondoLayout.createSequentialGroup()
+                        .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonVerGoogleFonts)
+                            .addComponent(jButtonVerFuentesLocales))))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -416,32 +483,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private void jButtonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportarActionPerformed
 
-        //HACER METODO
-        
-        if (dirDestino == null) {
-            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
-            String seleccionarDirectorio = seleccionarDirectorio(this);
-            dirDestino = new File(seleccionarDirectorio);
-        }
-
-        JOptionPane.showMessageDialog(this, "Elija las fuentes a importar");
-        for (File selectedFile : seleccionarArchivos(this)) {
-            try {
-                String dirDestinoCadena = dirDestino.getAbsolutePath();
-                dirDestinoCadena = dirDestinoCadena + File.separator + selectedFile.getName();
-                File dirTemp = new File(dirDestinoCadena);
-
-                Files.copy(selectedFile.toPath(), dirTemp.toPath());
-
-                dirTemp = null;
-                actualizarNodos();
-            } catch (IOException ex) {
-                Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-
-        dirDestino = null;
+        coiparArchivos(seleccionarArchivos(this));
 
     }//GEN-LAST:event_jButtonImportarActionPerformed
 
@@ -461,6 +503,21 @@ public class PruebaVista extends javax.swing.JFrame {
         actualizarNodos();
 
     }//GEN-LAST:event_jButtonDescargarActionPerformed
+
+    private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
+        rellenarTablaGoogleFonts();
+    }//GEN-LAST:event_jButtonVerGoogleFontsActionPerformed
+
+    private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
+
+        listaFuentesLocales = new ArrayList<>();
+        buscarFuentesLocales(dirDestino);
+
+        for (File fuenteLocal : listaFuentesLocales) {
+            System.out.println(fuenteLocal.toString());
+        }
+
+    }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,6 +560,8 @@ public class PruebaVista extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDescargar;
     private javax.swing.JButton jButtonImportar;
     private javax.swing.JButton jButtonPreview;
+    private javax.swing.JButton jButtonVerFuentesLocales;
+    private javax.swing.JButton jButtonVerGoogleFonts;
     private javax.swing.JComboBox<String> jComboBoxStyles;
     private javax.swing.JLabel jLabel1TituloPrueba;
     private javax.swing.JLabel jLabelDragDrop;

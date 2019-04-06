@@ -9,7 +9,7 @@ package modelo;
  *
  * @author Mario
  */
-public class Fuente {
+public class LocalFont {
     
     private String nombre, familia, estilo;
     
