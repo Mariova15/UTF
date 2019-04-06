@@ -27,11 +27,13 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
 import test.TestControlador;
 import utils.DescargaRecursos;
+import utils.Filtros;
 import vista.tablemodels.TableModelGoogleFonts;
 
 /**
@@ -179,6 +181,7 @@ public class PruebaVista extends javax.swing.JFrame {
         File file = null;
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //Dir guardado en conf por el usuario
         File temp = new File("Mis fuentes");
         jc.setCurrentDirectory(temp);
         int seleccion = jc.showOpenDialog(pantalla);
@@ -200,6 +203,16 @@ public class PruebaVista extends javax.swing.JFrame {
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jc.setMultiSelectionEnabled(true);
+
+        /*for (FileFilter fileFilter : Filtros.fontFilterFileChooser()) {
+            jc.addChoosableFileFilter(fileFilter);
+        }*/
+        
+        for (int i = 1; i > -1; i--) {
+            jc.setFileFilter(Filtros.fontFilterFileChooser().get(i));
+        }
+
+        
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             selectedFiles = jc.getSelectedFiles();
