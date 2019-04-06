@@ -34,7 +34,14 @@ public class ControladorGestorFuentes {
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";
     private List<GoogleFont> listaFuentes;
 
-    public ControladorGestorFuentes() {
+    private File misFuentes, datosApp;
+
+    public ControladorGestorFuentes(File misFuentes, File datosApp) {
+        this.misFuentes = misFuentes;
+        if (!misFuentes.exists()) {
+            misFuentes.mkdir();
+        }
+        this.datosApp = datosApp;
         listaFuentes = new ArrayList<>();
     }
 
@@ -42,11 +49,13 @@ public class ControladorGestorFuentes {
         return listaFuentes;
     }
 
+    public File getMisFuentes() {
+        return misFuentes;
+    }
+
     public void descargaJsonFuentes() {
-        //APPDATA
-        File destino = new File("");
-        //System.out.println(destino.getAbsolutePath());
-        DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "Fonts.json", destino.getAbsolutePath());
+        //APPDATA                
+        DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "GoogleFonts.json", datosApp.getAbsolutePath());
         lecturaJson();
     }
 
@@ -54,7 +63,7 @@ public class ControladorGestorFuentes {
         JsonReader jsonReader;
         JsonObject jsonFuentes = null;
         try {
-            InputStream fis = new FileInputStream("Fonts.json");
+            InputStream fis = new FileInputStream(datosApp.getAbsolutePath() + File.separator + "GoogleFonts.json");
             jsonReader = Json.createReader(fis);
             jsonFuentes = jsonReader.readObject();
             jsonReader.close();
@@ -102,6 +111,7 @@ public class ControladorGestorFuentes {
                 if (archivo.isDirectory()) {
                     buscarArchivos(listaFuenteLocales, archivo);
                 } else {
+                    //Filtrar por extension
                     listaFuenteLocales.add(archivo);
                 }
             }

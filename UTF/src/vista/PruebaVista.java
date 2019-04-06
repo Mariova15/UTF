@@ -63,7 +63,10 @@ public class PruebaVista extends javax.swing.JFrame {
     public PruebaVista() {
         initComponents();
         this.setLocationRelativeTo(null);
-        cgf = new ControladorGestorFuentes();
+        //Guardar cfg en fichero de datos y gestionar que el usuario elija el lugar del dir Mis fuentes
+        //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
+        //Mirar como hacer ficheros ocultos en windows desde java
+        cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File(""));
         cgf.descargaJsonFuentes();
         rellenarTablaGoogleFonts();
         dragDrop();
@@ -71,13 +74,11 @@ public class PruebaVista extends javax.swing.JFrame {
         jTableGoogleFonts.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //System.out.println(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFamily());                
                 jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
             }
         });
 
-        //Dir raiz guardado en config via filechooser
-        misFuentes = new File("Mis fuentes");
+        misFuentes = cgf.getMisFuentes();
         root = new DefaultMutableTreeNode(misFuentes);
 
         actualizarNodos();
@@ -170,21 +171,23 @@ public class PruebaVista extends javax.swing.JFrame {
                     Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                //FALTA FILTRAR (parado en bucle)
+                List<File> archivosCopiar = new ArrayList<>();
+
+                for (File file : transferData) {
+                    if (file.getName().endsWith(".ttf") || file.getName().endsWith(".otf")) {
+                        archivosCopiar.add(file);
+                    }
+                }
+                PruebaVista.this.coiparArchivos(archivosCopiar.toArray(new File[archivosCopiar.size()]));
+                
                 /*for (Iterator<File> iterator = transferData.iterator(); iterator.hasNext();) {
                     File next = iterator.next();
-                    
-                    if (!next.getName().endsWith(".otf")) {
-                        JOptionPane.showMessageDialog(PruebaVista.this,next.getName() + " no es compatible");
+                    if (!next.getName().endsWith(".ttf") || !next.getName().endsWith(".otf")) {
                         iterator.remove();
                     }
-                    
                 }
-
-                System.out.println(transferData.size());*/
-                File[] toArray = (File[]) transferData.toArray();
-
-                PruebaVista.this.coiparArchivos(toArray);
+                File[] toArray = transferData.toArray(new File[transferData.size()]);
+                PruebaVista.this.coiparArchivos(toArray);*/
 
                 return true;
             }
@@ -203,9 +206,8 @@ public class PruebaVista extends javax.swing.JFrame {
         File file = null;
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        //Dir guardado en conf por el usuario
-        File temp = new File("Mis fuentes");
-        jc.setCurrentDirectory(temp);
+
+        jc.setCurrentDirectory(misFuentes);
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             file = jc.getSelectedFile();
@@ -277,7 +279,9 @@ public class PruebaVista extends javax.swing.JFrame {
                 if (file.isDirectory()) {
                     this.buscarFuentesLocales(file);
                 } else {
-                    listaFuentesLocales.add(new LocalFont(file));
+                    if (file.getName().endsWith(".ttf") || file.getName().endsWith(".otf")) {
+                        listaFuentesLocales.add(new LocalFont(file));
+                    }                    
                 }
             }
         }
@@ -505,7 +509,7 @@ public class PruebaVista extends javax.swing.JFrame {
             jTextAreaLorem.setFont(createFont.deriveFont(14F));
         } else {
             jLabel1TituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
-            jTextAreaLorem.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
+            jTextAreaLorem.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(14F));
         }
 
 
@@ -554,6 +558,8 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
         listaFuentesLocales = null;
+        jComboBoxStyles.setVisible(true);
+        jButtonDescargar.setVisible(true);
         rellenarTablaGoogleFonts();
     }//GEN-LAST:event_jButtonVerGoogleFontsActionPerformed
 
