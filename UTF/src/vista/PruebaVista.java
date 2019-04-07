@@ -21,7 +21,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +29,6 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
@@ -83,7 +81,9 @@ public class PruebaVista extends javax.swing.JFrame {
             Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        JOptionPane.showMessageDialog(this, "Elija el directorio donde guardar sus fuentes");
         seleccionarDirectorio(this);
+        //Guardar info en appdata
         cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File(""));
         gfo.abrirFicheroEscrituraObjetos("configuracion.conf");
         gfo.grabarObjetoFicheroObjetos(cgf);
@@ -516,8 +516,14 @@ public class PruebaVista extends javax.swing.JFrame {
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
         System.out.println(dirDestino.getAbsolutePath());
         //dirDestino.delete();
-        System.out.println(dirDestino.delete());
-
+        //System.out.println(dirDestino.delete());
+        try {
+            
+            Files.delete(dirDestino.toPath());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Archivo en uso");
+            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dirDestino = null;
         actualizarNodos();
     }//GEN-LAST:event_jButtonBorrarActionPerformed
@@ -573,6 +579,7 @@ public class PruebaVista extends javax.swing.JFrame {
         }
 
         listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
+
         dirDestino = null;
         rellenarTablaLocalFonts();
 
@@ -588,8 +595,10 @@ public class PruebaVista extends javax.swing.JFrame {
 
         try {
             Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+
         } catch (IOException ex) {
-            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PruebaVista.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         dirDestino = null;
@@ -611,16 +620,24 @@ public class PruebaVista extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PruebaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaVista.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PruebaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaVista.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PruebaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaVista.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PruebaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaVista.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

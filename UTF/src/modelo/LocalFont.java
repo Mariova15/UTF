@@ -8,7 +8,9 @@ package modelo;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,8 +26,8 @@ public class LocalFont implements Serializable {
     private Font font;
 
     public LocalFont(File fontFile) {
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+        try {           
+            font = Font.createFont(Font.TRUETYPE_FONT,fontFile);           
         } catch (FontFormatException ex) {
             Logger.getLogger(LocalFont.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
