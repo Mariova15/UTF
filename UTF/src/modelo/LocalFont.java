@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Mario
  */
-public class LocalFont {
+public class LocalFont implements Serializable {
 
     private String family, name;
     private File fontFile;

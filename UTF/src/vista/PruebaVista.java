@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
+import controlador.GestionFicherosObjetos;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -46,6 +47,8 @@ import vista.tablemodels.TableModelLocalFonts;
  */
 public class PruebaVista extends javax.swing.JFrame {
 
+    GestionFicherosObjetos gfo;
+
     private ControladorGestorFuentes cgf;
     private Font createFont = null;
 
@@ -67,6 +70,24 @@ public class PruebaVista extends javax.swing.JFrame {
         //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
         //Mirar como hacer ficheros ocultos en windows desde java
         cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File(""));
+        gfo = new GestionFicherosObjetos();
+
+        //Ver donde guardar archivos
+        /*try {            
+            gfo.abrirFicheroLecturaObjetos("configuracion.conf");
+            cgf = gfo.leerUnRegistroFicheroObjetos();
+            gfo.cerrarFicherosLecturaObjetos();
+        } catch (IOException ex) {
+            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        seleccionarDirectorio(this);
+        cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File(""));
+        gfo.abrirFicheroEscrituraObjetos("configuracion.conf");
+        gfo.grabarObjetoFicheroObjetos(cgf);
+        gfo.cerrarFicherosEscrituraObjetos();*/
         cgf.descargaJsonFuentes();
         rellenarTablaGoogleFonts();
         dragDrop();
@@ -124,12 +145,10 @@ public class PruebaVista extends javax.swing.JFrame {
     private void createChildNodes(File fileRoot,
             DefaultMutableTreeNode node) {
         File[] files = fileRoot.listFiles();
-
         //comprueba que files tenga archivos o directorios
         if (files == null) {
             return;
         }
-
         for (File file : files) {
             DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(file.getName());
 
@@ -179,7 +198,7 @@ public class PruebaVista extends javax.swing.JFrame {
                     }
                 }
                 PruebaVista.this.coiparArchivos(archivosCopiar.toArray(new File[archivosCopiar.size()]));
-                
+
                 /*for (Iterator<File> iterator = transferData.iterator(); iterator.hasNext();) {
                     File next = iterator.next();
                     if (!next.getName().endsWith(".ttf") || !next.getName().endsWith(".otf")) {
@@ -188,7 +207,6 @@ public class PruebaVista extends javax.swing.JFrame {
                 }
                 File[] toArray = transferData.toArray(new File[transferData.size()]);
                 PruebaVista.this.coiparArchivos(toArray);*/
-
                 return true;
             }
 
@@ -266,26 +284,6 @@ public class PruebaVista extends javax.swing.JFrame {
         }
 
         dirDestino = null;
-    }
-
-    public void buscarFuentesLocales(File dirBusqueda) {
-
-        File[] files = dirBusqueda.listFiles();
-
-        //comprueba que files tenga archivos o directorios
-        if (files != null) {
-            for (File file : files) {
-
-                if (file.isDirectory()) {
-                    this.buscarFuentesLocales(file);
-                } else {
-                    if (file.getName().endsWith(".ttf") || file.getName().endsWith(".otf")) {
-                        listaFuentesLocales.add(new LocalFont(file));
-                    }                    
-                }
-            }
-        }
-
     }
 
     /**
@@ -540,7 +538,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
         if (dirDestino == null) {
-            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
+            JOptionPane.showMessageDialog(this, "Elija el directorio donde descargar las fuentes");
             String seleccionarDirectorio = seleccionarDirectorio(this);
             dirDestino = new File(seleccionarDirectorio);
         }
@@ -568,16 +566,14 @@ public class PruebaVista extends javax.swing.JFrame {
         jComboBoxStyles.setVisible(false);
         jButtonDescargar.setVisible(false);
 
-        listaFuentesLocales = new ArrayList<>();
-
         if (dirDestino == null) {
-            JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
+            JOptionPane.showMessageDialog(this, "Elija el directorio a partir del que buscar las fuentes");
             String seleccionarDirectorio = seleccionarDirectorio(this);
             dirDestino = new File(seleccionarDirectorio);
         }
 
-        buscarFuentesLocales(dirDestino);
-
+        listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
+        dirDestino = null;
         rellenarTablaLocalFonts();
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed

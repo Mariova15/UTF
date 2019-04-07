@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
  *
  * @author Mario
  */
-public class GoogleFont {
+public class GoogleFont implements Serializable {
 
     private String kind, family, category, version;
     private Date lastModified;
