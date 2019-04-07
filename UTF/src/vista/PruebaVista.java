@@ -129,33 +129,9 @@ public class PruebaVista extends javax.swing.JFrame {
                 /*gfO.abrirFicheroEscrituraObjetos("carreras.dat");
                 gfO.grabarObjetoFicheroObjetos(gdCarreras);
                 gfO.cerrarFicherosEscrituraObjetos();*/
-                /*File file = new File("temp");
-                File[] listFiles = file.listFiles();
-                if (listFiles != null) {
-                    for (File borrar : listFiles) {
-                        try {
-                            Files.delete(borrar.toPath());
-                        } catch (IOException ex) {
-                            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }*/
+
             }
 
-            @Override
-            public void windowOpened(WindowEvent e) {
-                File file = new File("temp");
-                File[] listFiles = file.listFiles();
-                if (listFiles != null) {
-                    for (File borrar : listFiles) {
-                        try {
-                            Files.delete(borrar.toPath());
-                        } catch (IOException ex) {
-                            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-            }
         });
 
     }

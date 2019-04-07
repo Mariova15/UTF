@@ -39,6 +39,7 @@ public class LocalFont implements Serializable {
                 copy = Files.copy(fontFile.toPath(), file.toPath(),REPLACE_EXISTING);
             }
             
+            copy.toFile().deleteOnExit();
                         
             //font = Font.createFont(Font.TRUETYPE_FONT,fontFile);           
             font = Font.createFont(Font.TRUETYPE_FONT,new File(copy.toString()));           
