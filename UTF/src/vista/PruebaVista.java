@@ -15,6 +15,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -117,6 +119,42 @@ public class PruebaVista extends javax.swing.JFrame {
                     //System.out.println(dirDestino.getAbsolutePath());
                 }
 
+            }
+        });
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                super.windowClosing(we);
+                /*gfO.abrirFicheroEscrituraObjetos("carreras.dat");
+                gfO.grabarObjetoFicheroObjetos(gdCarreras);
+                gfO.cerrarFicherosEscrituraObjetos();*/
+                /*File file = new File("temp");
+                File[] listFiles = file.listFiles();
+                if (listFiles != null) {
+                    for (File borrar : listFiles) {
+                        try {
+                            Files.delete(borrar.toPath());
+                        } catch (IOException ex) {
+                            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }*/
+            }
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                File file = new File("temp");
+                File[] listFiles = file.listFiles();
+                if (listFiles != null) {
+                    for (File borrar : listFiles) {
+                        try {
+                            Files.delete(borrar.toPath());
+                        } catch (IOException ex) {
+                            Logger.getLogger(PruebaVista.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
         });
 
@@ -518,7 +556,6 @@ public class PruebaVista extends javax.swing.JFrame {
         //dirDestino.delete();
         //System.out.println(dirDestino.delete());
         try {
-            
             Files.delete(dirDestino.toPath());
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Archivo en uso");
@@ -562,6 +599,7 @@ public class PruebaVista extends javax.swing.JFrame {
 
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
         listaFuentesLocales = null;
+
         jComboBoxStyles.setVisible(true);
         jButtonDescargar.setVisible(true);
         rellenarTablaGoogleFonts();
