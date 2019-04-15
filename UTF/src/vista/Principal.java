@@ -23,6 +23,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,10 +37,12 @@ import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
 import modelo.LocalFont;
 import test.TestControlador;
+import utils.Backup;
 import utils.DescargaRecursos;
 import utils.Filtros;
 import vista.tablemodels.TableModelGoogleFonts;
 import vista.tablemodels.TableModelLocalFonts;
+import utils.Fecha;
 
 /**
  *
@@ -528,6 +531,11 @@ public class Principal extends javax.swing.JFrame {
         jMenuBackup.setText("Backup");
 
         jMenuItemBackupCrear.setText("Crear");
+        jMenuItemBackupCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBackupCrearActionPerformed(evt);
+            }
+        });
         jMenuBackup.add(jMenuItemBackupCrear);
 
         jMenuItemBackupCargar.setText("Cargar");
@@ -672,9 +680,17 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonMoverActionPerformed
 
     private void jMenuItemConfAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConfAppActionPerformed
-        Configuracion configuracion = new Configuracion(this, true);
+        Configuracion configuracion = new Configuracion(this, true, cgf);
         configuracion.setVisible(true);
     }//GEN-LAST:event_jMenuItemConfAppActionPerformed
+
+    private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
+
+        Backup.zipDirectory(misFuentes, 
+                new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", 
+                Backup.populateFilesList(misFuentes, new ArrayList<>()));
+
+    }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     /**
      * @param args the command line arguments
