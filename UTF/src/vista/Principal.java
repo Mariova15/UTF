@@ -539,6 +539,11 @@ public class Principal extends javax.swing.JFrame {
         jMenuBackup.add(jMenuItemBackupCrear);
 
         jMenuItemBackupCargar.setText("Cargar");
+        jMenuItemBackupCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBackupCargarActionPerformed(evt);
+            }
+        });
         jMenuBackup.add(jMenuItemBackupCargar);
 
         jMenuItemBuackupGDSubir.setText("Crear en Google Drive");
@@ -691,6 +696,11 @@ public class Principal extends javax.swing.JFrame {
                 Backup.populateFilesList(misFuentes, new ArrayList<>()));
 
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
+
+    private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
+        Backup.unzip(new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", misFuentes.getAbsolutePath());
+        actualizarNodos();
+    }//GEN-LAST:event_jMenuItemBackupCargarActionPerformed
 
     /**
      * @param args the command line arguments
