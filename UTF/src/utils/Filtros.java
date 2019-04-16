@@ -56,7 +56,7 @@ public class Filtros {
      * @param extension del archivo.
      * @return 
      */
-    private static FileFilter crearFiltro(String descripcion, String extension) {
+    public static FileFilter crearFiltro(String descripcion, String extension) {
 
         FileFilter filtro = new FileFilter() {
             public String getDescription() {

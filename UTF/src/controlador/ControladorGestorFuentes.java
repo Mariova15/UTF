@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,9 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 import modelo.GoogleFont;
 import modelo.LocalFont;
+import utils.Backup;
 import utils.DescargaRecursos;
+import utils.Fecha;
 
 /**
  *
@@ -36,16 +39,17 @@ public class ControladorGestorFuentes implements Serializable {
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";
     private List<GoogleFont> listaFuentes;
 
-    private File misFuentes, datosApp;
+    private File misFuentes, backup, datosApp;
 
     private File[] systemFonts;
 
-    public ControladorGestorFuentes(File misFuentes, File datosApp) {
+    public ControladorGestorFuentes(File misFuentes, File backup, File datosApp) {
         this.misFuentes = misFuentes;
         if (!misFuentes.exists()) {
             misFuentes.mkdir();
         }
         this.datosApp = datosApp;
+        this.backup = backup;
         listaFuentes = new ArrayList<>();
 
         //Buscar directorio fuentes linux y diferenciar los casos con File.separator
@@ -63,6 +67,14 @@ public class ControladorGestorFuentes implements Serializable {
         return misFuentes;
     }
 
+    public File getBackup() {
+        return backup;
+    }
+
+    public File getDatosApp() {
+        return datosApp;
+    }
+        
     /**
      * Método que descarga que hace la petición a google para descargar el
      * archivo json con las fuentes y genera una lista con ellas.
@@ -151,5 +163,26 @@ public class ControladorGestorFuentes implements Serializable {
         }
 
     }
+
+    /**
+     * Método que crea un archivo zip en el directorio backup con el contenido
+     * del directorio misfuentes.
+     */
+    public void crearBackup() {
+        Backup.zipDirectory(misFuentes,
+                backup.getAbsolutePath() + File.separator + "UTF-" + Fecha.formatearFecha(new Date().getTime()) + ".zip",
+                Backup.populateFilesList(misFuentes, new ArrayList<>()));
+    }
+
+    /**
+     * Método que descoprime archivo zip pasado por parámetro
+     *
+     * @param backupCarga
+     */
+    public void cargarBackup(File backupCarga) {
+        //Borrar antes todos los archivos de la carpeta mis fuentes.
         
+        Backup.unzip(backupCarga.getAbsolutePath(), misFuentes.getAbsolutePath());
+    }
+
 }

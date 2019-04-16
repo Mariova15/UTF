@@ -56,7 +56,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelTitle" alignment="0" pref="360" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="jLabelMisFuentes" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabelMisFuentes" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelBackup" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -71,7 +74,9 @@
                   <Component id="jLabelTitle" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabelMisFuentes" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="206" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabelBackup" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="186" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -89,6 +94,11 @@
         <Component class="javax.swing.JLabel" name="jLabelMisFuentes">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cambiar directorio Mis fuentes"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelBackup">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cambiar directorio backup"/>
           </Properties>
         </Component>
       </SubComponents>

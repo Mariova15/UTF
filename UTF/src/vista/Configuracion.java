@@ -37,6 +37,7 @@ public class Configuracion extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
         jLabelMisFuentes = new javax.swing.JLabel();
+        jLabelBackup = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -48,6 +49,8 @@ public class Configuracion extends javax.swing.JDialog {
 
         jLabelMisFuentes.setText("Cambiar directorio Mis fuentes");
 
+        jLabelBackup.setText("Cambiar directorio backup");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -57,7 +60,9 @@ public class Configuracion extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabelMisFuentes)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelMisFuentes)
+                            .addComponent(jLabelBackup))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -68,7 +73,9 @@ public class Configuracion extends javax.swing.JDialog {
                 .addComponent(jLabelTitle)
                 .addGap(18, 18, 18)
                 .addComponent(jLabelMisFuentes)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelBackup)
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -92,6 +99,7 @@ public class Configuracion extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelBackup;
     private javax.swing.JLabel jLabelMisFuentes;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel1;

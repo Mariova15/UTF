@@ -32,6 +32,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
@@ -72,7 +73,7 @@ public class Principal extends javax.swing.JFrame {
         //Guardar cfg en fichero de datos y gestionar que el usuario elija el lugar del dir Mis fuentes
         //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
         //Mirar como hacer ficheros ocultos en windows desde java
-        cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File(""));
+        cgf = new ControladorGestorFuentes(new File("Mis fuentes"),new File("backup") ,new File(""));
         gfo = new GestionFicherosObjetos();
 
         //Ver donde guardar archivos
@@ -592,7 +593,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPreviewActionPerformed
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-        System.out.println(dirDestino.getAbsolutePath());
+        //System.out.println(dirDestino.getAbsolutePath());
         //dirDestino.delete();
         //System.out.println(dirDestino.delete());
         try {
@@ -691,14 +692,30 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
 
-        Backup.zipDirectory(misFuentes, 
-                new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", 
-                Backup.populateFilesList(misFuentes, new ArrayList<>()));
+        /*Backup.zipDirectory(misFuentes,
+        new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip",
+        Backup.populateFilesList(misFuentes, new ArrayList<>()));*/
+        
+        cgf.crearBackup();
 
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
-        Backup.unzip(new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", misFuentes.getAbsolutePath());
+        //Backup.unzip(new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", misFuentes.getAbsolutePath());
+        
+        JOptionPane.showMessageDialog(this, "Elija la copia");
+        File selectedFiles = null;
+        JFileChooser jc = new JFileChooser();
+        jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jc.setCurrentDirectory(cgf.getBackup());
+        jc.setFileFilter(Filtros.crearFiltro("Archivos zip", ".zip"));
+        
+        int seleccion = jc.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            selectedFiles = jc.getSelectedFile();
+        }
+        
+        cgf.cargarBackup(selectedFiles);        
         actualizarNodos();
     }//GEN-LAST:event_jMenuItemBackupCargarActionPerformed
 
