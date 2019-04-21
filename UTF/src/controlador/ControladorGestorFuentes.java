@@ -35,8 +35,10 @@ import utils.Fecha;
  */
 public class ControladorGestorFuentes implements Serializable {
 
+    /*private static String JSON_GOOGLE_FONTS
+            = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";*/
     private static String JSON_GOOGLE_FONTS
-            = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";
+            = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBCg_A6NZYHLU-bSlpS92dOIBmurELni_Q";
     private List<GoogleFont> listaFuentes;
 
     private File misFuentes, backup, datosApp;

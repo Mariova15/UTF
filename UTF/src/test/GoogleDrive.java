@@ -10,22 +10,17 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.Preconditions;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -51,17 +46,6 @@ public class GoogleDrive {
 
     private static Credential authorize() throws Exception {
 
-        /*GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-        new InputStreamReader(new FileInputStream(new File("client_secret.json").getAbsolutePath())));*/
-        //GoogleCredential credential = GoogleCredential.fromStream(GoogleDrive.class.getClass().getResourceAsStream("/client_secret.json")).createScoped(scopes);
-        InputStream resourceAsStream = GoogleDrive.class.getClass().getResourceAsStream("/client_secret.json");
-
-        String result = new BufferedReader(new InputStreamReader(new FileInputStream(new File("client_secret.json"))))
-                .lines().collect(Collectors.joining("\n"));
-
-        System.out.println(result);
-
-        //GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(resourceAsStream));
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(new FileInputStream(new File("client_secret.json"))));
 
         /*if (clientSecrets.getDetails().getClientId().startsWith("Enter")
@@ -88,6 +72,8 @@ public class GoogleDrive {
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // authorization
         Credential credential = authorize();
+        
+        System.out.println(credential.getAccessToken());
 
     }
 
