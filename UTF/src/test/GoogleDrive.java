@@ -11,16 +11,23 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.media.MediaHttpUploader;
+import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Collections;
+import static org.omg.CORBA.AnySeqHelper.insert;
+import com.google.api.services.drive.model.FileList;
+import java.util.List;
 
 /**
  *
@@ -72,9 +79,45 @@ public class GoogleDrive {
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // authorization
         Credential credential = authorize();
-        
+
         System.out.println(credential.getAccessToken());
+
+        drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+                APPLICATION_NAME).build();
+
+        
+        //Subir
+        /*com.google.api.services.drive.model.File algo = new com.google.api.services.drive.model.File();
+        algo.setName("UTF-15_04_19.zip");
+        java.io.File filePath = new java.io.File("backup/UTF-15_04_19.zip");
+        FileContent mediaContent = new FileContent("file/.zip", filePath);
+        com.google.api.services.drive.model.File file = drive.files().create(algo, mediaContent).setFields("id").execute();
+        System.out.println("File ID: " + file.getId());*/
+        
+        //Descargar
+        String fileId = "1TZD-yThtVrXhymWpsVz-QGdAHtZ3HLQ0";
+        OutputStream outputStream = new ByteArrayOutputStream();
+        drive.files().get(fileId)
+                .executeMediaAndDownloadTo(outputStream);
+        
+        System.out.println(outputStream.toString());
+        
+        //Listar archivos
+        FileList result = drive.files().list()
+                .setPageSize(10)
+                .setFields("nextPageToken, files(id, name)")
+                .execute();
+        List<com.google.api.services.drive.model.File> files = result.getFiles();
+        if (files == null || files.size() == 0) {
+            System.out.println("No files found.");
+        } else {
+            System.out.println("Files:");
+            for (com.google.api.services.drive.model.File movida : files) {
+                System.out.printf("%s (%s)\n", movida.getName(), movida.getId());
+            }
+        }
 
     }
 
 }
+
