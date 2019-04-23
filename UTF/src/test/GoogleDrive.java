@@ -87,12 +87,12 @@ public class GoogleDrive {
 
         
         //Subir
-        /*com.google.api.services.drive.model.File algo = new com.google.api.services.drive.model.File();
+        com.google.api.services.drive.model.File algo = new com.google.api.services.drive.model.File();
         algo.setName("UTF-15_04_19.zip");
         java.io.File filePath = new java.io.File("backup/UTF-15_04_19.zip");
         FileContent mediaContent = new FileContent("file/.zip", filePath);
         com.google.api.services.drive.model.File file = drive.files().create(algo, mediaContent).setFields("id").execute();
-        System.out.println("File ID: " + file.getId());*/
+        System.out.println("File ID: " + file.getId());
         
         //Descargar
         String fileId = "1TZD-yThtVrXhymWpsVz-QGdAHtZ3HLQ0";
