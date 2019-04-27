@@ -26,7 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.Serializable;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  *
  * @author Mario
  */
-public class ContoladorGoogleDrive {
+public class ContoladorGoogleDrive implements Serializable {
 
     private static final String APPLICATION_NAME = "Use that font";
     private String gDBackupDirID;
@@ -69,11 +69,15 @@ public class ContoladorGoogleDrive {
 
     }
 
+    public void setgDBackupDirID(String gDBackupDirID) {
+        this.gDBackupDirID = gDBackupDirID;
+    }
+        
     /**
      * Método que genera una credencial de google.
-     * 
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     private Credential authorize() throws Exception {
 
@@ -87,9 +91,9 @@ public class ContoladorGoogleDrive {
 
     /**
      * Método que sube un archivo a google drive.
-     * 
+     *
      * @param archivoLocal
-     * @return 
+     * @return
      */
     public com.google.api.services.drive.model.File subidaArchivo(File archivoLocal) {
 
@@ -99,11 +103,12 @@ public class ContoladorGoogleDrive {
             com.google.api.services.drive.model.File archivoSubir = new com.google.api.services.drive.model.File();
 
             archivoSubir.setName(archivoLocal.getName());
-            
+
             //archivoSubir.setParents(Collections.singletonList("1s93eDS_QKIIiplMcgv0RtZGnN4aZT5S4"));
             archivoSubir.setParents(Collections.singletonList(gDBackupDirID));
 
             FileContent mediaContent = new FileContent("file/.zip", archivoLocal);
+            //FileContent mediaContent = new FileContent("image/.png", archivoLocal);
 
             execute = drive.files().create(archivoSubir, mediaContent).setFields("id").execute();
         } catch (IOException ex) {
@@ -116,9 +121,9 @@ public class ContoladorGoogleDrive {
 
     /**
      * Método que descarga un archivo desde google drive.
-     * 
+     *
      * @param rutaDestino
-     * @param fileId 
+     * @param fileId
      */
     public void descargaArchivo(String rutaDestino, String fileId) {
 
@@ -140,15 +145,15 @@ public class ContoladorGoogleDrive {
 
     /**
      * Método que crea un direcotio en el raiz de google drive.
-     * 
+     *
      * @param nombreDir nombre del directorio.
      */
-    public void crearDirectorio(String nombreDir) {        
+    public void crearDirectorio(String nombreDir) {
         try {
             com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
             fileMetadata.setName(nombreDir);
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
-            
+
             com.google.api.services.drive.model.File execute = drive.files().create(fileMetadata)
                     .setFields("id")
                     .execute();
@@ -161,8 +166,8 @@ public class ContoladorGoogleDrive {
 
     /**
      * Método que lista los archivos de google drive.
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<com.google.api.services.drive.model.File> listarArchivosDrive() {
 
@@ -174,6 +179,7 @@ public class ContoladorGoogleDrive {
             do {
                 try {
                     FileList files = request.execute();
+                    System.out.println(files.getFiles().size());
                     result.addAll(files.getFiles());
                     request.setPageToken(files.getNextPageToken());
                 } catch (IOException e) {

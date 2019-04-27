@@ -45,6 +45,8 @@ public class ControladorGestorFuentes implements Serializable {
 
     private File[] systemFonts;
 
+    private ContoladorGoogleDrive cgd;
+
     public ControladorGestorFuentes(File misFuentes, File backup, File datosApp) {
         this.misFuentes = misFuentes;
         if (!misFuentes.exists()) {
@@ -53,6 +55,7 @@ public class ControladorGestorFuentes implements Serializable {
         this.datosApp = datosApp;
         this.backup = backup;
         listaFuentes = new ArrayList<>();
+        //cgd = new ContoladorGoogleDrive(datosApp);
 
         //Buscar directorio fuentes linux y diferenciar los casos con File.separator
         //usar a la hora de instalar las fuente para no instalar una fuente ya existente.
@@ -76,7 +79,7 @@ public class ControladorGestorFuentes implements Serializable {
     public File getDatosApp() {
         return datosApp;
     }
-        
+
     /**
      * Método que descarga que hace la petición a google para descargar el
      * archivo json con las fuentes y genera una lista con ellas.
@@ -183,8 +186,21 @@ public class ControladorGestorFuentes implements Serializable {
      */
     public void cargarBackup(File backupCarga) {
         //Borrar antes todos los archivos de la carpeta mis fuentes.
-        
+
         Backup.unzip(backupCarga.getAbsolutePath(), misFuentes.getAbsolutePath());
+    }
+
+    public void iniciarGoogleDrive() {
+        cgd = new ContoladorGoogleDrive(datosApp);        
+    }
+    
+    public void cambiarCuentaGoogleDrive(){
+        for (File fileToDelete : datosApp.listFiles()) {
+            if (fileToDelete.getName().equals("StoredCredential")) {
+                fileToDelete.delete();
+            }
+        }
+        iniciarGoogleDrive();
     }
 
 }

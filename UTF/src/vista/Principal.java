@@ -69,7 +69,7 @@ public class Principal extends javax.swing.JFrame {
         //Guardar cfg en fichero de datos y gestionar que el usuario elija el lugar del dir Mis fuentes
         //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
         //Mirar como hacer ficheros ocultos en windows desde java
-        cgf = new ControladorGestorFuentes(new File("Mis fuentes"),new File("backup") ,new File(""));
+        cgf = new ControladorGestorFuentes(new File("Mis fuentes"),new File("Backup") ,new File("Datos"));
         gfo = new GestionFicherosObjetos();
 
         //Ver donde guardar archivos
@@ -508,9 +508,19 @@ public class Principal extends javax.swing.JFrame {
         jMenuGD.setText("Google Drive");
 
         jMenuItemLogin.setText("Iniciar sesión");
+        jMenuItemLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLoginActionPerformed(evt);
+            }
+        });
         jMenuGD.add(jMenuItemLogin);
 
         jMenuItemCambiar.setText("Cambiar cuenta");
+        jMenuItemCambiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCambiarActionPerformed(evt);
+            }
+        });
         jMenuGD.add(jMenuItemCambiar);
 
         jMenuConf.add(jMenuGD);
@@ -714,6 +724,14 @@ public class Principal extends javax.swing.JFrame {
         cgf.cargarBackup(selectedFiles);        
         actualizarNodos();
     }//GEN-LAST:event_jMenuItemBackupCargarActionPerformed
+
+    private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
+        cgf.iniciarGoogleDrive();
+    }//GEN-LAST:event_jMenuItemLoginActionPerformed
+
+    private void jMenuItemCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCambiarActionPerformed
+        cgf.cambiarCuentaGoogleDrive();
+    }//GEN-LAST:event_jMenuItemCambiarActionPerformed
 
     /**
      * @param args the command line arguments
