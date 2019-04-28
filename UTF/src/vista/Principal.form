@@ -65,8 +65,11 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemBuackupGDSubir">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Crear en Google Drive"/>
+                <Property name="text" type="java.lang.String" value="Subir a Google Drive"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemBuackupGDSubirActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemBuackupGDCargar">
               <Properties>

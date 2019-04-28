@@ -186,7 +186,6 @@ public class ControladorGestorFuentes implements Serializable {
      */
     public void cargarBackup(File backupCarga) {
         //Borrar antes todos los archivos de la carpeta mis fuentes.
-
         Backup.unzip(backupCarga.getAbsolutePath(), misFuentes.getAbsolutePath());
     }
 
@@ -201,6 +200,12 @@ public class ControladorGestorFuentes implements Serializable {
             }
         }
         iniciarGoogleDrive();
+    }
+    
+    public void subirBackupGoogleDrive(){
+        for (File backupFile : backup.listFiles()) {
+            cgd.subidaArchivo(backupFile);
+        }
     }
 
 }

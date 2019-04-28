@@ -59,6 +59,24 @@ public class ContoladorGoogleDrive implements Serializable {
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
             drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
+
+            boolean crearDirBackup = false;
+
+            if (listarArchivosDrive().size() > 0) {
+                for (com.google.api.services.drive.model.File dirBackup : listarArchivosDrive()) {
+                    if (dirBackup.getName().equals("Backup")) {
+                        gDBackupDirID = dirBackup.getName();
+                    } else {
+                        crearDirBackup = true;
+                    }
+                }
+                if (crearDirBackup) {
+                    crearDirectorio("Backup");
+                }
+            } else {
+                crearDirectorio("Backup");
+            }
+
         } catch (GeneralSecurityException ex) {
             Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -72,7 +90,7 @@ public class ContoladorGoogleDrive implements Serializable {
     public void setgDBackupDirID(String gDBackupDirID) {
         this.gDBackupDirID = gDBackupDirID;
     }
-        
+
     /**
      * Método que genera una credencial de google.
      *
@@ -179,7 +197,7 @@ public class ContoladorGoogleDrive implements Serializable {
             do {
                 try {
                     FileList files = request.execute();
-                    System.out.println(files.getFiles().size());
+                    //System.out.println(files.getFiles().size());
                     result.addAll(files.getFiles());
                     request.setPageToken(files.getNextPageToken());
                 } catch (IOException e) {
