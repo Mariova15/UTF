@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
+import utils.Instalacion;
 import controlador.GestionFicherosObjetos;
 import java.awt.Component;
 import java.awt.Font;
@@ -639,6 +640,9 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
 
         if (listaFuentesLocales != null) {
+
+            cgf.instalarFuente( listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                    listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
             
         } else {
             if (dirDestino == null) {

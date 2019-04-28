@@ -23,11 +23,13 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import modelo.FuenteInstalada;
 import modelo.GoogleFont;
 import modelo.LocalFont;
 import utils.Backup;
 import utils.DescargaRecursos;
 import utils.Fecha;
+import utils.Instalacion;
 
 /**
  *
@@ -40,8 +42,9 @@ public class ControladorGestorFuentes implements Serializable {
     private static String JSON_GOOGLE_FONTS
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBCg_A6NZYHLU-bSlpS92dOIBmurELni_Q";
     private List<GoogleFont> listaFuentes;
+    private List<FuenteInstalada> listafuenteInstaladas;
 
-    private File misFuentes, backup, datosApp;
+    private File misFuentes, backup, datosApp, dirInstalacion;
 
     private File[] systemFonts;
 
@@ -54,13 +57,13 @@ public class ControladorGestorFuentes implements Serializable {
         }
         this.datosApp = datosApp;
         this.backup = backup;
+        if (File.separator.equals("\\")) {
+            dirInstalacion = new File("C:\\Windows\\Fonts");
+        }
         listaFuentes = new ArrayList<>();
-        //cgd = new ContoladorGoogleDrive(datosApp);
+        listafuenteInstaladas = new ArrayList<>();
 
-        //Buscar directorio fuentes linux y diferenciar los casos con File.separator
-        //usar a la hora de instalar las fuente para no instalar una fuente ya existente.
-        File dirSystemFonts = new File("C:\\Windows\\Fonts");
-        systemFonts = dirSystemFonts.listFiles();
+        systemFonts = dirInstalacion.listFiles();
 
     }
 
@@ -78,6 +81,10 @@ public class ControladorGestorFuentes implements Serializable {
 
     public File getDatosApp() {
         return datosApp;
+    }
+
+    public File getDirInstalacion() {
+        return dirInstalacion;
     }
 
     /**
@@ -218,16 +225,20 @@ public class ControladorGestorFuentes implements Serializable {
     public void descargaBackupGoogleDrive() {
 
         List<String> nombresArchivosLocal = new ArrayList<>();
-        
+
         for (File archivoLocal : backup.listFiles()) {
             nombresArchivosLocal.add(archivoLocal.getName());
         }
-        
+
         for (com.google.api.services.drive.model.File backupDescargar : cgd.listarArchivosDrive()) {
-            if (backupDescargar.getMimeType().equals("file/.zip")&& !nombresArchivosLocal.contains(backupDescargar.getName())) {
+            if (backupDescargar.getMimeType().equals("file/.zip") && !nombresArchivosLocal.contains(backupDescargar.getName())) {
                 cgd.descargaArchivo(backup.getAbsolutePath(), backupDescargar.getId());
             }
         }
+    }
+
+    public void instalarFuente(File fuenteInstalar, String nombreFuente) {
+        listafuenteInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
     }
 
 }
