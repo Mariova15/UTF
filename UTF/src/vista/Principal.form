@@ -73,8 +73,11 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemBuackupGDCargar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cargar desde Google Drive"/>
+                <Property name="text" type="java.lang.String" value="Descarga desde Google Drive"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemBuackupGDCargarActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

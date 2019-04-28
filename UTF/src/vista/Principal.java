@@ -561,7 +561,12 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuBackup.add(jMenuItemBuackupGDSubir);
 
-        jMenuItemBuackupGDCargar.setText("Cargar desde Google Drive");
+        jMenuItemBuackupGDCargar.setText("Descarga desde Google Drive");
+        jMenuItemBuackupGDCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBuackupGDCargarActionPerformed(evt);
+            }
+        });
         jMenuBackup.add(jMenuItemBuackupGDCargar);
 
         jMenuBar1.add(jMenuBackup);
@@ -741,6 +746,10 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItemBuackupGDSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDSubirActionPerformed
         cgf.subirBackupGoogleDrive();
     }//GEN-LAST:event_jMenuItemBuackupGDSubirActionPerformed
+
+    private void jMenuItemBuackupGDCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDCargarActionPerformed
+        cgf.descargaBackupGoogleDrive();
+    }//GEN-LAST:event_jMenuItemBuackupGDCargarActionPerformed
 
     /**
      * @param args the command line arguments

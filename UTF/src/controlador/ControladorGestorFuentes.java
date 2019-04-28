@@ -190,10 +190,10 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void iniciarGoogleDrive() {
-        cgd = new ContoladorGoogleDrive(datosApp);        
+        cgd = new ContoladorGoogleDrive(datosApp);
     }
-    
-    public void cambiarCuentaGoogleDrive(){
+
+    public void cambiarCuentaGoogleDrive() {
         for (File fileToDelete : datosApp.listFiles()) {
             if (fileToDelete.getName().equals("StoredCredential")) {
                 fileToDelete.delete();
@@ -201,11 +201,20 @@ public class ControladorGestorFuentes implements Serializable {
         }
         iniciarGoogleDrive();
     }
-    
-    public void subirBackupGoogleDrive(){
+
+    public void subirBackupGoogleDrive() {
         for (File backupFile : backup.listFiles()) {
             cgd.subidaArchivo(backupFile);
         }
+    }
+
+    public void descargaBackupGoogleDrive() {
+
+        for (com.google.api.services.drive.model.File backupDescargar : cgd.listarArchivosDrive()) {
+            if (backupDescargar.getMimeType().equals("file/.zip")) {
+                cgd.descargaArchivo(backup.getAbsolutePath(), backupDescargar.getId());
+            }
+        }        
     }
 
 }
