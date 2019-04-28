@@ -50,31 +50,31 @@ public class ContoladorGoogleDrive implements Serializable {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private static Drive drive;
+    
+    private File clientSecret;
 
-    public ContoladorGoogleDrive(File dirGdrive) {
+    public ContoladorGoogleDrive(File dirGdrive, File clientSecret) {
 
         try {
+            this.clientSecret = clientSecret;
+            
             dataStoreFactory = new FileDataStoreFactory(dirGdrive);
 
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
             drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
 
-            boolean crearDirBackup = false;
-
+            System.out.println(listarArchivosDrive().size());
+            
             if (listarArchivosDrive().size() > 0) {
                 for (com.google.api.services.drive.model.File dirBackup : listarArchivosDrive()) {
                     if (dirBackup.getName().equals("Backup")) {
-                        gDBackupDirID = dirBackup.getName();
-                    } else {
-                        crearDirBackup = true;
+                        gDBackupDirID = dirBackup.getId();
                     }
-                }
-                if (crearDirBackup) {
-                    crearDirectorio("Backup");
                 }
             } else {
                 crearDirectorio("Backup");
+                System.out.println(listarArchivosDrive().size());
             }
 
         } catch (GeneralSecurityException ex) {
@@ -99,7 +99,7 @@ public class ContoladorGoogleDrive implements Serializable {
      */
     private Credential authorize() throws Exception {
 
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(new FileInputStream(new File("client_secret.json"))));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(new FileInputStream(clientSecret)));
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets, Collections.singleton(DriveScopes.DRIVE_FILE)).setDataStoreFactory(dataStoreFactory).build();
 

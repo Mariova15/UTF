@@ -18,7 +18,7 @@ public class TestControlDrive {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ContoladorGoogleDrive cgd = new ContoladorGoogleDrive(new File("drive"));
+        ContoladorGoogleDrive cgd = new ContoladorGoogleDrive(new File("drive"), new File(""));
 
         for (com.google.api.services.drive.model.File file : cgd.listarArchivosDrive()) {
             /*System.out.println(file.getId());

@@ -69,7 +69,7 @@ public class Principal extends javax.swing.JFrame {
         //Guardar cfg en fichero de datos y gestionar que el usuario elija el lugar del dir Mis fuentes
         //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
         //Mirar como hacer ficheros ocultos en windows desde java
-        cgf = new ControladorGestorFuentes(new File("Mis fuentes"),new File("Backup") ,new File("Datos"));
+        cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
         gfo = new GestionFicherosObjetos();
 
         //Ver donde guardar archivos
@@ -637,26 +637,31 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonImportarActionPerformed
 
     private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
-        if (dirDestino == null) {
-            JOptionPane.showMessageDialog(this, "Elija el directorio donde descargar las fuentes");
-            String seleccionarDirectorio = seleccionarDirectorio(this);
-            dirDestino = new File(seleccionarDirectorio);
+
+        if (listaFuentesLocales != null) {
+            
+        } else {
+            if (dirDestino == null) {
+                JOptionPane.showMessageDialog(this, "Elija el directorio donde descargar las fuentes");
+                String seleccionarDirectorio = seleccionarDirectorio(this);
+                dirDestino = new File(seleccionarDirectorio);
+            }
+
+            String url = cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
+
+            GoogleFont fontDescargar = cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow());
+
+            DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
+
+            dirDestino = null;
+            actualizarNodos();
         }
-
-        String url = cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
-
-        GoogleFont fontDescargar = cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow());
-
-        DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
-
-        dirDestino = null;
-        actualizarNodos();
 
     }//GEN-LAST:event_jButtonDescargarActionPerformed
 
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
         listaFuentesLocales = null;
-
+        jButtonDescargar.setText("Descargar fuente");
         jComboBoxStyles.setVisible(true);
         jButtonDescargar.setVisible(true);
         rellenarTablaGoogleFonts();
@@ -665,7 +670,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
 
         jComboBoxStyles.setVisible(false);
-        jButtonDescargar.setVisible(false);
+        //jButtonDescargar.setVisible(false);
+        jButtonDescargar.setText("Instalar fuente");
 
         if (dirDestino == null) {
             JOptionPane.showMessageDialog(this, "Elija el directorio a partir del que buscar las fuentes");
@@ -711,27 +717,26 @@ public class Principal extends javax.swing.JFrame {
         /*Backup.zipDirectory(misFuentes,
         new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip",
         Backup.populateFilesList(misFuentes, new ArrayList<>()));*/
-        
         cgf.crearBackup();
 
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
         //Backup.unzip(new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", misFuentes.getAbsolutePath());
-        
+
         JOptionPane.showMessageDialog(this, "Elija la copia");
         File selectedFiles = null;
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jc.setCurrentDirectory(cgf.getBackup());
         jc.setFileFilter(Filtros.crearFiltro("Archivos zip", ".zip"));
-        
+
         int seleccion = jc.showOpenDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             selectedFiles = jc.getSelectedFile();
         }
-        
-        cgf.cargarBackup(selectedFiles);        
+
+        cgf.cargarBackup(selectedFiles);
         actualizarNodos();
     }//GEN-LAST:event_jMenuItemBackupCargarActionPerformed
 

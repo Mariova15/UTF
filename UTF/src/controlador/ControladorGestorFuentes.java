@@ -190,7 +190,7 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void iniciarGoogleDrive() {
-        cgd = new ContoladorGoogleDrive(datosApp);
+        cgd = new ContoladorGoogleDrive(datosApp, new File(datosApp.getAbsolutePath() + File.separator + "client_secret.json"));
     }
 
     public void cambiarCuentaGoogleDrive() {
@@ -203,18 +203,31 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void subirBackupGoogleDrive() {
+
+        List<String> nombresArchivosDrive = new ArrayList<>();
+        for (com.google.api.services.drive.model.File fileDrive : cgd.listarArchivosDrive()) {
+            nombresArchivosDrive.add(fileDrive.getName());
+        }
         for (File backupFile : backup.listFiles()) {
-            cgd.subidaArchivo(backupFile);
+            if (!nombresArchivosDrive.contains(backupFile.getName())) {
+                cgd.subidaArchivo(backupFile);
+            }
         }
     }
 
     public void descargaBackupGoogleDrive() {
 
+        List<String> nombresArchivosLocal = new ArrayList<>();
+        
+        for (File archivoLocal : backup.listFiles()) {
+            nombresArchivosLocal.add(archivoLocal.getName());
+        }
+        
         for (com.google.api.services.drive.model.File backupDescargar : cgd.listarArchivosDrive()) {
-            if (backupDescargar.getMimeType().equals("file/.zip")) {
+            if (backupDescargar.getMimeType().equals("file/.zip")&& !nombresArchivosLocal.contains(backupDescargar.getName())) {
                 cgd.descargaArchivo(backup.getAbsolutePath(), backupDescargar.getId());
             }
-        }        
+        }
     }
 
 }
