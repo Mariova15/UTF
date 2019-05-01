@@ -99,6 +99,16 @@ public class Principal extends javax.swing.JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
+
+                if (listaFuentesLocales != null) {
+
+                    if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile())) {
+                        jButtonDescargar.setText("Desinstalar fuente");
+                    } else {
+                        jButtonDescargar.setText("Instalar fuente");
+                    }
+                }
+
             }
         });
 
@@ -641,9 +651,13 @@ public class Principal extends javax.swing.JFrame {
 
         if (listaFuentesLocales != null) {
 
-            cgf.instalarFuente( listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                    listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
-            
+            if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
+                cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile());
+            } else {
+                cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
+            }
+
         } else {
             if (dirDestino == null) {
                 JOptionPane.showMessageDialog(this, "Elija el directorio donde descargar las fuentes");

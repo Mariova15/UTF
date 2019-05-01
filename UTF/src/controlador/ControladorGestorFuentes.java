@@ -241,4 +241,28 @@ public class ControladorGestorFuentes implements Serializable {
         listafuenteInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
     }
 
+    public void desinstalarFuente(File fuenteDesinstalar) {
+
+        for (Iterator<FuenteInstalada> iterator = listafuenteInstaladas.iterator(); iterator.hasNext();) {
+            FuenteInstalada next = iterator.next();
+            if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
+                Instalacion.desinstalarFuente(next);
+                iterator.remove();
+            }
+
+        }
+    }
+
+    public boolean comprobarFuenteInstalada(File fuenteComprobar) {
+        boolean instalada = false;
+
+        for (FuenteInstalada listafuenteInstalada : listafuenteInstaladas) {
+
+            if (listafuenteInstalada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
+                instalada = true;
+            }
+        }
+        return instalada;
+    }
+
 }
