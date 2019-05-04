@@ -70,12 +70,13 @@ public class Principal extends javax.swing.JFrame {
         //Guardar cfg en fichero de datos y gestionar que el usuario elija el lugar del dir Mis fuentes
         //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
         //Mirar como hacer ficheros ocultos en windows desde java
-        
+
         //cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
         gfo = new GestionFicherosObjetos();
-
+        
+        //System.out.println(new File(System.getProperty("user.home")+File.separator+"AppData").getAbsolutePath());
+                
         if (new File("Datos\\configuracion.conf").exists()) {
-            System.out.println("Existe");
             try {
                 gfo.abrirFicheroLecturaObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
                 cgf = gfo.leerUnRegistroFicheroObjetos();
@@ -86,12 +87,13 @@ public class Principal extends javax.swing.JFrame {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            System.out.println("No existe");
-            cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
+            cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"), new File("temp"));
             gfo.abrirFicheroEscrituraObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
             gfo.grabarObjetoFicheroObjetos(cgf);
             gfo.cerrarFicherosEscrituraObjetos();
         }
+        
+        //cgf.borrarTemporales();
         
         cgf.descargaJsonFuentes();
         rellenarTablaGoogleFonts();
