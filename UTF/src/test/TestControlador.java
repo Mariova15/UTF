@@ -30,7 +30,7 @@ public class TestControlador {
         
         cgf.descargaJsonFuentes();
         
-        cgf.verFuentes();
+        //cgf.verFuentes();
         
         Font createFont = null;
         try {

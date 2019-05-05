@@ -40,10 +40,9 @@ public class LocalFont implements Serializable {
             }
 
             //copy.toFile().deleteOnExit();
-            System.out.println(file.getAbsolutePath());
+            //System.out.println(file.getAbsolutePath());
             file.deleteOnExit();
-                        
-            //font = Font.createFont(Font.TRUETYPE_FONT,fontFile);           
+      
             font = Font.createFont(Font.TRUETYPE_FONT,new File(copy.toString()));           
         } catch (FontFormatException ex) {
             Logger.getLogger(LocalFont.class.getName()).log(Level.SEVERE, null, ex);

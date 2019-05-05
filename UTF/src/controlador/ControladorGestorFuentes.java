@@ -43,6 +43,7 @@ public class ControladorGestorFuentes implements Serializable {
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBCg_A6NZYHLU-bSlpS92dOIBmurELni_Q";
     private List<GoogleFont> listaFuentes;
     private List<FuenteInstalada> listafuenteInstaladas;
+    private List<String> listaTipos;
 
     private File misFuentes, backup, datosApp, dirInstalacion, temp;
 
@@ -60,10 +61,13 @@ public class ControladorGestorFuentes implements Serializable {
         this.temp = temp;
         if (File.separator.equals("\\")) {
             dirInstalacion = new File("C:\\Windows\\Fonts");
+            dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
+        } else {
+            dirInstalacion = new File("C:\\Windows\\Fonts");
         }
         listaFuentes = new ArrayList<>();
         listafuenteInstaladas = new ArrayList<>();
-
+        listaTipos = new ArrayList<>();
         systemFonts = dirInstalacion.listFiles();
 
     }
@@ -92,8 +96,7 @@ public class ControladorGestorFuentes implements Serializable {
      * Método que descarga que hace la petición a google para descargar el
      * archivo json con las fuentes y genera una lista con ellas.
      */
-    public void descargaJsonFuentes() {
-        //APPDATA                
+    public void descargaJsonFuentes() {            
         DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "GoogleFonts.json", datosApp.getAbsolutePath());
         lecturaJson();
     }
@@ -129,12 +132,11 @@ public class ControladorGestorFuentes implements Serializable {
             listaFuentes.add(new GoogleFont(fuente.getJsonString("kind").getString(),
                     fuente.getJsonString("family").getString(), fuente.getJsonString("category").getString(),
                     fuente.getJsonString("version").getString(), mapaFuentes));
-        }
-    }
-
-    public void verFuentes() {
-        for (GoogleFont fuente : listaFuentes) {
-            System.out.println(fuente.toString());
+            
+            
+            if (!listaTipos.contains(fuente.getJsonString("category").getString())) {
+                listaTipos.add(fuente.getJsonString("category").getString());
+            }            
         }
     }
 
@@ -147,9 +149,7 @@ public class ControladorGestorFuentes implements Serializable {
      */
     public List<LocalFont> generarListaFuentesLocales(File raiz) {
         List<LocalFont> listaFuentesLocales = new ArrayList<>();
-
         buscarArchivos(listaFuentesLocales, raiz);
-
         return listaFuentesLocales;
 
     }
@@ -197,10 +197,18 @@ public class ControladorGestorFuentes implements Serializable {
         Backup.unzip(backupCarga.getAbsolutePath(), misFuentes.getAbsolutePath());
     }
 
+    /**
+     * Método que inicia sesión en google drive abriendo el navegador y
+     * generando un archivo con las credenciales.
+     */
     public void iniciarGoogleDrive() {
         cgd = new ContoladorGoogleDrive(datosApp, new File(datosApp.getAbsolutePath() + File.separator + "client_secret.json"));
     }
 
+    /**
+     * Método que borra el archivo de credenciales y vuelve a llamar al login
+     * del usuario de google drive.
+     */
     public void cambiarCuentaGoogleDrive() {
         for (File fileToDelete : datosApp.listFiles()) {
             if (fileToDelete.getName().equals("StoredCredential")) {
@@ -210,8 +218,10 @@ public class ControladorGestorFuentes implements Serializable {
         iniciarGoogleDrive();
     }
 
+    /**
+     * Método que sube los zip dentro del direcotio backup a google drive.
+     */
     public void subirBackupGoogleDrive() {
-
         List<String> nombresArchivosDrive = new ArrayList<>();
         for (com.google.api.services.drive.model.File fileDrive : cgd.listarArchivosDrive()) {
             nombresArchivosDrive.add(fileDrive.getName());
@@ -223,14 +233,15 @@ public class ControladorGestorFuentes implements Serializable {
         }
     }
 
+    /**
+     * Método que descarga los archivos zip alojados en google drive a la
+     * carpeta backup.
+     */
     public void descargaBackupGoogleDrive() {
-
         List<String> nombresArchivosLocal = new ArrayList<>();
-
         for (File archivoLocal : backup.listFiles()) {
             nombresArchivosLocal.add(archivoLocal.getName());
         }
-
         for (com.google.api.services.drive.model.File backupDescargar : cgd.listarArchivosDrive()) {
             if (backupDescargar.getMimeType().equals("file/.zip") && !nombresArchivosLocal.contains(backupDescargar.getName())) {
                 cgd.descargaArchivo(backup.getAbsolutePath(), backupDescargar.getId());
@@ -243,14 +254,12 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void desinstalarFuente(File fuenteDesinstalar) {
-
         for (Iterator<FuenteInstalada> iterator = listafuenteInstaladas.iterator(); iterator.hasNext();) {
             FuenteInstalada next = iterator.next();
             if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
                 Instalacion.desinstalarFuente(next);
                 iterator.remove();
             }
-
         }
     }
 
@@ -258,7 +267,6 @@ public class ControladorGestorFuentes implements Serializable {
         boolean instalada = false;
 
         for (FuenteInstalada listafuenteInstalada : listafuenteInstaladas) {
-
             if (listafuenteInstalada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
                 instalada = true;
             }
@@ -267,11 +275,9 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void borrarTemporales() {
-     
         for (File listFile : temp.listFiles()) {
             listFile.delete();
         }
-        
     }
 
 }

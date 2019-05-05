@@ -73,9 +73,10 @@ public class Principal extends javax.swing.JFrame {
 
         //cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
         gfo = new GestionFicherosObjetos();
-        
+
         //System.out.println(new File(System.getProperty("user.home")+File.separator+"AppData").getAbsolutePath());
-                
+        
+        //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
         if (new File("Datos\\configuracion.conf").exists()) {
             try {
                 gfo.abrirFicheroLecturaObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
@@ -92,9 +93,8 @@ public class Principal extends javax.swing.JFrame {
             gfo.grabarObjetoFicheroObjetos(cgf);
             gfo.cerrarFicherosEscrituraObjetos();
         }
-        
+
         //cgf.borrarTemporales();
-        
         cgf.descargaJsonFuentes();
         rellenarTablaGoogleFonts();
         dragDrop();
@@ -105,14 +105,12 @@ public class Principal extends javax.swing.JFrame {
                 jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentes().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
 
                 if (listaFuentesLocales != null) {
-
                     if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile())) {
                         jButtonDescargar.setText("Desinstalar fuente");
                     } else {
                         jButtonDescargar.setText("Instalar fuente");
                     }
                 }
-
             }
         });
 
@@ -141,9 +139,10 @@ public class Principal extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent we) {
                 super.windowClosing(we);
-                /*gfO.abrirFicheroEscrituraObjetos("carreras.dat");
-                gfO.grabarObjetoFicheroObjetos(gdCarreras);
-                gfO.cerrarFicherosEscrituraObjetos();*/
+                //Cambiar string File
+                gfo.abrirFicheroEscrituraObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
+                gfo.grabarObjetoFicheroObjetos(cgf);
+                gfo.cerrarFicherosEscrituraObjetos();
 
             }
 
@@ -389,8 +388,6 @@ public class Principal extends javax.swing.JFrame {
                 jButtonPreviewActionPerformed(evt);
             }
         });
-
-        jComboBoxStyles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jScrollPaneTree.setViewportView(jTreeUserDir);
 
