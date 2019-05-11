@@ -41,9 +41,9 @@ public class ControladorGestorFuentes implements Serializable {
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";*/
     private static String JSON_GOOGLE_FONTS
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBCg_A6NZYHLU-bSlpS92dOIBmurELni_Q";
-    private List<GoogleFont> listaFuentes;
-    private List<FuenteInstalada> listafuenteInstaladas;
-    private List<String> listaTipos;
+    private List<GoogleFont> listaFuentesGoogle;
+    private List<FuenteInstalada> listaFuentesInstaladas;
+    private List<String> listaTiposGoogle;
 
     private File misFuentes, backup, datosApp, dirInstalacion, temp;
 
@@ -60,20 +60,24 @@ public class ControladorGestorFuentes implements Serializable {
         this.backup = backup;
         this.temp = temp;
         if (File.separator.equals("\\")) {
-            dirInstalacion = new File("C:\\Windows\\Fonts");
+            //dirInstalacion = new File("C:\\Windows\\Fonts");
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
         } else {
-            dirInstalacion = new File("C:\\Windows\\Fonts");
+            dirInstalacion = new File("etc/Fonts");
         }
-        listaFuentes = new ArrayList<>();
-        listafuenteInstaladas = new ArrayList<>();
-        listaTipos = new ArrayList<>();
+        listaFuentesGoogle = new ArrayList<>();
+        listaFuentesInstaladas = new ArrayList<>();
+        listaTiposGoogle = new ArrayList<>();
         systemFonts = dirInstalacion.listFiles();
 
     }
 
-    public List<GoogleFont> getListaFuentes() {
-        return listaFuentes;
+    public List<GoogleFont> getListaFuentesGoogle() {
+        return listaFuentesGoogle;
+    }
+
+    public List<String> getListaTiposGoogle() {
+        return listaTiposGoogle;
     }
 
     public File getMisFuentes() {
@@ -96,8 +100,9 @@ public class ControladorGestorFuentes implements Serializable {
      * Método que descarga que hace la petición a google para descargar el
      * archivo json con las fuentes y genera una lista con ellas.
      */
-    public void descargaJsonFuentes() {            
+    public void descargaJsonFuentes() {
         DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "GoogleFonts.json", datosApp.getAbsolutePath());
+        listaTiposGoogle = new ArrayList<>();
         lecturaJson();
     }
 
@@ -108,6 +113,7 @@ public class ControladorGestorFuentes implements Serializable {
     private void lecturaJson() {
         JsonReader jsonReader;
         JsonObject jsonFuentes = null;
+        listaTiposGoogle.add("Todos los estilos");
         try {
             InputStream fis = new FileInputStream(datosApp.getAbsolutePath() + File.separator + "GoogleFonts.json");
             jsonReader = Json.createReader(fis);
@@ -129,14 +135,13 @@ public class ControladorGestorFuentes implements Serializable {
                 mapaFuentes.put(variants.getString(i), files.getString(variants.getString(i)));
             }
 
-            listaFuentes.add(new GoogleFont(fuente.getJsonString("kind").getString(),
+            listaFuentesGoogle.add(new GoogleFont(fuente.getJsonString("kind").getString(),
                     fuente.getJsonString("family").getString(), fuente.getJsonString("category").getString(),
                     fuente.getJsonString("version").getString(), mapaFuentes));
-            
-            
-            if (!listaTipos.contains(fuente.getJsonString("category").getString())) {
-                listaTipos.add(fuente.getJsonString("category").getString());
-            }            
+
+            if (!listaTiposGoogle.contains(fuente.getJsonString("category").getString())) {
+                listaTiposGoogle.add(fuente.getJsonString("category").getString());
+            }
         }
     }
 
@@ -250,11 +255,11 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void instalarFuente(File fuenteInstalar, String nombreFuente) {
-        listafuenteInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
+        listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
     }
 
     public void desinstalarFuente(File fuenteDesinstalar) {
-        for (Iterator<FuenteInstalada> iterator = listafuenteInstaladas.iterator(); iterator.hasNext();) {
+        for (Iterator<FuenteInstalada> iterator = listaFuentesInstaladas.iterator(); iterator.hasNext();) {
             FuenteInstalada next = iterator.next();
             if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
                 Instalacion.desinstalarFuente(next);
@@ -266,7 +271,7 @@ public class ControladorGestorFuentes implements Serializable {
     public boolean comprobarFuenteInstalada(File fuenteComprobar) {
         boolean instalada = false;
 
-        for (FuenteInstalada listafuenteInstalada : listafuenteInstaladas) {
+        for (FuenteInstalada listafuenteInstalada : listaFuentesInstaladas) {
             if (listafuenteInstalada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
                 instalada = true;
             }
@@ -278,6 +283,17 @@ public class ControladorGestorFuentes implements Serializable {
         for (File listFile : temp.listFiles()) {
             listFile.delete();
         }
+    }
+
+    public List<GoogleFont> filtrarFuentesGoogles(String estilo) {
+        List<GoogleFont> listaFiltrada = new ArrayList<>();
+
+        for (GoogleFont fuenteFiltrar : listaFuentesGoogle) {
+            if (fuenteFiltrar.getCategory().equals(estilo)) {
+                listaFiltrada.add(fuenteFiltrar);
+            }
+        }
+        return listaFiltrada;        
     }
 
 }
