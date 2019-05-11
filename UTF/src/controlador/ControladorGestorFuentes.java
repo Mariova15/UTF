@@ -45,20 +45,19 @@ public class ControladorGestorFuentes implements Serializable {
     private List<FuenteInstalada> listaFuentesInstaladas;
     private List<String> listaTiposGoogle;
 
-    private File misFuentes, backup, datosApp, dirInstalacion, temp;
+    private File misFuentes, backup, datosApp, dirInstalacion;
 
     private File[] systemFonts;
 
     private ContoladorGoogleDrive cgd;
 
-    public ControladorGestorFuentes(File misFuentes, File backup, File datosApp, File temp) {
+    public ControladorGestorFuentes(File misFuentes, File backup, File datosApp) {
         this.misFuentes = misFuentes;
         if (!misFuentes.exists()) {
             misFuentes.mkdir();
         }
         this.datosApp = datosApp;
         this.backup = backup;
-        this.temp = temp;
         if (File.separator.equals("\\")) {
             //dirInstalacion = new File("C:\\Windows\\Fonts");
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
@@ -279,12 +278,6 @@ public class ControladorGestorFuentes implements Serializable {
         return instalada;
     }
 
-    public void borrarTemporales() {
-        for (File listFile : temp.listFiles()) {
-            listFile.delete();
-        }
-    }
-
     public List<GoogleFont> filtrarFuentesGoogles(String estilo) {
         List<GoogleFont> listaFiltrada = new ArrayList<>();
 
@@ -293,7 +286,7 @@ public class ControladorGestorFuentes implements Serializable {
                 listaFiltrada.add(fuenteFiltrar);
             }
         }
-        return listaFiltrada;        
+        return listaFiltrada;
     }
 
 }

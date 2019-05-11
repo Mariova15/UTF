@@ -6,7 +6,6 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
-import utils.Instalacion;
 import controlador.GestionFicherosObjetos;
 import java.awt.Component;
 import java.awt.Font;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -91,7 +89,7 @@ public class Principal extends javax.swing.JFrame {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"), new File("temp"));
+            cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
             gfo.abrirFicheroEscrituraObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
             gfo.grabarObjetoFicheroObjetos(cgf);
             gfo.cerrarFicherosEscrituraObjetos();
@@ -99,7 +97,6 @@ public class Principal extends javax.swing.JFrame {
         
         cgf.descargaJsonFuentes();
 
-        //cgf.borrarTemporales();
         jComboBoxStyles.setVisible(false);
         jComboBoxFiltro.setModel(new DefaultComboBoxModel<>(cgf.getListaTiposGoogle().toArray(new String[cgf.getListaTiposGoogle().size()])));
         
@@ -695,9 +692,9 @@ public class Principal extends javax.swing.JFrame {
                 dirDestino = new File(seleccionarDirectorio);
             }
             
-            String url = cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
+            String url = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
             
-            GoogleFont fontDescargar = cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow());
+            GoogleFont fontDescargar = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow());
             
             DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
             

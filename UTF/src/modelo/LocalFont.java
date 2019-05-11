@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,19 +32,19 @@ public class LocalFont implements Serializable {
     public LocalFont(File fontFile) {
         try {
             //cambiar temp por carpeta de datos de la app
-            File file = new File("temp"+File.separator+fontFile.getName());
+            /*File file = new File("temp"+File.separator+fontFile.getName());
             
             Path copy = file.toPath();
             
             if (!file.exists()) {
-                copy = Files.copy(fontFile.toPath(), file.toPath(),REPLACE_EXISTING);
-            }
-
+            copy = Files.copy(fontFile.toPath(), file.toPath(),REPLACE_EXISTING);
+            }*/
             //copy.toFile().deleteOnExit();
             //System.out.println(file.getAbsolutePath());
-            file.deleteOnExit();
-      
-            font = Font.createFont(Font.TRUETYPE_FONT,new File(copy.toString()));           
+            //file.deleteOnExit(); 
+            
+            //font = Font.createFont(Font.TRUETYPE_FONT,new File(copy.toString()));           
+            font = Font.createFont(Font.TRUETYPE_FONT,(new FileInputStream(fontFile)));           
         } catch (FontFormatException ex) {
             Logger.getLogger(LocalFont.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

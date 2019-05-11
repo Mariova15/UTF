@@ -26,7 +26,7 @@ public class TestControlador {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ControladorGestorFuentes cgf = new ControladorGestorFuentes(new File("Mis fuentes"),new File("backup") , new File(""), new File(""));
+        ControladorGestorFuentes cgf = new ControladorGestorFuentes(new File("Mis fuentes"),new File("backup") , new File(""));
         
         cgf.descargaJsonFuentes();
         

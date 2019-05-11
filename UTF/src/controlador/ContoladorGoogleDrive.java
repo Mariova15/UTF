@@ -64,7 +64,7 @@ public class ContoladorGoogleDrive implements Serializable {
 
             drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
 
-            System.out.println(listarArchivosDrive().size());
+            //System.out.println(listarArchivosDrive().size());
             
             if (listarArchivosDrive().size() > 0) {
                 for (com.google.api.services.drive.model.File dirBackup : listarArchivosDrive()) {
@@ -74,7 +74,7 @@ public class ContoladorGoogleDrive implements Serializable {
                 }
             } else {
                 crearDirectorio("Backup");
-                System.out.println(listarArchivosDrive().size());
+                //System.out.println(listarArchivosDrive().size());
             }
 
         } catch (GeneralSecurityException ex) {

@@ -1,1 +1,0 @@
-sans-serif,serif,display,handwriting,monospace
