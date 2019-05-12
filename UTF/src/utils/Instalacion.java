@@ -24,10 +24,12 @@ public class Instalacion {
 
         String claveRegistro = null;
 
+        String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+        String name = nombreFuente;
+        String valor = font.getName();
+
         try {
-            String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
-            String name = nombreFuente;
-            String valor = font.getName();
+
             Files.copy(font.toPath(), installDir.toPath());
 
             WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, key, name, valor);
@@ -45,7 +47,7 @@ public class Instalacion {
 
         System.out.println(claveRegistro);
 
-        return new FuenteInstalada(installDir, claveRegistro);
+        return new FuenteInstalada(installDir, key + File.separator + claveRegistro);
 
     }
 
