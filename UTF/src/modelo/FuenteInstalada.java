@@ -6,12 +6,13 @@
 package modelo;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  *
  * @author Mario
  */
-public class FuenteInstalada {
+public class FuenteInstalada implements Serializable {
 
     private File dirInstalacion;
 
