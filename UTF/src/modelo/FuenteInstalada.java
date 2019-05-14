@@ -16,19 +16,19 @@ public class FuenteInstalada implements Serializable {
 
     private File dirInstalacion;
 
-    private String claveRegistro;
+    private String valorRegistro;
 
     public FuenteInstalada(File dirInstalacion, String claveRegistro) {
         this.dirInstalacion = dirInstalacion;
-        this.claveRegistro = claveRegistro;
+        this.valorRegistro = claveRegistro;
     }
 
     public File getDirInstalacion() {
         return dirInstalacion;
     }
 
-    public String getClaveRegistro() {
-        return claveRegistro;
+    public String getValorRegistro() {
+        return valorRegistro;
     }
 
 }
