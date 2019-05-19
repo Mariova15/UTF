@@ -46,7 +46,7 @@ public class Instalacion {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return new FuenteInstalada(installDir, name);
+        return new FuenteInstalada(dirDestino, name);
 
     }
 
