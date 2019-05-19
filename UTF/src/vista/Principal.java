@@ -684,20 +684,19 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
 
         if (listaFuentesLocales != null) {
-
             if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
                 cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile());
+                JOptionPane.showMessageDialog(this, "Fuente desinstalada");
             } else {
                 cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
                         listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
+                JOptionPane.showMessageDialog(this, "Fuente instalada");
             }
-
         } else {
             if (dirDestino == null) {
                 JOptionPane.showMessageDialog(this, "Elija el directorio donde descargar las fuentes");
                 String seleccionarDirectorio = seleccionarDirectorio(this);
-                dirDestino = new File(seleccionarDirectorio);
-            }
+                dirDestino = new File(seleccionarDirectorio);            }
 
             String url = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
 
