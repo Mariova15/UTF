@@ -63,10 +63,8 @@ public class ControladorGestorFuentes implements Serializable {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
         } else {
             dirInstalacion = new File("etc/Fonts");
-        }
-        listaFuentesGoogle = new ArrayList<>();
-        listaFuentesInstaladas = new ArrayList<>();
-        listaTiposGoogle = new ArrayList<>();
+        }        
+        listaFuentesInstaladas = new ArrayList<>();        
         systemFonts = dirInstalacion.listFiles();
 
     }
@@ -101,6 +99,7 @@ public class ControladorGestorFuentes implements Serializable {
      */
     public void descargaJsonFuentes() {
         DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "GoogleFonts.json", datosApp.getAbsolutePath());
+        listaFuentesGoogle = new ArrayList<>();
         listaTiposGoogle = new ArrayList<>();
         lecturaJson();
     }
