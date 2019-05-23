@@ -20,7 +20,7 @@ import utils.WinRegistry;
  */
 public class Instalacion {
 
-    private static  String KEY = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+    private static String KEY = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
 
     public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente) {
 
@@ -69,7 +69,14 @@ public class Instalacion {
         if (System.getProperty("os.name").toLowerCase().equals("win")) {
 
             try {
+
+                if (font.getDirInstalacion().isDirectory()) {
+                    for (File fuenteBorrar : font.getDirInstalacion().listFiles()) {
+                        fuenteBorrar.delete();
+                    }
+                }
                 font.getDirInstalacion().delete();
+
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +98,7 @@ public class Instalacion {
 
     private static void limpiarCacheFuentesLinux() {
         try {
-           Runtime.getRuntime().exec("sudo fc-cache -fv").exitValue();            
+            Runtime.getRuntime().exec("sudo fc-cache -fv").exitValue();
         } catch (IOException ex) {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
         }
