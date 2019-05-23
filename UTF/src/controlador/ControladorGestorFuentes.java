@@ -37,8 +37,6 @@ import utils.Instalacion;
  */
 public class ControladorGestorFuentes implements Serializable {
 
-    /*private static String JSON_GOOGLE_FONTS
-            = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB6PLrsPXC9TteULArPKMtaBlirw60pqZ0";*/
     private static String JSON_GOOGLE_FONTS
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBCg_A6NZYHLU-bSlpS92dOIBmurELni_Q";
     private List<GoogleFont> listaFuentesGoogle;
@@ -58,13 +56,29 @@ public class ControladorGestorFuentes implements Serializable {
         }
         this.datosApp = datosApp;
         this.backup = backup;
-        if (File.separator.equals("\\")) {
-            //dirInstalacion = new File("C:\\Windows\\Fonts");
+
+        if (System.getProperty("os.name").toLowerCase().equals("win")) {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
-        } else {
-            dirInstalacion = new File("etc/Fonts");
-        }        
-        listaFuentesInstaladas = new ArrayList<>();        
+        } else if (System.getProperty("os.name").toLowerCase().equals("nix")
+                || System.getProperty("os.name").toLowerCase().equals("nux")
+                || System.getProperty("os.name").toLowerCase().equals("aix")) {
+
+            dirInstalacion = new File(System.getProperty("user.home") + File.separator + "fonts");
+
+            File dirOpentype = new File(dirInstalacion.getAbsolutePath() + File.separator + "opentype");
+            File dirTruetype = new File(dirInstalacion.getAbsolutePath() + File.separator + "truetype");
+
+            if (!dirInstalacion.exists()) {
+                dirInstalacion.mkdir();
+                dirOpentype.mkdir();
+                dirTruetype.mkdir();
+            } else if (!dirOpentype.exists() || dirTruetype.exists()) {
+                dirOpentype.mkdir();
+                dirTruetype.mkdir();
+            }
+        }
+
+        listaFuentesInstaladas = new ArrayList<>();
         systemFonts = dirInstalacion.listFiles();
 
     }
