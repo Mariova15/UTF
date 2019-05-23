@@ -22,39 +22,52 @@ public class Instalacion {
 
     public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente) {
 
-        String valorClave = null;
-
         String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
-        String name = nombreFuente;
-        String valor = font.getName();
-        File dirDestino = new File(installDir.getAbsolutePath() + File.separator + valor); 
+        File dirDestino = new File(installDir.getAbsolutePath() + File.separator + font.getName());
 
-        try {
-            //Files.copy(font.toPath(), installDir.toPath());            
-            Files.copy(font.toPath(), dirDestino.toPath());
+        if (System.getProperty("os.name").toLowerCase().equals("win")) {
 
-            WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, key, name, valor);
-            valorClave = WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE, key, name);
+            try {
+                Files.copy(font.toPath(), dirDestino.toPath());
 
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, key, nombreFuente, font.getName());
+                //WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE, key, nombreFuente);
+
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (System.getProperty("os.name").toLowerCase().equals("nix")
+                || System.getProperty("os.name").toLowerCase().equals("nux")
+                || System.getProperty("os.name").toLowerCase().equals("aix")) {
+
+            try {
+                dirDestino = installDir;
+                Files.copy(font.toPath(), installDir.toPath());
+
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec("sudo fc-cache -fv").exitValue();
+
+            } catch (IOException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
-        return new FuenteInstalada(dirDestino, name);
+        return new FuenteInstalada(dirDestino, nombreFuente);
 
     }
 
     public static void desinstalarFuente(FuenteInstalada font) {
-        String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";        
+        String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
         try {
             font.getDirInstalacion().delete();
-            //WinRegistry.deleteKey(WinRegistry.HKEY_LOCAL_MACHINE, font.getValorRegistro());
             WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, key, font.getValorRegistro());
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
