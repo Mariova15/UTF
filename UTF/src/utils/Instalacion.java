@@ -20,9 +20,11 @@ import utils.WinRegistry;
  */
 public class Instalacion {
 
+    private static  String KEY = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+
     public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente) {
 
-        String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+        //String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
         File dirDestino = new File(installDir.getAbsolutePath() + File.separator + font.getName());
 
         if (System.getProperty("os.name").toLowerCase().equals("win")) {
@@ -30,7 +32,7 @@ public class Instalacion {
             try {
                 Files.copy(font.toPath(), dirDestino.toPath());
 
-                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, key, nombreFuente, font.getName());
+                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getName());
                 //WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE, key, nombreFuente);
 
             } catch (IllegalArgumentException ex) {
@@ -50,10 +52,7 @@ public class Instalacion {
             try {
                 dirDestino = installDir;
                 Files.copy(font.toPath(), installDir.toPath());
-
-                Runtime runtime = Runtime.getRuntime();
-                runtime.exec("sudo fc-cache -fv").exitValue();
-
+                limpiarCacheFuentesLinux();
             } catch (IOException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -65,18 +64,37 @@ public class Instalacion {
     }
 
     public static void desinstalarFuente(FuenteInstalada font) {
-        String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
-        try {
+        //String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+
+        if (System.getProperty("os.name").toLowerCase().equals("win")) {
+
+            try {
+                font.getDirInstalacion().delete();
+                WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (System.getProperty("os.name").toLowerCase().equals("nix")
+                || System.getProperty("os.name").toLowerCase().equals("nux")
+                || System.getProperty("os.name").toLowerCase().equals("aix")) {
+
             font.getDirInstalacion().delete();
-            WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, key, font.getValorRegistro());
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+            limpiarCacheFuentesLinux();
         }
 
+    }
+
+    private static void limpiarCacheFuentesLinux() {
+        try {
+           Runtime.getRuntime().exec("sudo fc-cache -fv").exitValue();            
+        } catch (IOException ex) {
+            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
