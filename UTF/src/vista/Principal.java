@@ -69,14 +69,9 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        //Guardar cfg en fichero de datos y gestionar que el usuario elija el lugar del dir Mis fuentes
-        //Hacer que el archivo Json se guarde en el directorio appdata o en documentos
-        //Mirar como hacer ficheros ocultos en windows desde java
-
-        //cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
+        
         gfo = new GestionFicherosObjetos();
 
-        //System.out.println(new File(System.getProperty("user.home")+File.separator+"AppData").getAbsolutePath());
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
         if (new File("Datos\\configuracion.conf").exists()) {
             try {
@@ -148,7 +143,6 @@ public class Principal extends javax.swing.JFrame {
                     ruta = ruta.replace(", ", File.separator);
                     ruta = ruta.substring(1, ruta.length() - 1);
                     dirDestino = new File(ruta);
-                    //System.out.println(dirDestino.getAbsolutePath());
                 }
 
             }
@@ -170,7 +164,6 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void rellenarTablaGoogleFonts() {
-        //jTableGoogleFonts.setModel(new TableModelGoogleFonts(cgf.getListaFuentesGoogle()));
         jTableGoogleFonts.setModel(new TableModelGoogleFonts(listaFuentesGoogle));
     }
 
@@ -180,8 +173,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void crearFuente(String dirGoogleFont) {
         try {
-            //createFont = Font.createFont(Font.TRUETYPE_FONT, new File("AGaramondPro-Regular.otf"));
-            //createFont = Font.createFont(Font.TRUETYPE_FONT, new URL("https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf").openStream());
             createFont = Font.createFont(Font.TRUETYPE_FONT, new URL(dirGoogleFont).openStream());
         } catch (FontFormatException ex) {
             Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,10 +190,8 @@ public class Principal extends javax.swing.JFrame {
         }
         for (File file : files) {
             DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(file.getName());
-
             //añade el directorio o archivo al nodo raiz
             node.add(childNode);
-
             if (file.isDirectory()) {
                 this.createChildNodes(file, childNode);
             }
@@ -247,14 +236,6 @@ public class Principal extends javax.swing.JFrame {
                 }
                 Principal.this.coiparArchivos(archivosCopiar.toArray(new File[archivosCopiar.size()]));
 
-                /*for (Iterator<File> iterator = transferData.iterator(); iterator.hasNext();) {
-                    File next = iterator.next();
-                    if (!next.getName().endsWith(".ttf") || !next.getName().endsWith(".otf")) {
-                        iterator.remove();
-                    }
-                }
-                File[] toArray = transferData.toArray(new File[transferData.size()]);
-                Principal.this.coiparArchivos(toArray);*/
                 return true;
             }
 
@@ -294,9 +275,6 @@ public class Principal extends javax.swing.JFrame {
         jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jc.setMultiSelectionEnabled(true);
 
-        /*for (FileFilter fileFilter : Filtros.fontFilterFileChooser()) {
-            jc.addChoosableFileFilter(fileFilter);
-        }*/
         for (int i = 1; i > -1; i--) {
             jc.setFileFilter(Filtros.fontFilterFileChooser().get(i));
         }
@@ -647,9 +625,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPreviewActionPerformed
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-        //System.out.println(dirDestino.getAbsolutePath());
-        //dirDestino.delete();
-        //System.out.println(dirDestino.delete());
         try {
             Files.delete(dirDestino.toPath());
         } catch (IOException ex) {
@@ -723,7 +698,6 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
         jComboBoxFiltro.setVisible(false);
         jComboBoxStyles.setVisible(false);
-        //jButtonDescargar.setVisible(false);
         jButtonDescargar.setText("Instalar fuente");
 
         if (dirDestino == null) {
@@ -767,16 +741,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
 
-        /*Backup.zipDirectory(misFuentes,
-        new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip",
-        Backup.populateFilesList(misFuentes, new ArrayList<>()));*/
         cgf.crearBackup();
 
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
-        //Backup.unzip(new File("backup").getAbsolutePath() + File.separator + "UTF-"+Fecha.formatearFecha(new Date().getTime()) +".zip", misFuentes.getAbsolutePath());
-
+       
         JOptionPane.showMessageDialog(this, "Elija la copia");
         File selectedFiles = null;
         JFileChooser jc = new JFileChooser();
