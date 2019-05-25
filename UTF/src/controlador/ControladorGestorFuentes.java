@@ -47,7 +47,7 @@ public class ControladorGestorFuentes implements Serializable {
 
     private File[] systemFonts;
 
-    private ContoladorGoogleDrive cgd;
+    private GestorGoogleDrive cgd;
 
     public ControladorGestorFuentes(File misFuentes, File backup, File datosApp) {
         this.misFuentes = misFuentes;
@@ -219,7 +219,7 @@ public class ControladorGestorFuentes implements Serializable {
      * generando un archivo con las credenciales.
      */
     public void iniciarGoogleDrive() {
-        cgd = new ContoladorGoogleDrive(datosApp, new File(datosApp.getAbsolutePath() + File.separator + "client_secret.json"));
+        cgd = new GestorGoogleDrive(datosApp, new File(datosApp.getAbsolutePath() + File.separator + "client_secret.json"));
     }
 
     /**

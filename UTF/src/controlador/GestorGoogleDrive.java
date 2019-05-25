@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  *
  * @author Mario
  */
-public class ContoladorGoogleDrive implements Serializable {
+public class GestorGoogleDrive implements Serializable {
 
     private static final String APPLICATION_NAME = "Use that font";
     private String gDBackupDirID;
@@ -53,7 +53,7 @@ public class ContoladorGoogleDrive implements Serializable {
     
     private File clientSecret;
 
-    public ContoladorGoogleDrive(File dirGdrive, File clientSecret) {
+    public GestorGoogleDrive(File dirGdrive, File clientSecret) {
 
         try {
             this.clientSecret = clientSecret;
@@ -78,11 +78,11 @@ public class ContoladorGoogleDrive implements Serializable {
             }
 
         } catch (GeneralSecurityException ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -130,7 +130,7 @@ public class ContoladorGoogleDrive implements Serializable {
 
             execute = drive.files().create(archivoSubir, mediaContent).setFields("id").execute();
         } catch (IOException ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return execute;
@@ -156,7 +156,7 @@ public class ContoladorGoogleDrive implements Serializable {
             fos.write(byteArrayOutputStream.toByteArray());
             fos.close();
         } catch (IOException ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -177,7 +177,7 @@ public class ContoladorGoogleDrive implements Serializable {
                     .execute();
             gDBackupDirID = execute.getId();
         } catch (IOException ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -206,7 +206,7 @@ public class ContoladorGoogleDrive implements Serializable {
             } while (request.getPageToken() != null && request.getPageToken().length() > 0);
 
         } catch (IOException ex) {
-            Logger.getLogger(ContoladorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }

@@ -19,7 +19,7 @@ import java.util.TimerTask;
  *
  * @author Mario
  */
-public class GestionFicherosObjetos {
+public class GestorFicherosObjetos {
 
     private File fichero = null;
     private FileInputStream fis = null;

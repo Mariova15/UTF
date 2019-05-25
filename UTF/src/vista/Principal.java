@@ -6,7 +6,7 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
-import controlador.GestionFicherosObjetos;
+import controlador.GestorFicherosObjetos;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -49,7 +49,7 @@ import vista.tablemodels.TableModelLocalFonts;
  */
 public class Principal extends javax.swing.JFrame {
 
-    GestionFicherosObjetos gfo;
+    GestorFicherosObjetos gfo;
 
     private ControladorGestorFuentes cgf;
     private Font createFont = null;
@@ -70,7 +70,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        gfo = new GestionFicherosObjetos();
+        gfo = new GestorFicherosObjetos();
 
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
         if (new File("Datos\\configuracion.conf").exists()) {
