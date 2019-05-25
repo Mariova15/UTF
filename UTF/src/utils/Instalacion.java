@@ -24,17 +24,13 @@ public class Instalacion {
 
     public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente) {
 
-        //String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
         File dirDestino = new File(installDir.getAbsolutePath() + File.separator + font.getName());
 
-        if (System.getProperty("os.name").toLowerCase().equals("win")) {
+        if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 
             try {
                 Files.copy(font.toPath(), dirDestino.toPath());
-
                 WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getName());
-                //WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE, key, nombreFuente);
-
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
