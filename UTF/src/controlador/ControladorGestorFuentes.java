@@ -266,8 +266,13 @@ public class ControladorGestorFuentes implements Serializable {
         }
     }
 
-    public void instalarFuente(File fuenteInstalar, String nombreFuente) {
-        listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
+    public String instalarFuente(File fuenteInstalar, String nombreFuente) {
+        if (!comprobarFuenteInstalada(fuenteInstalar, Boolean.TRUE)) {
+            listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
+            return "Fuente instalada";
+        } else {
+            return "La fuente ya esta instalada en el sistema";
+        }
     }
 
     public void desinstalarFuente(File fuenteDesinstalar) {
@@ -280,14 +285,30 @@ public class ControladorGestorFuentes implements Serializable {
         }
     }
 
-    public boolean comprobarFuenteInstalada(File fuenteComprobar) {
+    /**
+     * Método que comproba si se intenta instalar una fuente ya instalada.
+     *
+     * @param fuenteComprobar
+     * @param sistema true para comprobar si es una fuente del sistema.
+     * @return True si la fuente esta instalada o false en caso contrario.
+     */
+    public boolean comprobarFuenteInstalada(File fuenteComprobar, Boolean sistema) {
         boolean instalada = false;
 
-        for (FuenteInstalada listafuenteInstalada : listaFuentesInstaladas) {
-            if (listafuenteInstalada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
-                instalada = true;
+        if (sistema) {
+            for (File systemFont : systemFonts) {
+                if (systemFont.getName().equals(fuenteComprobar.getName())) {
+                    instalada = true;
+                }
+            }
+        } else {
+            for (FuenteInstalada listafuenteInstalada : listaFuentesInstaladas) {
+                if (listafuenteInstalada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
+                    instalada = true;
+                }
             }
         }
+
         return instalada;
     }
 

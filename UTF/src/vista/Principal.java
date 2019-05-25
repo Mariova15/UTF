@@ -69,7 +69,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+
         gfo = new GestorFicherosObjetos();
 
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
@@ -117,7 +117,7 @@ public class Principal extends javax.swing.JFrame {
                 jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
 
                 if (listaFuentesLocales != null) {
-                    if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile())) {
+                    if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
                         jButtonDescargar.setText("Desinstalar fuente");
                     } else {
                         jButtonDescargar.setText("Instalar fuente");
@@ -663,15 +663,18 @@ public class Principal extends javax.swing.JFrame {
                 cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile());
                 JOptionPane.showMessageDialog(this, "Fuente desinstalada");
             } else {
-                cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
-                JOptionPane.showMessageDialog(this, "Fuente instalada");
+                /*cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());*/
+                //JOptionPane.showMessageDialog(this, "Fuente instalada");
+                JOptionPane.showMessageDialog(this, cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName()));
             }
         } else {
             if (dirDestino == null) {
                 JOptionPane.showMessageDialog(this, "Elija el directorio donde descargar las fuentes");
                 String seleccionarDirectorio = seleccionarDirectorio(this);
-                dirDestino = new File(seleccionarDirectorio);            }
+                dirDestino = new File(seleccionarDirectorio);
+            }
 
             String url = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
 
@@ -746,7 +749,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
-       
+
         JOptionPane.showMessageDialog(this, "Elija la copia");
         File selectedFiles = null;
         JFileChooser jc = new JFileChooser();
