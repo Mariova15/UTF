@@ -57,7 +57,7 @@ public class ControladorGestorFuentes implements Serializable {
         this.datosApp = datosApp;
         this.backup = backup;
 
-        if (System.getProperty("os.name").toLowerCase().equals("win")) {
+        if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
         } else if (System.getProperty("os.name").toLowerCase().equals("nix")
                 || System.getProperty("os.name").toLowerCase().equals("nux")
