@@ -60,19 +60,16 @@ public class Instalacion {
     }
 
     public static void desinstalarFuente(FuenteInstalada font) {
-        //String key = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
 
-        if (System.getProperty("os.name").toLowerCase().equals("win")) {
+        if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 
             try {
-
                 if (font.getDirInstalacion().isDirectory()) {
                     for (File fuenteBorrar : font.getDirInstalacion().listFiles()) {
                         fuenteBorrar.delete();
                     }
                 }
                 font.getDirInstalacion().delete();
-
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
