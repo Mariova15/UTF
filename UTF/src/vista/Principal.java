@@ -151,8 +151,6 @@ public class Principal extends javax.swing.JFrame {
         if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
             jMenuBackup.setVisible(false);
         }
-        
-        
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -631,12 +629,17 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPreviewActionPerformed
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-        try {
-            Files.delete(dirDestino.toPath());
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Archivo en uso");
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+
+        //Files.delete(dirDestino.toPath());
+        if (dirDestino.listFiles() != null) {
+            int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
+            if (showConfirmDialog == 0) {
+                cgf.borrarDirectorio(dirDestino);
+            }
+        } else {
+            dirDestino.delete();
         }
+
         dirDestino = null;
         if (listaFuentesLocales != null) {
             rellenarTablaLocalFonts();

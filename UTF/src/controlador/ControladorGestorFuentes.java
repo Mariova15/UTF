@@ -321,4 +321,12 @@ public class ControladorGestorFuentes implements Serializable {
         return listaFiltrada;
     }
 
+    public void borrarDirectorio(File dirBorrar) {
+
+        for (File listFile : dirBorrar.listFiles()) {
+            listFile.delete();
+        }
+        dirBorrar.delete();
+    }
+
 }
