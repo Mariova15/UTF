@@ -59,11 +59,9 @@ public class ControladorGestorFuentes implements Serializable {
 
         if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
-        } else if (System.getProperty("os.name").toLowerCase().equals("nix")
-                || System.getProperty("os.name").toLowerCase().equals("nux")
-                || System.getProperty("os.name").toLowerCase().equals("aix")) {
+        } else if (System.getProperty("os.name").toLowerCase().startsWith("lin")) {
 
-            dirInstalacion = new File(System.getProperty("user.home") + File.separator + "fonts");
+            dirInstalacion = new File(System.getProperty("user.home") + File.separator + ".fonts");
 
             File dirOpentype = new File(dirInstalacion.getAbsolutePath() + File.separator + "opentype");
             File dirTruetype = new File(dirInstalacion.getAbsolutePath() + File.separator + "truetype");

@@ -41,13 +41,18 @@ public class Instalacion {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else if (System.getProperty("os.name").toLowerCase().equals("nix")
-                || System.getProperty("os.name").toLowerCase().equals("nux")
-                || System.getProperty("os.name").toLowerCase().equals("aix")) {
+        } else if (System.getProperty("os.name").toLowerCase().startsWith("lin")) {
 
             try {
-                dirDestino = installDir;
-                Files.copy(font.toPath(), installDir.toPath());
+                if (font.getName().endsWith(".ttf")) {
+                    dirDestino = new File(installDir.getAbsolutePath() + File.separator + "truetype");
+                } else if (font.getName().endsWith(".otf")) {
+                    dirDestino = new File(installDir.getAbsolutePath() + File.separator + "opentype");
+                }
+                if (dirDestino.exists()) {
+                    dirDestino.mkdir();
+                }
+                Files.copy(font.toPath(), dirDestino.toPath());
                 limpiarCacheFuentesLinux();
             } catch (IOException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,9 +84,7 @@ public class Instalacion {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else if (System.getProperty("os.name").toLowerCase().equals("nix")
-                || System.getProperty("os.name").toLowerCase().equals("nux")
-                || System.getProperty("os.name").toLowerCase().equals("aix")) {
+        } else if (System.getProperty("os.name").toLowerCase().startsWith("lin")) {
 
             font.getDirInstalacion().delete();
             limpiarCacheFuentesLinux();
