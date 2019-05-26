@@ -49,9 +49,10 @@ public class Instalacion {
                 } else if (font.getName().endsWith(".otf")) {
                     dirDestino = new File(installDir.getAbsolutePath() + File.separator + "opentype");
                 }
-                if (dirDestino.exists()) {
+                if (!dirDestino.exists()) {
                     dirDestino.mkdir();
                 }
+                dirDestino = new File(dirDestino.getAbsolutePath() + File.separator + font.getName());
                 Files.copy(font.toPath(), dirDestino.toPath());
                 limpiarCacheFuentesLinux();
             } catch (IOException ex) {
@@ -94,7 +95,7 @@ public class Instalacion {
 
     private static void limpiarCacheFuentesLinux() {
         try {
-            Runtime.getRuntime().exec("sudo fc-cache -fv").exitValue();
+            Runtime.getRuntime().exec("sudo fc-cache -fv");
         } catch (IOException ex) {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
         }
