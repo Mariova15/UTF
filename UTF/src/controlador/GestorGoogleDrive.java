@@ -50,22 +50,20 @@ public class GestorGoogleDrive implements Serializable {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private static Drive drive;
-    
-    private File clientSecret;
+
+    private File clientSecret, dirGdrive;
 
     public GestorGoogleDrive(File dirGdrive, File clientSecret) {
 
         try {
             this.clientSecret = clientSecret;
-            
+            this.dirGdrive = dirGdrive;
+
             dataStoreFactory = new FileDataStoreFactory(dirGdrive);
-
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            //drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
+            generarObjetoDrive();
 
-            drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
-
-            //System.out.println(listarArchivosDrive().size());
-            
             if (listarArchivosDrive().size() > 0) {
                 for (com.google.api.services.drive.model.File dirBackup : listarArchivosDrive()) {
                     if (dirBackup.getName().equals("Backup")) {
@@ -74,7 +72,6 @@ public class GestorGoogleDrive implements Serializable {
                 }
             } else {
                 crearDirectorio("Backup");
-                //System.out.println(listarArchivosDrive().size());
             }
 
         } catch (GeneralSecurityException ex) {
@@ -89,6 +86,16 @@ public class GestorGoogleDrive implements Serializable {
 
     public void setgDBackupDirID(String gDBackupDirID) {
         this.gDBackupDirID = gDBackupDirID;
+    }
+
+    private void generarObjetoDrive() {
+        try {
+            dataStoreFactory = new FileDataStoreFactory(dirGdrive);
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
+        } catch (Exception ex) {
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -116,7 +123,9 @@ public class GestorGoogleDrive implements Serializable {
     public com.google.api.services.drive.model.File subidaArchivo(File archivoLocal) {
 
         com.google.api.services.drive.model.File execute = null;
-
+        if (drive == null) {
+            generarObjetoDrive();
+        }
         try {
             com.google.api.services.drive.model.File archivoSubir = new com.google.api.services.drive.model.File();
 
@@ -147,7 +156,9 @@ public class GestorGoogleDrive implements Serializable {
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
+            if (drive == null) {
+                generarObjetoDrive();
+            }
             drive.files().get(fileId).executeMediaAndDownloadTo(byteArrayOutputStream);
 
             FileOutputStream fos = new FileOutputStream(
@@ -168,6 +179,9 @@ public class GestorGoogleDrive implements Serializable {
      */
     public void crearDirectorio(String nombreDir) {
         try {
+            if (drive == null) {
+                generarObjetoDrive();
+            }
             com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
             fileMetadata.setName(nombreDir);
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
@@ -191,7 +205,9 @@ public class GestorGoogleDrive implements Serializable {
 
         //Falta hacer método recursivo        
         List<com.google.api.services.drive.model.File> result = new ArrayList<>();
-
+        if (drive == null) {
+            generarObjetoDrive();
+        }
         try {
             Files.List request = drive.files().list();
             do {
