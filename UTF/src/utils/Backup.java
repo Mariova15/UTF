@@ -56,8 +56,9 @@ public class Backup {
 
     /**
      * Método que comprime los archivos en un zip respetando los directorios.
-     * Sacado de https://www.journaldev.com/957/java-zip-file-folder-example#java-zip-folder
-     * 
+     * Sacado de
+     * https://www.journaldev.com/957/java-zip-file-folder-example#java-zip-folder
+     *
      * @param dir Directorio a comprimir.
      * @param zipDirName Ruta y nombre dle archivo comprimido.
      * @param filesListInDir Lista de archivos a comprimir
@@ -88,16 +89,19 @@ public class Backup {
             e.printStackTrace();
         }
     }
+
     /**
      * Método que descomprime un zip.
-     * 
+     *
      * @param zipFilePath
-     * @param destDir 
+     * @param destDir
      */
     public static void unzip(String zipFilePath, String destDir) {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
-        if(!dir.exists()) dir.mkdirs();
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
         FileInputStream fis;
         //buffer for read and write data to file
         byte[] buffer = new byte[1024];
@@ -105,16 +109,20 @@ public class Backup {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
-            while(ze != null){
+            while (ze != null) {
                 String fileName = ze.getName();
+                if (System.getProperty("os.name").toLowerCase().startsWith("win") && fileName.contains("/")) {
+                    fileName = fileName.replace("/", "\\");
+                } else if (System.getProperty("os.name").toLowerCase().startsWith("lin") && fileName.contains("\\")) {
+                    fileName = fileName.replace("\\", "/");
+                }
                 File newFile = new File(destDir + File.separator + fileName);
-                System.out.println("Unzipping to "+newFile.getAbsolutePath());
                 //create directories for sub directories in zip
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
                 while ((len = zis.read(buffer)) > 0) {
-                fos.write(buffer, 0, len);
+                    fos.write(buffer, 0, len);
                 }
                 fos.close();
                 //close this ZipEntry
@@ -122,19 +130,20 @@ public class Backup {
                 ze = zis.getNextEntry();
             }
             //close last ZipEntry
-            zis.closeEntry();            
+            zis.closeEntry();
             zis.close();
             fis.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**
-     * Método que lista todos los archivos del directorio proporcionado.
-     * Sacado de https://www.journaldev.com/957/java-zip-file-folder-example#java-zip-folder
-     * 
+     * Método que lista todos los archivos del directorio proporcionado. Sacado
+     * de
+     * https://www.journaldev.com/957/java-zip-file-folder-example#java-zip-folder
+     *
      * @param dir Directorio a listar.
      * @param filesListInDir lista a la que añadir directorios.
      * @return List String con todos los archivos de los directorios.
@@ -156,10 +165,10 @@ public class Backup {
 
     /**
      * Método que calcula el tamaño de los archivos de una lista.
-     * 
+     *
      * @param filesListInDir Lista de archivos de la que calcular el tamaño.
      * @return tamanno Long con el tamaño d ela lista de archivos en BITS.
-     */    
+     */
     public static Long calcularTamanno(List<String> filesListInDir) {
         Long tamanno = 0L;
         for (String string : filesListInDir) {

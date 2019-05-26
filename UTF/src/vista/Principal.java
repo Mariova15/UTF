@@ -73,9 +73,9 @@ public class Principal extends javax.swing.JFrame {
         gfo = new GestorFicherosObjetos();
 
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
-        if (new File("Datos\\configuracion.conf").exists()) {
+        if (new File("Datos" + File.separator + "configuracion.conf").exists()) {
             try {
-                gfo.abrirFicheroLecturaObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
+                gfo.abrirFicheroLecturaObjetos(new File("Datos" + File.separator + "configuracion.conf").getAbsolutePath());
                 cgf = gfo.leerUnRegistroFicheroObjetos();
                 gfo.cerrarFicherosLecturaObjetos();
             } catch (IOException ex) {
@@ -85,7 +85,7 @@ public class Principal extends javax.swing.JFrame {
             }
         } else {
             cgf = new ControladorGestorFuentes(new File("Mis fuentes"), new File("Backup"), new File("Datos"));
-            gfo.abrirFicheroEscrituraObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
+            gfo.abrirFicheroEscrituraObjetos(new File("Datos" + File.separator + "configuracion.conf").getAbsolutePath());
             gfo.grabarObjetoFicheroObjetos(cgf);
             gfo.cerrarFicherosEscrituraObjetos();
         }
@@ -148,12 +148,18 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
+            jMenuBackup.setVisible(false);
+        }
+        
+        
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
                 super.windowClosing(we);
                 //Cambiar string File
-                gfo.abrirFicheroEscrituraObjetos(new File("Datos\\configuracion.conf").getAbsolutePath());
+                gfo.abrirFicheroEscrituraObjetos(new File("Datos" + File.separator + "configuracion.conf").getAbsolutePath());
                 gfo.grabarObjetoFicheroObjetos(cgf);
                 gfo.cerrarFicherosEscrituraObjetos();
 
@@ -768,6 +774,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
         cgf.iniciarGoogleDrive();
+        jMenuBackup.setVisible(true);
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
     private void jMenuItemCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCambiarActionPerformed
