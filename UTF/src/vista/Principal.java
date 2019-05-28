@@ -671,12 +671,21 @@ public class Principal extends javax.swing.JFrame {
             if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
                 cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile());
                 JOptionPane.showMessageDialog(this, "Fuente desinstalada");
+                jButtonDescargar.setText("Instalar fuente");
             } else {
                 /*cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());*/
+                listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());*/
                 //JOptionPane.showMessageDialog(this, "Fuente instalada");
-                JOptionPane.showMessageDialog(this, cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName()));
+
+                String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
+
+                JOptionPane.showMessageDialog(this, mensaje);
+
+                if (mensaje.equals("Fuente instalada")) {
+                    jButtonDescargar.setText("Desinstalar fuente");
+                }
+
             }
         } else {
             if (dirDestino == null) {
