@@ -261,7 +261,12 @@ public class Principal extends javax.swing.JFrame {
         jc.setCurrentDirectory(misFuentes);
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            file = jc.getSelectedFile();
+            //file = jc.getSelectedFile();
+            if (jc.getSelectedFile().exists()) {
+                file = jc.getSelectedFile();
+            } else {
+                file = jc.getCurrentDirectory();
+            }
         }
         return file.getAbsolutePath();
     }
