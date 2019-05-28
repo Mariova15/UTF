@@ -49,13 +49,23 @@ public class ControladorGestorFuentes implements Serializable {
 
     private GestorGoogleDrive cgd;
 
+    private int limiteFuentes;
+
     public ControladorGestorFuentes(File misFuentes, File backup, File datosApp) {
         this.misFuentes = misFuentes;
         if (!misFuentes.exists()) {
             misFuentes.mkdir();
         }
         this.datosApp = datosApp;
+        if (!datosApp.exists()) {
+            datosApp.mkdir();
+        }
         this.backup = backup;
+        if (!backup.exists()) {
+            backup.mkdir();
+        }
+
+        limiteFuentes = 1;
 
         if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
@@ -103,6 +113,14 @@ public class ControladorGestorFuentes implements Serializable {
 
     public File getDirInstalacion() {
         return dirInstalacion;
+    }
+
+    public int getLimiteFuentes() {
+        return limiteFuentes;
+    }
+
+    public void setLimiteFuentes(int limiteFuentes) {
+        this.limiteFuentes = limiteFuentes;
     }
 
     /**
@@ -327,6 +345,16 @@ public class ControladorGestorFuentes implements Serializable {
             listFile.delete();
         }
         dirBorrar.delete();
+    }
+
+    public boolean comprobarLimiteFuentes(List<LocalFont> listaFuentes) {
+
+        if (listaFuentes.size() < limiteFuentes) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

@@ -729,8 +729,14 @@ public class Principal extends javax.swing.JFrame {
 
         listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
 
+        if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
+            rellenarTablaLocalFonts();
+        } else {
+            JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
+            listaFuentesLocales = null;
+        }
+
         dirDestino = null;
-        rellenarTablaLocalFonts();
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
 

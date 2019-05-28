@@ -6,6 +6,8 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -23,6 +25,18 @@ public class Configuracion extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         this.cgf = cgf;
+        
+        jSliderLimite.setValue(cgf.getLimiteFuentes());
+        jLabelValorSlider.setText(jSliderLimite.getValue()+"");
+        
+        jSliderLimite.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                cgf.setLimiteFuentes(jSliderLimite.getValue());
+                jLabelValorSlider.setText(jSliderLimite.getValue()+"");
+            }
+        });
+        
     }
 
     /**
@@ -38,6 +52,9 @@ public class Configuracion extends javax.swing.JDialog {
         jLabelTitle = new javax.swing.JLabel();
         jLabelMisFuentes = new javax.swing.JLabel();
         jLabelBackup = new javax.swing.JLabel();
+        jLabelLimite = new javax.swing.JLabel();
+        jSliderLimite = new javax.swing.JSlider();
+        jLabelValorSlider = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -51,6 +68,17 @@ public class Configuracion extends javax.swing.JDialog {
 
         jLabelBackup.setText("Cambiar directorio backup");
 
+        jLabelLimite.setText("Cambiar limite fuentes cargadas");
+
+        jSliderLimite.setMaximum(50);
+        jSliderLimite.setMinimum(10);
+        jSliderLimite.setPaintLabels(true);
+        jSliderLimite.setPaintTicks(true);
+        jSliderLimite.setSnapToTicks(true);
+
+        jLabelValorSlider.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelValorSlider.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -63,7 +91,13 @@ public class Configuracion extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelMisFuentes)
                             .addComponent(jLabelBackup))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabelLimite)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelValorSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSliderLimite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -75,7 +109,13 @@ public class Configuracion extends javax.swing.JDialog {
                 .addComponent(jLabelMisFuentes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelBackup)
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelLimite)
+                    .addComponent(jSliderLimite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelValorSlider)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -100,8 +140,11 @@ public class Configuracion extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelBackup;
+    private javax.swing.JLabel jLabelLimite;
     private javax.swing.JLabel jLabelMisFuentes;
     private javax.swing.JLabel jLabelTitle;
+    private javax.swing.JLabel jLabelValorSlider;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSlider jSliderLimite;
     // End of variables declaration//GEN-END:variables
 }
