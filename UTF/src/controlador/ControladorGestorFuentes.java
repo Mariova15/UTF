@@ -217,7 +217,7 @@ public class ControladorGestorFuentes implements Serializable {
      * generando un archivo con las credenciales.
      */
     public void iniciarGoogleDrive() {
-        cgd = new GestorGoogleDrive(datosApp, new File(datosApp.getAbsolutePath() + File.separator + "client_secret.json"));
+        cgd = new GestorGoogleDrive(datosApp);
     }
 
     /**

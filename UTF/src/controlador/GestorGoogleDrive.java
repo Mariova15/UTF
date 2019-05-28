@@ -25,8 +25,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +43,7 @@ import java.util.logging.Logger;
 public class GestorGoogleDrive implements Serializable {
 
     private static final String APPLICATION_NAME = "Use that font";
+    private static final String RUTA_CLIENT_SECRET = "/credenciales/client_secret.json";
     private String gDBackupDirID;
 
     private static FileDataStoreFactory dataStoreFactory;
@@ -51,12 +54,11 @@ public class GestorGoogleDrive implements Serializable {
 
     private static Drive drive;
 
-    private File clientSecret, dirGdrive;
+    private File  dirGdrive;
 
-    public GestorGoogleDrive(File dirGdrive, File clientSecret) {
+    public GestorGoogleDrive(File dirGdrive) {
 
         try {
-            this.clientSecret = clientSecret;
             this.dirGdrive = dirGdrive;
 
             dataStoreFactory = new FileDataStoreFactory(dirGdrive);
@@ -106,7 +108,7 @@ public class GestorGoogleDrive implements Serializable {
      */
     private Credential authorize() throws Exception {
 
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(new FileInputStream(clientSecret)));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(getClass().getResourceAsStream(RUTA_CLIENT_SECRET)));
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets, Collections.singleton(DriveScopes.DRIVE_FILE)).setDataStoreFactory(dataStoreFactory).build();
 
