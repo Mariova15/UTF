@@ -65,7 +65,7 @@ public class ControladorGestorFuentes implements Serializable {
             backup.mkdir();
         }
 
-        limiteFuentes = 1;
+        limiteFuentes = 10;
 
         if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
