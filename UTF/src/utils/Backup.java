@@ -162,6 +162,30 @@ public class Backup {
         }
         return filesListInDir;
     }
+    
+        /**
+     * Método que lista todos los archivos del directorio proporcionado. Sacado
+     * de
+     * https://www.journaldev.com/957/java-zip-file-folder-example#java-zip-folder
+     *
+     * @param dir Directorio a listar.
+     * @param filesListInDir lista a la que añadir directorios.
+     * @return List String con todos los archivos de los directorios.
+     */
+    public static List<File> buscarArchivos(File dir, List<File> filesListInDir) {
+        File[] files = dir.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    filesListInDir.add(file);
+                } else {
+                    buscarArchivos(file, filesListInDir);
+                }
+            }
+        }
+        return filesListInDir;
+    }
 
     /**
      * Método que calcula el tamaño de los archivos de una lista.

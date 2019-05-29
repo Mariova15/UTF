@@ -69,6 +69,7 @@ public class ControladorGestorFuentes implements Serializable {
 
         if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
             dirInstalacion = new File(System.getenv("WINDIR") + File.separator + "Fonts");
+            systemFonts = dirInstalacion.listFiles();
         } else if (System.getProperty("os.name").toLowerCase().startsWith("lin")) {
 
             dirInstalacion = new File(System.getProperty("user.home") + File.separator + ".fonts");
@@ -80,14 +81,22 @@ public class ControladorGestorFuentes implements Serializable {
                 dirInstalacion.mkdir();
                 dirOpentype.mkdir();
                 dirTruetype.mkdir();
-            } else if (!dirOpentype.exists() || dirTruetype.exists()) {
-                dirOpentype.mkdir();
-                dirTruetype.mkdir();
+            } else {
+                if (!dirOpentype.exists()) {
+                    dirOpentype.mkdir();
+                }
+                if (!dirTruetype.exists()) {
+                    dirTruetype.mkdir();
+                }
             }
+
+            List<File> listaTemp = new ArrayList<>();
+            listaTemp = Backup.buscarArchivos(dirInstalacion, new ArrayList<>());
+            listaTemp.addAll(Backup.buscarArchivos(new File(System.getenv("/usr/share/fonts")), new ArrayList<>()));
+            systemFonts = (File[]) listaTemp.toArray();
         }
 
         listaFuentesInstaladas = new ArrayList<>();
-        systemFonts = dirInstalacion.listFiles();
 
     }
 
