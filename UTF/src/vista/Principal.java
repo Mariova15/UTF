@@ -31,8 +31,13 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
@@ -143,6 +148,9 @@ public class Principal extends javax.swing.JFrame {
                     ruta = ruta.replace(", ", File.separator);
                     ruta = ruta.substring(1, ruta.length() - 1);
                     dirDestino = new File(ruta);
+                }
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    jPopupMenuBotonDerecho.show(e.getComponent(), e.getX(), e.getY());
                 }
 
             }
@@ -330,6 +338,11 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenuBotonDerecho = new javax.swing.JPopupMenu();
+        jMenuItemCrear = new javax.swing.JMenuItem();
+        jMenuItemBorrar = new javax.swing.JMenuItem();
+        jMenuItemMover = new javax.swing.JMenuItem();
+        jMenuItemRenombrar = new javax.swing.JMenuItem();
         jPanelFondo = new javax.swing.JPanel();
         jScrollPaneTable = new javax.swing.JScrollPane();
         jTableGoogleFonts = new javax.swing.JTable();
@@ -360,6 +373,38 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemBackupCargar = new javax.swing.JMenuItem();
         jMenuItemBuackupGDSubir = new javax.swing.JMenuItem();
         jMenuItemBuackupGDCargar = new javax.swing.JMenuItem();
+
+        jMenuItemCrear.setText("Crear");
+        jMenuItemCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCrearActionPerformed(evt);
+            }
+        });
+        jPopupMenuBotonDerecho.add(jMenuItemCrear);
+
+        jMenuItemBorrar.setText("Borrar");
+        jMenuItemBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBorrarActionPerformed(evt);
+            }
+        });
+        jPopupMenuBotonDerecho.add(jMenuItemBorrar);
+
+        jMenuItemMover.setText("Mover");
+        jMenuItemMover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMoverActionPerformed(evt);
+            }
+        });
+        jPopupMenuBotonDerecho.add(jMenuItemMover);
+
+        jMenuItemRenombrar.setText("Renombrar");
+        jMenuItemRenombrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRenombrarActionPerformed(evt);
+            }
+        });
+        jPopupMenuBotonDerecho.add(jMenuItemRenombrar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -812,6 +857,44 @@ public class Principal extends javax.swing.JFrame {
         cgf.descargaBackupGoogleDrive();
     }//GEN-LAST:event_jMenuItemBuackupGDCargarActionPerformed
 
+    private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
+        if (dirDestino.listFiles() != null) {
+            int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
+            if (showConfirmDialog == 0) {
+                cgf.borrarDirectorio(dirDestino);
+            }
+        } else {
+            dirDestino.delete();
+        }
+        dirDestino = null;
+        actualizarNodos();
+    }//GEN-LAST:event_jMenuItemBorrarActionPerformed
+
+    private void jMenuItemCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearActionPerformed
+        File nuevoDirectorio = new File(dirDestino.getAbsolutePath() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio"));
+        nuevoDirectorio.mkdir();
+        actualizarNodos();
+    }//GEN-LAST:event_jMenuItemCrearActionPerformed
+
+    private void jMenuItemMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMoverActionPerformed
+        try {
+            Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
+        dirDestino = null;
+        actualizarNodos();
+    }//GEN-LAST:event_jMenuItemMoverActionPerformed
+
+    private void jMenuItemRenombrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRenombrarActionPerformed
+
+        dirDestino = null;
+        actualizarNodos();
+    }//GEN-LAST:event_jMenuItemRenombrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -875,12 +958,17 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuGD;
     private javax.swing.JMenuItem jMenuItemBackupCargar;
     private javax.swing.JMenuItem jMenuItemBackupCrear;
+    private javax.swing.JMenuItem jMenuItemBorrar;
     private javax.swing.JMenuItem jMenuItemBuackupGDCargar;
     private javax.swing.JMenuItem jMenuItemBuackupGDSubir;
     private javax.swing.JMenuItem jMenuItemCambiar;
     private javax.swing.JMenuItem jMenuItemConfApp;
+    private javax.swing.JMenuItem jMenuItemCrear;
     private javax.swing.JMenuItem jMenuItemLogin;
+    private javax.swing.JMenuItem jMenuItemMover;
+    private javax.swing.JMenuItem jMenuItemRenombrar;
     private javax.swing.JPanel jPanelFondo;
+    private javax.swing.JPopupMenu jPopupMenuBotonDerecho;
     private javax.swing.JScrollPane jScrollPaneTable;
     private javax.swing.JScrollPane jScrollPaneTextArea;
     private javax.swing.JScrollPane jScrollPaneTree;

@@ -92,7 +92,7 @@ public class ControladorGestorFuentes implements Serializable {
 
             List<File> listaTemp = new ArrayList<>();
             listaTemp = Backup.buscarArchivos(dirInstalacion, new ArrayList<>());
-            listaTemp.addAll(Backup.buscarArchivos(new File(System.getenv("/usr/share/fonts")), new ArrayList<>()));
+            listaTemp.addAll(Backup.buscarArchivos(new File("/usr/share/fonts"), new ArrayList<>()));
             systemFonts = (File[]) listaTemp.toArray();
         }
 
