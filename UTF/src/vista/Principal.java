@@ -31,13 +31,9 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
@@ -252,7 +248,8 @@ public class Principal extends javax.swing.JFrame {
             }
 
         };
-        jLabelDragDrop.setTransferHandler(th);
+        //jLabelDragDrop.setTransferHandler(th);
+        jTreeUserDir.setTransferHandler(th);
     }
 
     /**
@@ -343,6 +340,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemBorrar = new javax.swing.JMenuItem();
         jMenuItemMover = new javax.swing.JMenuItem();
         jMenuItemRenombrar = new javax.swing.JMenuItem();
+        jMenuItemImportar = new javax.swing.JMenuItem();
         jPanelFondo = new javax.swing.JPanel();
         jScrollPaneTable = new javax.swing.JScrollPane();
         jTableGoogleFonts = new javax.swing.JTable();
@@ -353,16 +351,11 @@ public class Principal extends javax.swing.JFrame {
         jComboBoxStyles = new javax.swing.JComboBox<>();
         jScrollPaneTree = new javax.swing.JScrollPane();
         jTreeUserDir = new javax.swing.JTree();
-        jLabelDragDrop = new javax.swing.JLabel();
-        jButtonImportar = new javax.swing.JButton();
-        jButtonBorrar = new javax.swing.JButton();
-        jButtonCrear = new javax.swing.JButton();
         jButtonDescargar = new javax.swing.JButton();
         jButtonVerGoogleFonts = new javax.swing.JButton();
         jButtonVerFuentesLocales = new javax.swing.JButton();
-        jButtonMover = new javax.swing.JButton();
         jComboBoxFiltro = new javax.swing.JComboBox<>();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuBar = new javax.swing.JMenuBar();
         jMenuConf = new javax.swing.JMenu();
         jMenuGD = new javax.swing.JMenu();
         jMenuItemLogin = new javax.swing.JMenuItem();
@@ -406,6 +399,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jPopupMenuBotonDerecho.add(jMenuItemRenombrar);
 
+        jMenuItemImportar.setText("Importar");
+        jMenuItemImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemImportarActionPerformed(evt);
+            }
+        });
+        jPopupMenuBotonDerecho.add(jMenuItemImportar);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanelFondo.setBackground(new java.awt.Color(255, 255, 255));
@@ -444,31 +445,6 @@ public class Principal extends javax.swing.JFrame {
 
         jScrollPaneTree.setViewportView(jTreeUserDir);
 
-        jLabelDragDrop.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelDragDrop.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelDragDrop.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jButtonImportar.setText("Importar");
-        jButtonImportar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonImportarActionPerformed(evt);
-            }
-        });
-
-        jButtonBorrar.setText("Borrar");
-        jButtonBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBorrarActionPerformed(evt);
-            }
-        });
-
-        jButtonCrear.setText("Crear");
-        jButtonCrear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCrearActionPerformed(evt);
-            }
-        });
-
         jButtonDescargar.setText("Descargar fuente");
         jButtonDescargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -490,13 +466,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButtonMover.setText("Mover");
-        jButtonMover.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonMoverActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanelFondoLayout = new javax.swing.GroupLayout(jPanelFondo);
         jPanelFondo.setLayout(jPanelFondoLayout);
         jPanelFondoLayout.setHorizontalGroup(
@@ -506,34 +475,29 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPaneTextArea)
                     .addGroup(jPanelFondoLayout.createSequentialGroup()
-                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPaneTree, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelDragDrop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonImportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonMover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
+                                .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 19, Short.MAX_VALUE))
+                            .addComponent(jScrollPaneTree))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelFondoLayout.createSequentialGroup()
                                 .addComponent(jButtonPreview)
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonDescargar))
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanelFondoLayout.createSequentialGroup()
                                         .addComponent(jButtonVerGoogleFonts)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jButtonVerFuentesLocales)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanelFondoLayout.createSequentialGroup()
-                                        .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))))
+                                    .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 6, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanelFondoLayout.setVerticalGroup(
@@ -541,27 +505,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanelFondoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFondoLayout.createSequentialGroup()
-                        .addComponent(jScrollPaneTable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButtonVerFuentesLocales)
-                                .addComponent(jComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonVerGoogleFonts, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanelFondoLayout.createSequentialGroup()
-                        .addComponent(jScrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCrear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonMover)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonBorrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonImportar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelDragDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonVerGoogleFonts)
+                        .addComponent(jButtonVerFuentesLocales))
+                    .addComponent(jComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -569,7 +520,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonDescargar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -603,7 +554,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuConf.add(jMenuItemConfApp);
 
-        jMenuBar1.add(jMenuConf);
+        jMenuBar.add(jMenuConf);
 
         jMenuBackup.setText("Backup");
 
@@ -639,9 +590,9 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuBackup.add(jMenuItemBuackupGDCargar);
 
-        jMenuBar1.add(jMenuBackup);
+        jMenuBar.add(jMenuBackup);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -664,59 +615,17 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviewActionPerformed
-
         if (listaFuentesLocales == null) {
             crearFuente(cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
-
             jLabel1TituloPrueba.setFont(createFont.deriveFont(24F));
             jTextAreaLorem.setFont(createFont.deriveFont(14F));
         } else {
             jLabel1TituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
             jTextAreaLorem.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(14F));
         }
-
-
     }//GEN-LAST:event_jButtonPreviewActionPerformed
 
-    private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-
-        //Files.delete(dirDestino.toPath());
-        if (dirDestino.listFiles() != null) {
-            int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
-            if (showConfirmDialog == 0) {
-                cgf.borrarDirectorio(dirDestino);
-            }
-        } else {
-            dirDestino.delete();
-        }
-
-        dirDestino = null;
-        if (listaFuentesLocales != null) {
-            rellenarTablaLocalFonts();
-        }
-        actualizarNodos();
-    }//GEN-LAST:event_jButtonBorrarActionPerformed
-
-    private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
-        String showInputDialog = JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio");
-
-        File nuevoDirectorio = new File(dirDestino.getAbsolutePath() + File.separator + showInputDialog);
-        nuevoDirectorio.mkdir();
-        actualizarNodos();
-    }//GEN-LAST:event_jButtonCrearActionPerformed
-
-    private void jButtonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportarActionPerformed
-
-        coiparArchivos(seleccionarArchivos(this));
-
-        if (listaFuentesLocales != null) {
-            rellenarTablaLocalFonts();
-        }
-
-    }//GEN-LAST:event_jButtonImportarActionPerformed
-
     private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
-
         if (listaFuentesLocales != null) {
             if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
                 cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile());
@@ -726,16 +635,13 @@ public class Principal extends javax.swing.JFrame {
                 /*cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
                 listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());*/
                 //JOptionPane.showMessageDialog(this, "Fuente instalada");
-
                 String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
                         listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
 
                 JOptionPane.showMessageDialog(this, mensaje);
-
                 if (mensaje.equals("Fuente instalada")) {
                     jButtonDescargar.setText("Desinstalar fuente");
                 }
-
             }
         } else {
             if (dirDestino == null) {
@@ -790,40 +696,16 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
 
-    private void jButtonMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoverActionPerformed
-
-        if (dirDestino == null) {
-            JOptionPane.showMessageDialog(this, "Elija el directorio a mover");
-            String seleccionarDirectorio = seleccionarDirectorio(this);
-            dirDestino = new File(seleccionarDirectorio);
-        }
-
-        try {
-            Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException ex) {
-            Logger.getLogger(Principal.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
-        dirDestino = null;
-        actualizarNodos();
-
-    }//GEN-LAST:event_jButtonMoverActionPerformed
-
     private void jMenuItemConfAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConfAppActionPerformed
         Configuracion configuracion = new Configuracion(this, true, cgf);
         configuracion.setVisible(true);
     }//GEN-LAST:event_jMenuItemConfAppActionPerformed
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
-
         cgf.crearBackup();
-
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
-
         JOptionPane.showMessageDialog(this, "Elija la copia");
         File selectedFiles = null;
         JFileChooser jc = new JFileChooser();
@@ -858,42 +740,86 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBuackupGDCargarActionPerformed
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
-        if (dirDestino.listFiles() != null) {
-            int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
-            if (showConfirmDialog == 0) {
-                cgf.borrarDirectorio(dirDestino);
+        if (dirDestino != null) {
+
+            if (dirDestino.isDirectory() && dirDestino.listFiles().length == 0) {
+                dirDestino.delete();
+            } else {
+
+                if (dirDestino.listFiles() != null) {
+                    int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
+                    if (showConfirmDialog == 0) {
+                        cgf.borrarDirectorio(dirDestino);
+                    }
+                } else {
+                    dirDestino.delete();
+                }
             }
+            dirDestino = null;
+            actualizarNodos();
         } else {
-            dirDestino.delete();
+            JOptionPane.showMessageDialog(this, "Antes seleccione un directorio");
         }
-        dirDestino = null;
-        actualizarNodos();
+
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearActionPerformed
-        File nuevoDirectorio = new File(dirDestino.getAbsolutePath() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio"));
+        File nuevoDirectorio = new File(cgf.getMisFuentes().getAbsolutePath() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio"));
         nuevoDirectorio.mkdir();
         actualizarNodos();
     }//GEN-LAST:event_jMenuItemCrearActionPerformed
 
     private void jMenuItemMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMoverActionPerformed
-        try {
-            Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException ex) {
-            Logger.getLogger(Principal.class
-                    .getName()).log(Level.SEVERE, null, ex);
+        if (dirDestino != null) {
+            try {
+                Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            dirDestino = null;
+            actualizarNodos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Antes seleccione un directorio");
         }
-
-        dirDestino = null;
-        actualizarNodos();
     }//GEN-LAST:event_jMenuItemMoverActionPerformed
 
     private void jMenuItemRenombrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRenombrarActionPerformed
-
-        dirDestino = null;
-        actualizarNodos();
+        if (dirDestino != null) {
+            if (dirDestino.isDirectory()) {
+                dirDestino.renameTo(new File(dirDestino.getParent() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio")));
+                dirDestino = null;
+                actualizarNodos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un proyecto");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Antes seleccione un directorio");
+        }
     }//GEN-LAST:event_jMenuItemRenombrarActionPerformed
+
+    private void jMenuItemImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportarActionPerformed
+        coiparArchivos(seleccionarArchivos(this));
+        if (listaFuentesLocales != null) {
+            if (dirDestino == null) {
+                JOptionPane.showMessageDialog(this, "Elija el directorio a partir del que buscar las fuentes");
+                String seleccionarDirectorio = seleccionarDirectorio(this);
+                dirDestino = new File(seleccionarDirectorio);
+            }
+
+            listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
+
+            if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
+                rellenarTablaLocalFonts();
+            } else {
+                JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
+                listaFuentesLocales = null;
+            }
+
+            dirDestino = null;
+
+            rellenarTablaLocalFonts();
+        }
+    }//GEN-LAST:event_jMenuItemImportarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -940,20 +866,15 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonBorrar;
-    private javax.swing.JButton jButtonCrear;
     private javax.swing.JButton jButtonDescargar;
-    private javax.swing.JButton jButtonImportar;
-    private javax.swing.JButton jButtonMover;
     private javax.swing.JButton jButtonPreview;
     private javax.swing.JButton jButtonVerFuentesLocales;
     private javax.swing.JButton jButtonVerGoogleFonts;
     private javax.swing.JComboBox<String> jComboBoxFiltro;
     private javax.swing.JComboBox<String> jComboBoxStyles;
     private javax.swing.JLabel jLabel1TituloPrueba;
-    private javax.swing.JLabel jLabelDragDrop;
     private javax.swing.JMenu jMenuBackup;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuConf;
     private javax.swing.JMenu jMenuGD;
     private javax.swing.JMenuItem jMenuItemBackupCargar;
@@ -964,6 +885,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCambiar;
     private javax.swing.JMenuItem jMenuItemConfApp;
     private javax.swing.JMenuItem jMenuItemCrear;
+    private javax.swing.JMenuItem jMenuItemImportar;
     private javax.swing.JMenuItem jMenuItemLogin;
     private javax.swing.JMenuItem jMenuItemMover;
     private javax.swing.JMenuItem jMenuItemRenombrar;
