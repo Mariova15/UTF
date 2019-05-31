@@ -306,23 +306,36 @@ public class Principal extends javax.swing.JFrame {
             String seleccionarDirectorio = seleccionarDirectorio(this);
             dirDestino = new File(seleccionarDirectorio);
         }
-
         for (File selectedFile : archivosCopiar) {
             try {
                 String dirDestinoCadena = dirDestino.getAbsolutePath();
                 dirDestinoCadena = dirDestinoCadena + File.separator + selectedFile.getName();
                 File dirTemp = new File(dirDestinoCadena);
-
                 Files.copy(selectedFile.toPath(), dirTemp.toPath());
-
                 dirTemp = null;
                 actualizarNodos();
             } catch (IOException ex) {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
+        if (listaFuentesLocales != null) {
+            cargarListaFuentesLocales(true);
+        }
+        //dirDestino = null;
+    }
 
+    public void cargarListaFuentesLocales(boolean importar) {
+        if (importar) {
+            listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
+        } else {
+            listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino.getParentFile());
+        }
+        if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
+            rellenarTablaLocalFonts();
+        } else {
+            JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
+            listaFuentesLocales = null;
+        }
         dirDestino = null;
     }
 
@@ -675,6 +688,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
         jComboBoxFiltro.setVisible(false);
         jComboBoxStyles.setVisible(false);
+        jMenuItemRenombrar.setVisible(false);
+        jMenuItemMover.setVisible(false);
         jButtonDescargar.setText("Instalar fuente");
 
         if (dirDestino == null) {
@@ -755,6 +770,9 @@ public class Principal extends javax.swing.JFrame {
                     dirDestino.delete();
                 }
             }
+            if (listaFuentesLocales != null) {
+                cargarListaFuentesLocales(false);
+            }
             dirDestino = null;
             actualizarNodos();
         } else {
@@ -776,6 +794,9 @@ public class Principal extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (listaFuentesLocales != null) {
+                cargarListaFuentesLocales(false);
+            }
             dirDestino = null;
             actualizarNodos();
         } else {
@@ -787,6 +808,9 @@ public class Principal extends javax.swing.JFrame {
         if (dirDestino != null) {
             if (dirDestino.isDirectory()) {
                 dirDestino.renameTo(new File(dirDestino.getParent() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio")));
+                if (listaFuentesLocales != null) {
+                    cargarListaFuentesLocales(false);
+                }
                 dirDestino = null;
                 actualizarNodos();
             } else {
@@ -799,26 +823,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportarActionPerformed
         coiparArchivos(seleccionarArchivos(this));
-        if (listaFuentesLocales != null) {
-            if (dirDestino == null) {
-                JOptionPane.showMessageDialog(this, "Elija el directorio a partir del que buscar las fuentes");
-                String seleccionarDirectorio = seleccionarDirectorio(this);
-                dirDestino = new File(seleccionarDirectorio);
-            }
-
-            listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
-
-            if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
-                rellenarTablaLocalFonts();
-            } else {
-                JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
-                listaFuentesLocales = null;
-            }
-
-            dirDestino = null;
-
-            rellenarTablaLocalFonts();
-        }
     }//GEN-LAST:event_jMenuItemImportarActionPerformed
 
     /**
