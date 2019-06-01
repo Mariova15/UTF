@@ -822,7 +822,10 @@ public class Principal extends javax.swing.JFrame {
         if (dirDestino != null && !dirDestino.equals(misFuentes)) {
             if (cgf.comprobarAccion(dirDestino)) {
                 if (dirDestino.isDirectory()) {
-                    dirDestino.renameTo(new File(dirDestino.getParent() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio")));
+                    String nuevoNombre = JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio");
+                    if (nuevoNombre != null) {
+                        dirDestino.renameTo(new File(dirDestino.getParent() + File.separator + nuevoNombre));
+                    }
                     if (listaFuentesLocales != null) {
                         cargarListaFuentesLocales(false);
                     }
