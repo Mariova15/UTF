@@ -49,18 +49,18 @@ import vista.tablemodels.TableModelLocalFonts;
  * @author Mario
  */
 public class Principal extends javax.swing.JFrame {
-    
+
     GestorFicherosObjetos gfo;
-    
+
     private ControladorGestorFuentes cgf;
     private Font createFont = null;
-    
+
     private File misFuentes;
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
-    
+
     private File dirDestino;
-    
+
     private List<LocalFont> listaFuentesLocales;
     private List<GoogleFont> listaFuentesGoogle;
 
@@ -70,7 +70,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+
         gfo = new GestorFicherosObjetos();
 
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
@@ -90,12 +90,12 @@ public class Principal extends javax.swing.JFrame {
             gfo.grabarObjetoFicheroObjetos(cgf);
             gfo.cerrarFicherosEscrituraObjetos();
         }
-        
+
         cgf.descargaJsonFuentes();
-        
+
         jComboBoxStyles.setVisible(false);
         jComboBoxFiltro.setModel(new DefaultComboBoxModel<>(cgf.getListaTiposGoogle().toArray(new String[cgf.getListaTiposGoogle().size()])));
-        
+
         jComboBoxFiltro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,16 +107,16 @@ public class Principal extends javax.swing.JFrame {
                 rellenarTablaGoogleFonts();
             }
         });
-        
+
         listaFuentesGoogle = cgf.getListaFuentesGoogle();
         rellenarTablaGoogleFonts();
         dragDrop();
-        
+
         jTableGoogleFonts.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
-                
+
                 if (listaFuentesLocales != null) {
                     if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
                         jButtonDescargar.setText("Desinstalar fuente");
@@ -128,12 +128,12 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         misFuentes = cgf.getMisFuentes();
         root = new DefaultMutableTreeNode(misFuentes);
-        
+
         actualizarNodos();
-        
+
         jTreeUserDir.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -148,14 +148,14 @@ public class Principal extends javax.swing.JFrame {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     jPopupMenuBotonDerecho.show(e.getComponent(), e.getX(), e.getY());
                 }
-                
+
             }
         });
-        
+
         if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
             jMenuBackup.setVisible(false);
         }
-        
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
@@ -164,21 +164,21 @@ public class Principal extends javax.swing.JFrame {
                 gfo.abrirFicheroEscrituraObjetos(new File("Datos" + File.separator + "configuracion.conf").getAbsolutePath());
                 gfo.grabarObjetoFicheroObjetos(cgf);
                 gfo.cerrarFicherosEscrituraObjetos();
-                
+
             }
-            
+
         });
-        
+
     }
-    
+
     private void rellenarTablaGoogleFonts() {
         jTableGoogleFonts.setModel(new TableModelGoogleFonts(listaFuentesGoogle));
     }
-    
+
     private void rellenarTablaLocalFonts() {
         jTableGoogleFonts.setModel(new TableModelLocalFonts(listaFuentesLocales));
     }
-    
+
     private void crearFuente(String dirGoogleFont) {
         try {
             createFont = Font.createFont(Font.TRUETYPE_FONT, new URL(dirGoogleFont).openStream());
@@ -188,7 +188,7 @@ public class Principal extends javax.swing.JFrame {
             Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void createChildNodes(File fileRoot,
             DefaultMutableTreeNode node) {
         File[] files = fileRoot.listFiles();
@@ -205,28 +205,28 @@ public class Principal extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void actualizarNodos() {
         //dirDestino = null;
         root = new DefaultMutableTreeNode(misFuentes);
-        
+
         createChildNodes(misFuentes, root);
         treeModel = new DefaultTreeModel(root);
         jTreeUserDir.setModel(treeModel);
     }
-    
+
     private void dragDrop() {
         TransferHandler th = new TransferHandler(null) {
             @Override
             public boolean canImport(TransferHandler.TransferSupport support) {
                 return true;
             }
-            
+
             @Override
             public boolean importData(JComponent comp, Transferable t) {
-                
+
                 List<File> transferData = null;
-                
+
                 try {
                     transferData = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                 } catch (UnsupportedFlavorException ex) {
@@ -234,19 +234,19 @@ public class Principal extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 List<File> archivosCopiar = new ArrayList<>();
-                
+
                 for (File file : transferData) {
                     if (file.getName().endsWith(".ttf") || file.getName().endsWith(".otf")) {
                         archivosCopiar.add(file);
                     }
                 }
                 Principal.this.coiparArchivos(archivosCopiar.toArray(new File[archivosCopiar.size()]));
-                
+
                 return true;
             }
-            
+
         };
         //jLabelDragDrop.setTransferHandler(th);
         jTreeUserDir.setTransferHandler(th);
@@ -262,7 +262,7 @@ public class Principal extends javax.swing.JFrame {
         File file = null;
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
+
         jc.setCurrentDirectory(misFuentes);
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
@@ -288,18 +288,18 @@ public class Principal extends javax.swing.JFrame {
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jc.setMultiSelectionEnabled(true);
-        
+
         for (int i = 1; i > -1; i--) {
             jc.setFileFilter(Filtros.fontFilterFileChooser().get(i));
         }
-        
+
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             selectedFiles = jc.getSelectedFiles();
         }
         return selectedFiles;
     }
-    
+
     public void coiparArchivos(File[] archivosCopiar) {
         if (dirDestino == null) {
             JOptionPane.showMessageDialog(this, "Elija el directorio donde importar las fuentes");
@@ -323,7 +323,7 @@ public class Principal extends javax.swing.JFrame {
         }
         //dirDestino = null;
     }
-    
+
     public void cargarListaFuentesLocales(boolean importar) {
         if (importar) {
             listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
@@ -650,7 +650,7 @@ public class Principal extends javax.swing.JFrame {
                 //JOptionPane.showMessageDialog(this, "Fuente instalada");
                 String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
                         listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
-                
+
                 JOptionPane.showMessageDialog(this, mensaje);
                 if (mensaje.equals("Fuente instalada")) {
                     jButtonDescargar.setText("Desinstalar fuente");
@@ -662,13 +662,13 @@ public class Principal extends javax.swing.JFrame {
                 String seleccionarDirectorio = seleccionarDirectorio(this);
                 dirDestino = new File(seleccionarDirectorio);
             }
-            
+
             String url = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
-            
+
             GoogleFont fontDescargar = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow());
-            
+
             DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
-            
+
             dirDestino = null;
             jComboBoxStyles.setVisible(false);
             actualizarNodos();
@@ -679,6 +679,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
         listaFuentesLocales = null;
         jComboBoxFiltro.setVisible(true);
+        jMenuItemRenombrar.setVisible(true);
+        jMenuItemMover.setVisible(true);
         jButtonDescargar.setText("Descargar fuente");
         jComboBoxStyles.setVisible(true);
         jButtonDescargar.setVisible(true);
@@ -691,22 +693,22 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemRenombrar.setVisible(false);
         jMenuItemMover.setVisible(false);
         jButtonDescargar.setText("Instalar fuente");
-        
+
         if (dirDestino == null) {
             JOptionPane.showMessageDialog(this, "Elija el directorio a partir del que buscar las fuentes");
             String seleccionarDirectorio = seleccionarDirectorio(this);
             dirDestino = new File(seleccionarDirectorio);
         }
-        
+
         listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
-        
+
         if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
             rellenarTablaLocalFonts();
         } else {
             JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
             listaFuentesLocales = null;
         }
-        
+
         dirDestino = null;
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
@@ -730,12 +732,12 @@ public class Principal extends javax.swing.JFrame {
         jc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jc.setCurrentDirectory(cgf.getBackup());
         jc.setFileFilter(Filtros.crearFiltro("Archivos zip", ".zip"));
-        
+
         int seleccion = jc.showOpenDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             selectedFiles = jc.getSelectedFile();
         }
-        
+
         cgf.cargarBackup(selectedFiles);
         actualizarNodos();
     }//GEN-LAST:event_jMenuItemBackupCargarActionPerformed
@@ -857,21 +859,21 @@ public class Principal extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Principal.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(Principal.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(Principal.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Principal.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
