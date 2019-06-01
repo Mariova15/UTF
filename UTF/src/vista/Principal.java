@@ -761,23 +761,27 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
         if (dirDestino != null && !dirDestino.equals(misFuentes)) {
-            if (dirDestino.isDirectory() && dirDestino.listFiles().length == 0) {
-                dirDestino.delete();
-            } else {
-                if (dirDestino.listFiles() != null) {
-                    int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
-                    if (showConfirmDialog == 0) {
-                        cgf.borrarDirectorio(dirDestino);
-                    }
-                } else {
+            if (cgf.comprobarAccion(dirDestino)) {
+                if (dirDestino.isDirectory() && dirDestino.listFiles().length == 0) {
                     dirDestino.delete();
+                } else {
+                    if (dirDestino.listFiles() != null) {
+                        int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
+                        if (showConfirmDialog == 0) {
+                            cgf.borrarDirectorio(dirDestino);
+                        }
+                    } else {
+                        dirDestino.delete();
+                    }
                 }
+                if (listaFuentesLocales != null) {
+                    cargarListaFuentesLocales(false);
+                }
+                dirDestino = null;
+                actualizarNodos();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se puede mover por fuente instalada");
             }
-            if (listaFuentesLocales != null) {
-                cargarListaFuentesLocales(false);
-            }
-            dirDestino = null;
-            actualizarNodos();
         } else if (dirDestino.equals(misFuentes)) {
             JOptionPane.showMessageDialog(this, "Seleccione un directorio que no sea mis fuentes");
         } else {
@@ -793,16 +797,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMoverActionPerformed
         if (dirDestino != null && !dirDestino.equals(misFuentes)) {
-            /*boolean mover = false;
-            if (dirDestino.isFile() && !cgf.comprobarFuenteInstalada(dirDestino, false)) {
-            mover = true;
-            } else if (dirDestino.isDirectory()) {
-            for (File listFile : dirDestino.listFiles()) {
-            if (mover != cgf.comprobarFuenteInstalada(listFile, false)) {
-            mover = true;
-            }
-            }
-            }*/
             if (cgf.comprobarAccion(dirDestino)) {
                 try {
                     Files.move(dirDestino.toPath(), new File(seleccionarDirectorio(this) + File.separator + dirDestino.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -814,6 +808,8 @@ public class Principal extends javax.swing.JFrame {
                 }
                 dirDestino = null;
                 actualizarNodos();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se puede mover por fuente instalada");
             }
         } else if (dirDestino.equals(misFuentes)) {
             JOptionPane.showMessageDialog(this, "Seleccione un directorio que no sea mis fuentes");
@@ -824,15 +820,19 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemRenombrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRenombrarActionPerformed
         if (dirDestino != null && !dirDestino.equals(misFuentes)) {
-            if (dirDestino.isDirectory()) {
-                dirDestino.renameTo(new File(dirDestino.getParent() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio")));
-                if (listaFuentesLocales != null) {
-                    cargarListaFuentesLocales(false);
+            if (cgf.comprobarAccion(dirDestino)) {
+                if (dirDestino.isDirectory()) {
+                    dirDestino.renameTo(new File(dirDestino.getParent() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio")));
+                    if (listaFuentesLocales != null) {
+                        cargarListaFuentesLocales(false);
+                    }
+                    dirDestino = null;
+                    actualizarNodos();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Seleccione un proyecto");
                 }
-                dirDestino = null;
-                actualizarNodos();
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un proyecto");
+                JOptionPane.showMessageDialog(this, "No se puede mover por fuente instalada");
             }
         } else if (dirDestino.equals(misFuentes)) {
             JOptionPane.showMessageDialog(this, "Seleccione un directorio que no sea mis fuentes");
