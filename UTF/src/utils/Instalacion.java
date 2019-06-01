@@ -29,17 +29,18 @@ public class Instalacion {
         if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 
             try {
-                Files.copy(font.toPath(), dirDestino.toPath());
-                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getName());
+                /*Files.copy(font.toPath(), dirDestino.toPath());
+                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getName());*/
+                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getAbsolutePath());
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvocationTargetException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } /*catch (IOException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
 
         } else if (System.getProperty("os.name").toLowerCase().startsWith("lin")) {
 
@@ -75,7 +76,8 @@ public class Instalacion {
                         fuenteBorrar.delete();
                     }
                 }
-                font.getDirInstalacion().delete();
+                /*font.getDirInstalacion().delete();
+                WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());*/
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,7 +88,6 @@ public class Instalacion {
             }
 
         } else if (System.getProperty("os.name").toLowerCase().startsWith("lin")) {
-
             font.getDirInstalacion().delete();
             limpiarCacheFuentesLinux();
         }
