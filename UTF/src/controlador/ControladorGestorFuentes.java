@@ -109,6 +109,10 @@ public class ControladorGestorFuentes implements Serializable {
         return listaTiposGoogle;
     }
 
+    public void setMisFuentes(File misFuentes) {
+        this.misFuentes = misFuentes;
+    }
+
     public File getMisFuentes() {
         return misFuentes;
     }
@@ -334,8 +338,21 @@ public class ControladorGestorFuentes implements Serializable {
                 }
             }
         }
-
         return instalada;
+    }
+
+    public boolean comprobarAccion(File comprobar) {
+        boolean mover = false;
+        if (comprobar.isFile() && !comprobarFuenteInstalada(comprobar, false)) {
+            mover = true;
+        } else if (comprobar.isDirectory()) {
+            for (File listFile : comprobar.listFiles()) {
+                if (mover != comprobarFuenteInstalada(listFile, false)) {
+                    mover = true;
+                }
+            }
+        }
+        return mover;
     }
 
     public List<GoogleFont> filtrarFuentesGoogles(String estilo) {

@@ -6,17 +6,28 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
+import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import utils.Filtros;
 
 /**
  *
  * @author Mario
  */
 public class Configuracion extends javax.swing.JDialog {
-
-    private ControladorGestorFuentes cgf;
     
+    private ControladorGestorFuentes cgf;
+
     /**
      * Creates new form Configuracion
      */
@@ -27,16 +38,40 @@ public class Configuracion extends javax.swing.JDialog {
         this.cgf = cgf;
         
         jSliderLimite.setValue(cgf.getLimiteFuentes());
-        jLabelValorSlider.setText(jSliderLimite.getValue()+"");
+        jLabelValorSlider.setText(jSliderLimite.getValue() + "");
         
         jSliderLimite.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 cgf.setLimiteFuentes(jSliderLimite.getValue());
-                jLabelValorSlider.setText(jSliderLimite.getValue()+"");
+                jLabelValorSlider.setText(jSliderLimite.getValue() + "");
             }
         });
         
+    }
+
+    /**
+     * Método que devuelve una ruta escogida por un JFileChooser.
+     *
+     * @param pantalla Componente padre.
+     * @return String con una ruta.
+     */
+    public String seleccionarDirectorio(Component pantalla) {
+        File file = null;
+        JFileChooser jc = new JFileChooser();
+        jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        jc.setCurrentDirectory(cgf.getMisFuentes());
+        int seleccion = jc.showOpenDialog(pantalla);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            //file = jc.getSelectedFile();
+            if (jc.getSelectedFile().exists()) {
+                file = jc.getSelectedFile();
+            } else {
+                file = jc.getCurrentDirectory();
+            }
+        }
+        return file.getAbsolutePath();
     }
 
     /**
@@ -51,10 +86,10 @@ public class Configuracion extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
         jLabelMisFuentes = new javax.swing.JLabel();
-        jLabelBackup = new javax.swing.JLabel();
         jLabelLimite = new javax.swing.JLabel();
         jSliderLimite = new javax.swing.JSlider();
         jLabelValorSlider = new javax.swing.JLabel();
+        jButtonMover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -65,8 +100,6 @@ public class Configuracion extends javax.swing.JDialog {
         jLabelTitle.setText("Configuración");
 
         jLabelMisFuentes.setText("Cambiar directorio Mis fuentes");
-
-        jLabelBackup.setText("Cambiar directorio backup");
 
         jLabelLimite.setText("Cambiar limite fuentes cargadas");
 
@@ -79,6 +112,13 @@ public class Configuracion extends javax.swing.JDialog {
         jLabelValorSlider.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelValorSlider.setText("0");
 
+        jButtonMover.setText("Selecciona el directorio de destino");
+        jButtonMover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMoverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -88,10 +128,9 @@ public class Configuracion extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelMisFuentes)
-                            .addComponent(jLabelBackup))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabelMisFuentes)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonMover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabelLimite)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -106,16 +145,16 @@ public class Configuracion extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelTitle)
                 .addGap(18, 18, 18)
-                .addComponent(jLabelMisFuentes)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelBackup)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelMisFuentes)
+                    .addComponent(jButtonMover))
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelLimite)
                     .addComponent(jSliderLimite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelValorSlider)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -138,8 +177,18 @@ public class Configuracion extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoverActionPerformed
+        try {
+            Path move = Files.move(cgf.getMisFuentes().toPath(), new File(seleccionarDirectorio(this)
+                    + File.separator + cgf.getMisFuentes().getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            cgf.setMisFuentes(move.toFile());
+        } catch (IOException ex) {
+            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonMoverActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabelBackup;
+    private javax.swing.JButton jButtonMover;
     private javax.swing.JLabel jLabelLimite;
     private javax.swing.JLabel jLabelMisFuentes;
     private javax.swing.JLabel jLabelTitle;
