@@ -5,8 +5,10 @@
  */
 package utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.logging.Level;
@@ -38,7 +40,8 @@ public class Instalacion {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvocationTargetException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
-            } /*catch (IOException ex) {
+            }
+            /*catch (IOException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             }*/
 
@@ -79,6 +82,7 @@ public class Instalacion {
                 /*font.getDirInstalacion().delete();
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());*/
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
+                limpiarCacheFuentesWindows();
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
@@ -99,6 +103,40 @@ public class Instalacion {
             Runtime.getRuntime().exec("sudo fc-cache -fv");
         } catch (IOException ex) {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void limpiarCacheFuentesWindows() {
+        try {
+            Process p;
+            p = Runtime.getRuntime().exec("cmd /c net stop FontCache");
+            pintarCMD(p);
+            p = Runtime.getRuntime().exec("cmd /c del /A /F /Q %WinDir%\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache\\*Font*");
+            pintarCMD(p);
+            p = Runtime.getRuntime().exec("cmd /c del /A /F /Q %WinDir%\\System32\\FNTCACHE.DAT");
+            pintarCMD(p);
+            p = Runtime.getRuntime().exec("cmd /c net start FontCache");
+            pintarCMD(p);
+        } catch (IOException ex) {
+            Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void pintarCMD(Process p) {
+        try {
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    p.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
