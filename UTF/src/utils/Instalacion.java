@@ -111,7 +111,7 @@ public class Instalacion {
             Process p;
             p = Runtime.getRuntime().exec("cmd /c net stop FontCache");
             pintarCMD(p);
-            p = Runtime.getRuntime().exec("cmd /c del /A /F /Q %WinDir%\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache\\*Font*");
+            p = Runtime.getRuntime().exec("cmd /c del /A /F /Q /S %WinDir%\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache\\*Font*");
             pintarCMD(p);
             p = Runtime.getRuntime().exec("cmd /c del /A /F /Q %WinDir%\\System32\\FNTCACHE.DAT");
             pintarCMD(p);

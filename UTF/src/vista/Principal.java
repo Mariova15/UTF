@@ -21,6 +21,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -38,7 +39,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelo.GoogleFont;
 import modelo.LocalFont;
-import test.TestControlador;
 import utils.DescargaRecursos;
 import utils.Filtros;
 import vista.tablemodels.TableModelGoogleFonts;
@@ -183,9 +183,9 @@ public class Principal extends javax.swing.JFrame {
         try {
             createFont = Font.createFont(Font.TRUETYPE_FONT, new URL(dirGoogleFont).openStream());
         } catch (FontFormatException ex) {
-            Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(TestControlador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -209,7 +209,6 @@ public class Principal extends javax.swing.JFrame {
     private void actualizarNodos() {
         //dirDestino = null;
         root = new DefaultMutableTreeNode(misFuentes);
-
         createChildNodes(misFuentes, root);
         treeModel = new DefaultTreeModel(root);
         jTreeUserDir.setModel(treeModel);
@@ -221,12 +220,9 @@ public class Principal extends javax.swing.JFrame {
             public boolean canImport(TransferHandler.TransferSupport support) {
                 return true;
             }
-
             @Override
             public boolean importData(JComponent comp, Transferable t) {
-
                 List<File> transferData = null;
-
                 try {
                     transferData = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                 } catch (UnsupportedFlavorException ex) {
@@ -234,9 +230,7 @@ public class Principal extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
                 List<File> archivosCopiar = new ArrayList<>();
-
                 for (File file : transferData) {
                     if (file.getName().endsWith(".ttf") || file.getName().endsWith(".otf")) {
                         archivosCopiar.add(file);
@@ -246,9 +240,7 @@ public class Principal extends javax.swing.JFrame {
 
                 return true;
             }
-
         };
-        //jLabelDragDrop.setTransferHandler(th);
         jTreeUserDir.setTransferHandler(th);
     }
 
@@ -266,7 +258,6 @@ public class Principal extends javax.swing.JFrame {
         jc.setCurrentDirectory(misFuentes);
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            //file = jc.getSelectedFile();
             if (jc.getSelectedFile().exists()) {
                 file = jc.getSelectedFile();
             } else {
@@ -321,7 +312,6 @@ public class Principal extends javax.swing.JFrame {
         if (listaFuentesLocales != null) {
             cargarListaFuentesLocales(true);
         }
-        //dirDestino = null;
     }
 
     public void cargarListaFuentesLocales(boolean importar) {
@@ -780,7 +770,7 @@ public class Principal extends javax.swing.JFrame {
                 dirDestino = null;
                 actualizarNodos();
             } else {
-                JOptionPane.showMessageDialog(this, "No se puede mover por fuente instalada");
+                JOptionPane.showMessageDialog(this, "No se puede borrar por fuente instalada");
             }
         } else if (dirDestino.equals(misFuentes)) {
             JOptionPane.showMessageDialog(this, "Seleccione un directorio que no sea mis fuentes");
@@ -835,7 +825,7 @@ public class Principal extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Seleccione un proyecto");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "No se puede mover por fuente instalada");
+                JOptionPane.showMessageDialog(this, "No se puede renombrar por fuente instalada");
             }
         } else if (dirDestino.equals(misFuentes)) {
             JOptionPane.showMessageDialog(this, "Seleccione un directorio que no sea mis fuentes");
