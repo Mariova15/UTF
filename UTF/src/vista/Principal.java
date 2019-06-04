@@ -115,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
         jTableGoogleFonts.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                jComboBoxStyles.setModel(new DefaultComboBoxModel(cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
+                jComboBoxStyles.setModel(new DefaultComboBoxModel(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
 
                 if (listaFuentesLocales != null) {
                     if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
