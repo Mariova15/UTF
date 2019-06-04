@@ -116,7 +116,6 @@ public class Principal extends javax.swing.JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 jComboBoxStyles.setModel(new DefaultComboBoxModel(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().keySet().toArray()));
-
                 if (listaFuentesLocales != null) {
                     if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
                         jButtonDescargar.setText("Desinstalar fuente");
@@ -619,7 +618,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButtonPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviewActionPerformed
         if (listaFuentesLocales == null) {
-            crearFuente(cgf.getListaFuentesGoogle().get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
+            crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
             jLabel1TituloPrueba.setFont(createFont.deriveFont(24F));
             jTextAreaLorem.setFont(createFont.deriveFont(14F));
         } else {
