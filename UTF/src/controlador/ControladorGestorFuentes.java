@@ -353,11 +353,15 @@ public class ControladorGestorFuentes implements Serializable {
         if (comprobar.isFile() && !comprobarFuenteInstalada(comprobar, false)) {
             mover = true;
         } else if (comprobar.isDirectory()) {
-            for (File listFile : comprobar.listFiles()) {
+            if (comprobar.listFiles().length < 1) {
                 mover = true;
-                if (listFile.isFile() && comprobarFuenteInstalada(listFile, false)) {
-                    mover = false;
-                    break;
+            } else {
+                for (File listFile : comprobar.listFiles()) {
+                    mover = true;
+                    if (listFile.isFile() && comprobarFuenteInstalada(listFile, false)) {
+                        mover = false;
+                        break;
+                    }
                 }
             }
         }
