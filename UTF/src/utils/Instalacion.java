@@ -100,6 +100,8 @@ public class Instalacion {
 
     private static void limpiarCacheFuentesLinux() {
         try {
+            /*String[] cmd = {"/bin/bash","-c","echo password| sudo -S fc-cache -fv"};
+            Runtime.getRuntime().exec(cmd);*/
             Runtime.getRuntime().exec("sudo fc-cache -fv");
         } catch (IOException ex) {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);

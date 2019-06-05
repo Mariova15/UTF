@@ -152,7 +152,9 @@ public class Principal extends javax.swing.JFrame {
         });
 
         if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
-            jMenuBackup.setVisible(false);
+            //jMenuBackup.setVisible(false);
+            jMenuItemBuackupGDSubir.setVisible(false);
+            jMenuItemBuackupGDCargar.setVisible(false);
         }
 
         this.addWindowListener(new WindowAdapter() {
@@ -219,6 +221,7 @@ public class Principal extends javax.swing.JFrame {
             public boolean canImport(TransferHandler.TransferSupport support) {
                 return true;
             }
+
             @Override
             public boolean importData(JComponent comp, Transferable t) {
                 List<File> transferData = null;
@@ -733,7 +736,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
         cgf.iniciarGoogleDrive();
-        jMenuBackup.setVisible(true);
+        //jMenuBackup.setVisible(true);
+        jMenuItemBuackupGDSubir.setVisible(true);
+        jMenuItemBuackupGDCargar.setVisible(true);
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
     private void jMenuItemCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCambiarActionPerformed
