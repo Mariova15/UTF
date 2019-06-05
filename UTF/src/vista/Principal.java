@@ -72,7 +72,6 @@ public class Principal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         gfo = new GestorFicherosObjetos();
-
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
         if (new File("Datos" + File.separator + "configuracion.conf").exists()) {
             try {
@@ -129,8 +128,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         misFuentes = cgf.getMisFuentes();
-        root = new DefaultMutableTreeNode(misFuentes);
-
         actualizarNodos();
 
         jTreeUserDir.addMouseListener(new MouseAdapter() {
@@ -208,7 +205,6 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void actualizarNodos() {
-        //dirDestino = null;
         root = new DefaultMutableTreeNode(misFuentes);
         createChildNodes(misFuentes, root);
         treeModel = new DefaultTreeModel(root);
