@@ -61,9 +61,6 @@ public class GestorGoogleDrive implements Serializable {
         try {
             this.dirGdrive = dirGdrive;
 
-            dataStoreFactory = new FileDataStoreFactory(dirGdrive);
-            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            //drive = new Drive.Builder(httpTransport, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
             generarObjetoDrive();
 
             if (listarArchivosDrive().size() > 0) {
@@ -75,11 +72,7 @@ public class GestorGoogleDrive implements Serializable {
             } else {
                 crearDirectorio("Backup");
             }
-
-        } catch (GeneralSecurityException ex) {
-            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+        
         } catch (Exception ex) {
             Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -149,7 +149,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
-            //jMenuBackup.setVisible(false);
             jMenuItemBuackupGDSubir.setVisible(false);
             jMenuItemBuackupGDCargar.setVisible(false);
             jMenuItemCerrarSesion.setVisible(false);
@@ -860,6 +859,10 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCerrarSesionActionPerformed
         cgf.cerrarGoogleDrive();
+        jMenuItemBuackupGDSubir.setVisible(false);
+        jMenuItemBuackupGDCargar.setVisible(false);
+        jMenuItemCerrarSesion.setVisible(false);
+        jMenuItemCambiar.setVisible(false);
         JOptionPane.showMessageDialog(this, "Sesión cerrada");
     }//GEN-LAST:event_jMenuItemCerrarSesionActionPerformed
 
