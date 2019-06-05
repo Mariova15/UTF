@@ -715,6 +715,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
         cgf.crearBackup();
+       JOptionPane.showMessageDialog(this, "Backup creado");
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
@@ -732,6 +733,7 @@ public class Principal extends javax.swing.JFrame {
 
         cgf.cargarBackup(selectedFiles);
         actualizarNodos();
+        JOptionPane.showMessageDialog(this, "Backup cargado");
     }//GEN-LAST:event_jMenuItemBackupCargarActionPerformed
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
@@ -747,10 +749,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBuackupGDSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDSubirActionPerformed
         cgf.subirBackupGoogleDrive();
+        JOptionPane.showMessageDialog(this, "Subida completa");
     }//GEN-LAST:event_jMenuItemBuackupGDSubirActionPerformed
 
     private void jMenuItemBuackupGDCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDCargarActionPerformed
         cgf.descargaBackupGoogleDrive();
+        JOptionPane.showMessageDialog(this, "Descarga completa");
     }//GEN-LAST:event_jMenuItemBuackupGDCargarActionPerformed
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
