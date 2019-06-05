@@ -252,6 +252,14 @@ public class ControladorGestorFuentes implements Serializable {
         cgd = new GestorGoogleDrive(datosApp);
     }
 
+    public void cerrarGoogleDrive() {
+        for (File fileToDelete : datosApp.listFiles()) {
+            if (fileToDelete.getName().equals("StoredCredential")) {
+                fileToDelete.delete();
+            }
+        }
+    }
+
     /**
      * Método que borra el archivo de credenciales y vuelve a llamar al login
      * del usuario de google drive.

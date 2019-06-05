@@ -152,6 +152,8 @@ public class Principal extends javax.swing.JFrame {
             //jMenuBackup.setVisible(false);
             jMenuItemBuackupGDSubir.setVisible(false);
             jMenuItemBuackupGDCargar.setVisible(false);
+            jMenuItemCerrarSesion.setVisible(false);
+            jMenuItemCambiar.setVisible(false);
         }
 
         this.addWindowListener(new WindowAdapter() {
@@ -360,6 +362,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuConf = new javax.swing.JMenu();
         jMenuGD = new javax.swing.JMenu();
         jMenuItemLogin = new javax.swing.JMenuItem();
+        jMenuItemCerrarSesion = new javax.swing.JMenuItem();
         jMenuItemCambiar = new javax.swing.JMenuItem();
         jMenuItemConfApp = new javax.swing.JMenuItem();
         jMenuBackup = new javax.swing.JMenu();
@@ -537,6 +540,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGD.add(jMenuItemLogin);
 
+        jMenuItemCerrarSesion.setText("Cerrar sesion");
+        jMenuItemCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCerrarSesionActionPerformed(evt);
+            }
+        });
+        jMenuGD.add(jMenuItemCerrarSesion);
+
         jMenuItemCambiar.setText("Cambiar cuenta");
         jMenuItemCambiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -711,7 +722,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
         cgf.crearBackup();
-       JOptionPane.showMessageDialog(this, "Backup creado");
+        JOptionPane.showMessageDialog(this, "Backup creado");
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed
@@ -737,10 +748,14 @@ public class Principal extends javax.swing.JFrame {
         //jMenuBackup.setVisible(true);
         jMenuItemBuackupGDSubir.setVisible(true);
         jMenuItemBuackupGDCargar.setVisible(true);
+        jMenuItemCerrarSesion.setVisible(true);
+        jMenuItemCambiar.setVisible(true);
+        JOptionPane.showMessageDialog(this, "Sesión iniciada");
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
     private void jMenuItemCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCambiarActionPerformed
         cgf.cambiarCuentaGoogleDrive();
+        JOptionPane.showMessageDialog(this, "Cuenta cambiada");
     }//GEN-LAST:event_jMenuItemCambiarActionPerformed
 
     private void jMenuItemBuackupGDSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDSubirActionPerformed
@@ -840,7 +855,13 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportarActionPerformed
         coiparArchivos(seleccionarArchivos(this));
+        JOptionPane.showMessageDialog(this, "Fuentesimportada");
     }//GEN-LAST:event_jMenuItemImportarActionPerformed
+
+    private void jMenuItemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCerrarSesionActionPerformed
+        cgf.cerrarGoogleDrive();
+        JOptionPane.showMessageDialog(this, "Sesión cerrada");
+    }//GEN-LAST:event_jMenuItemCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -904,6 +925,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemBuackupGDCargar;
     private javax.swing.JMenuItem jMenuItemBuackupGDSubir;
     private javax.swing.JMenuItem jMenuItemCambiar;
+    private javax.swing.JMenuItem jMenuItemCerrarSesion;
     private javax.swing.JMenuItem jMenuItemConfApp;
     private javax.swing.JMenuItem jMenuItemCrear;
     private javax.swing.JMenuItem jMenuItemImportar;
