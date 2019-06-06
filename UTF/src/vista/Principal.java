@@ -35,8 +35,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import mdlaf.MaterialLookAndFeel;
 import modelo.GoogleFont;
 import modelo.LocalFont;
 import utils.DescargaRecursos;
@@ -70,7 +73,13 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        /*try {
+            UIManager.setLookAndFeel(new MaterialLookAndFeel());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();*/
         gfo = new GestorFicherosObjetos();
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
         if (new File("Datos" + File.separator + "configuracion.conf").exists()) {
@@ -149,17 +158,13 @@ public class Principal extends javax.swing.JFrame {
         });
 
         if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
-            jMenuItemBuackupGDSubir.setVisible(false);
-            jMenuItemBuackupGDCargar.setVisible(false);
-            jMenuItemCerrarSesion.setVisible(false);
-            jMenuItemCambiar.setVisible(false);
+            visibilidadAccionesGDrive(false);
         }
 
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
                 super.windowClosing(we);
-                //Cambiar string File
                 gfo.abrirFicheroEscrituraObjetos(new File("Datos" + File.separator + "configuracion.conf").getAbsolutePath());
                 gfo.grabarObjetoFicheroObjetos(cgf);
                 gfo.cerrarFicherosEscrituraObjetos();
@@ -186,6 +191,18 @@ public class Principal extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void visibilidadAccionesGDrive(boolean visible) {
+        if (visible) {
+            jMenuItemLogin.setVisible(false);
+        } else {
+            jMenuItemLogin.setVisible(true);
+        }
+        jMenuItemBuackupGDSubir.setVisible(visible);
+        jMenuItemBuackupGDCargar.setVisible(visible);
+        jMenuItemCerrarSesion.setVisible(visible);
+        jMenuItemCambiar.setVisible(visible);
     }
 
     private void createChildNodes(File fileRoot,
@@ -744,11 +761,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLoginActionPerformed
         cgf.iniciarGoogleDrive();
-        //jMenuBackup.setVisible(true);
-        jMenuItemBuackupGDSubir.setVisible(true);
-        jMenuItemBuackupGDCargar.setVisible(true);
-        jMenuItemCerrarSesion.setVisible(true);
-        jMenuItemCambiar.setVisible(true);
+        visibilidadAccionesGDrive(true);
         JOptionPane.showMessageDialog(this, "Sesión iniciada");
     }//GEN-LAST:event_jMenuItemLoginActionPerformed
 
@@ -859,10 +872,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCerrarSesionActionPerformed
         cgf.cerrarGoogleDrive();
-        jMenuItemBuackupGDSubir.setVisible(false);
-        jMenuItemBuackupGDCargar.setVisible(false);
-        jMenuItemCerrarSesion.setVisible(false);
-        jMenuItemCambiar.setVisible(false);
+        visibilidadAccionesGDrive(false);
         JOptionPane.showMessageDialog(this, "Sesión cerrada");
     }//GEN-LAST:event_jMenuItemCerrarSesionActionPerformed
 
