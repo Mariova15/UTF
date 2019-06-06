@@ -74,7 +74,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         /*try {
-            UIManager.setLookAndFeel(new MaterialLookAndFeel());
+            UIManager.setLookAndFeel(new MaterialLookAndFeel());            
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -804,9 +804,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearActionPerformed
-        File nuevoDirectorio = new File(cgf.getMisFuentes().getAbsolutePath() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio"));
-        nuevoDirectorio.mkdir();
-        actualizarNodos();
+        String showInputDialog = JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio");
+        if (showInputDialog != null) {
+            File nuevoDirectorio = new File(cgf.getMisFuentes().getAbsolutePath() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio"));
+            nuevoDirectorio.mkdir();
+            actualizarNodos();
+        }
     }//GEN-LAST:event_jMenuItemCrearActionPerformed
 
     private void jMenuItemMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMoverActionPerformed
