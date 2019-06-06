@@ -150,7 +150,7 @@ public class Principal extends javax.swing.JFrame {
                     ruta = ruta.substring(1, ruta.length() - 1);
                     dirDestino = new File(ruta);
                 }
-                if (SwingUtilities.isRightMouseButton(e)) {
+                if (SwingUtilities.isRightMouseButton(e) && listaFuentesLocales == null) {
                     jPopupMenuBotonDerecho.show(e.getComponent(), e.getX(), e.getY());
                 }
 
@@ -451,7 +451,7 @@ public class Principal extends javax.swing.JFrame {
         jTextAreaLorem.setColumns(20);
         jTextAreaLorem.setLineWrap(true);
         jTextAreaLorem.setRows(5);
-        jTextAreaLorem.setText(" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam porta congue tortor sit amet suscipit. Sed lobortis ipsum non nisl consequat tempor. Donec cursus fringilla euismod. Mauris convallis tincidunt mauris, sed tristique nisi efficitur vitae. Proin luctus, purus nec ultrices feugiat, mi risus consequat sapien, nec maximus urna turpis et dolor. Proin fermentum magna vitae finibus convallis. Curabitur rhoncus massa libero.");
+        jTextAreaLorem.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam porta congue tortor sit amet suscipit. Sed lobortis ipsum non nisl consequat tempor. Donec cursus fringilla euismod. Mauris convallis tincidunt mauris, sed tristique nisi efficitur vitae. Proin luctus, purus nec ultrices feugiat, mi risus consequat sapien, nec maximus urna turpis et dolor. Proin fermentum magna vitae finibus convallis. Curabitur rhoncus massa libero.");
         jTextAreaLorem.setToolTipText("");
         jTextAreaLorem.setWrapStyleWord(true);
         jScrollPaneTextArea.setViewportView(jTextAreaLorem);
@@ -694,8 +694,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
         listaFuentesLocales = null;
         jComboBoxFiltro.setVisible(true);
-        jMenuItemRenombrar.setVisible(true);
-        jMenuItemMover.setVisible(true);
+        /*jMenuItemRenombrar.setVisible(true);
+        jMenuItemMover.setVisible(true);*/
         jButtonDescargar.setText("Descargar fuente");
         jComboBoxStyles.setVisible(true);
         jButtonDescargar.setVisible(true);
@@ -705,8 +705,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
         jComboBoxFiltro.setVisible(false);
         jComboBoxStyles.setVisible(false);
-        jMenuItemRenombrar.setVisible(false);
-        jMenuItemMover.setVisible(false);
+        /*jMenuItemRenombrar.setVisible(false);
+        jMenuItemMover.setVisible(false);*/
         jButtonDescargar.setText("Instalar fuente");
 
         if (dirDestino == null) {
@@ -732,7 +732,6 @@ public class Principal extends javax.swing.JFrame {
         Configuracion configuracion = new Configuracion(this, true, cgf);
         configuracion.setVisible(true);
         misFuentes = cgf.getMisFuentes();
-        root = new DefaultMutableTreeNode(misFuentes);
         actualizarNodos();
     }//GEN-LAST:event_jMenuItemConfAppActionPerformed
 
