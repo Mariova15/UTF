@@ -197,13 +197,10 @@
                       <Component id="jScrollPaneTextArea" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel1TituloPrueba" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="19" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="jScrollPaneTree" max="32767" attributes="0"/>
+                              <Component id="jLabel1TituloPrueba" min="-2" pref="170" max="-2" attributes="0"/>
+                              <Component id="jScrollPaneTree" min="-2" pref="212" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="jButtonPreview" min="-2" max="-2" attributes="0"/>
@@ -213,18 +210,13 @@
                                   <Component id="jButtonDescargar" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="jButtonVerGoogleFonts" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButtonVerFuentesLocales" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="jComboBoxFiltro" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="jScrollPaneTable" min="-2" pref="470" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+                                  <Component id="jButtonVerGoogleFonts" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jButtonVerFuentesLocales" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jComboBoxFiltro" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jScrollPaneTable" alignment="0" pref="477" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -241,12 +233,10 @@
                       <Component id="jScrollPaneTable" pref="296" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButtonVerGoogleFonts" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonVerFuentesLocales" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jComboBoxFiltro" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButtonVerGoogleFonts" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonVerFuentesLocales" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">

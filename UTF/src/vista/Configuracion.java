@@ -61,10 +61,8 @@ public class Configuracion extends javax.swing.JDialog {
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         
-        jc.setCurrentDirectory(cgf.getMisFuentes());
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            //file = jc.getSelectedFile();
             if (jc.getSelectedFile().exists()) {
                 file = jc.getSelectedFile();
             } else {
