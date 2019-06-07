@@ -54,7 +54,7 @@ public class GestorGoogleDrive implements Serializable {
 
     private static Drive drive;
 
-    private File  dirGdrive;
+    private File dirGdrive;
 
     public GestorGoogleDrive(File dirGdrive) {
 
@@ -72,7 +72,7 @@ public class GestorGoogleDrive implements Serializable {
             } else {
                 crearDirectorio("Backup");
             }
-        
+
         } catch (Exception ex) {
             Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -220,6 +220,14 @@ public class GestorGoogleDrive implements Serializable {
             Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    public void borrarArchivoDrive(String fileId) {
+        try {
+            drive.files().delete(fileId).execute();
+        } catch (IOException ex) {
+            Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

@@ -205,6 +205,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemBuackupGDCargar.setVisible(visible);
         jMenuItemCerrarSesion.setVisible(visible);
         jMenuItemCambiar.setVisible(visible);
+        jMenuItemGestionar.setVisible(visible);
     }
 
     private void createChildNodes(File fileRoot,
@@ -380,6 +381,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuConf = new javax.swing.JMenu();
         jMenuGD = new javax.swing.JMenu();
         jMenuItemLogin = new javax.swing.JMenuItem();
+        jMenuItemGestionar = new javax.swing.JMenuItem();
         jMenuItemCerrarSesion = new javax.swing.JMenuItem();
         jMenuItemCambiar = new javax.swing.JMenuItem();
         jMenuItemConfApp = new javax.swing.JMenuItem();
@@ -551,6 +553,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenuGD.add(jMenuItemLogin);
+
+        jMenuItemGestionar.setText("Gestionar");
+        jMenuItemGestionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGestionarActionPerformed(evt);
+            }
+        });
+        jMenuGD.add(jMenuItemGestionar);
 
         jMenuItemCerrarSesion.setText("Cerrar sesion");
         jMenuItemCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -878,6 +888,11 @@ public class Principal extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Sesión cerrada");
     }//GEN-LAST:event_jMenuItemCerrarSesionActionPerformed
 
+    private void jMenuItemGestionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarActionPerformed
+        GestionGD gestionGD = new GestionGD(this, true, cgf);
+        gestionGD.setVisible(true);
+    }//GEN-LAST:event_jMenuItemGestionarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -943,6 +958,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCerrarSesion;
     private javax.swing.JMenuItem jMenuItemConfApp;
     private javax.swing.JMenuItem jMenuItemCrear;
+    private javax.swing.JMenuItem jMenuItemGestionar;
     private javax.swing.JMenuItem jMenuItemImportar;
     private javax.swing.JMenuItem jMenuItemLogin;
     private javax.swing.JMenuItem jMenuItemMover;

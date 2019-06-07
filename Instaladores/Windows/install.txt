@@ -1,0 +1,41 @@
+Name "Use that font"
+
+OutFile "UTF-Installer.exe"
+
+InstallDir $PROGRAMFILES\UTF
+
+RequestExecutionLevel admin
+
+Page directory
+Page instfiles
+
+!include "MUI.nsh"
+!insertmacro MUI_LANGUAGE "Spanish"
+
+Section
+	writeUninstaller "$INSTDIR\uninstall.exe"
+File "UTF.jar"
+File /r "lib"
+createShortCut "$SMPROGRAMS\Use that font.lnk" "$INSTDIR\UTF.jar"
+	createShortCut "$DESKTOP\Use that font.lnk" "$INSTDIR\UTF.jar"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\UTF" \
+                 "DisplayName" "Use that font"
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\UTF" \
+                 "Publisher" "Mario - Desarrollo de aplicaciones multiplataforma"
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\UTF" \
+                 "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+SectionEnd
+
+section "uninstall"
+	delete "$INSTDIR\uninstall.exe"
+	delete "$INSTDIR\UTF.jar"
+RmDir /r "$INSTDIR\lib"
+RmDir /r "$INSTDIR\Datos"
+RmDir /r "$INSTDIR\Backup"
+RmDir /r "$INSTDIR\Mis fuentes"
+delete "$SMPROGRAMS\Use that font.lnk"
+delete "$DESKTOP\Use that font.lnk"
+RmDir "$INSTDIR"
+
+DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\UTF
+sectionEnd

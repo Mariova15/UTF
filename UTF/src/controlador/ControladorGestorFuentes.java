@@ -312,6 +312,21 @@ public class ControladorGestorFuentes implements Serializable {
         }
     }
 
+    public List<com.google.api.services.drive.model.File> listarArchivosGoogleDrive() {
+        List<com.google.api.services.drive.model.File> listarArchivosDrive = cgd.listarArchivosDrive();
+        for (Iterator<com.google.api.services.drive.model.File> iterator = listarArchivosDrive.iterator(); iterator.hasNext();) {
+            com.google.api.services.drive.model.File next = iterator.next();
+            if (!next.getMimeType().equals("file/.zip")) {
+                iterator.remove();
+            }
+        }
+        return listarArchivosDrive;
+    }
+
+    public void borrarArchivoDrive(String fileId) {
+        cgd.borrarArchivoDrive(fileId);
+    }
+
     public String instalarFuente(File fuenteInstalar, String nombreFuente) {
         if (!comprobarFuenteInstalada(fuenteInstalar, Boolean.TRUE)) {
             listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
