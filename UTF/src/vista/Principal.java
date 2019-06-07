@@ -74,7 +74,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         /*try {
-            UIManager.setLookAndFeel(new MaterialLookAndFeel());            
+            UIManager.setLookAndFeel(new MaterialLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -159,6 +159,8 @@ public class Principal extends javax.swing.JFrame {
 
         if (!new File("Datos" + File.separator + "StoredCredential").exists()) {
             visibilidadAccionesGDrive(false);
+        } else {
+            visibilidadAccionesGDrive(true);
         }
 
         this.addWindowListener(new WindowAdapter() {
