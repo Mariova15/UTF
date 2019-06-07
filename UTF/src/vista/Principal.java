@@ -731,8 +731,13 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConfAppActionPerformed
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
-        cgf.crearBackup();
-        JOptionPane.showMessageDialog(this, "Backup creado");
+        if (misFuentes.listFiles().length > 0) {
+            
+            cgf.crearBackup();
+            JOptionPane.showMessageDialog(this, "Backup creado");
+        } else {
+            JOptionPane.showMessageDialog(this, "No tiene proyectos creados");
+        }
     }//GEN-LAST:event_jMenuItemBackupCrearActionPerformed
 
     private void jMenuItemBackupCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCargarActionPerformed

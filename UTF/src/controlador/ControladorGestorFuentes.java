@@ -240,7 +240,15 @@ public class ControladorGestorFuentes implements Serializable {
      * @param backupCarga
      */
     public void cargarBackup(File backupCarga) {
-        //Borrar antes todos los archivos de la carpeta mis fuentes.
+        if (misFuentes.listFiles().length > 0) {
+            for (File listFile : misFuentes.listFiles()) {
+                if (listFile.isDirectory()) {
+                    borrarDirectorio(listFile);
+                } else {
+                    listFile.delete();
+                }
+            }
+        }
         Backup.unzip(backupCarga.getAbsolutePath(), misFuentes.getAbsolutePath());
     }
 
@@ -388,7 +396,6 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public void borrarDirectorio(File dirBorrar) {
-
         for (File listFile : dirBorrar.listFiles()) {
             listFile.delete();
         }
