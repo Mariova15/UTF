@@ -396,13 +396,11 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     public boolean comprobarLimiteFuentes(List<LocalFont> listaFuentes) {
-
-        if (listaFuentes.size() < limiteFuentes) {
+        if (listaFuentes.size() <= limiteFuentes) {
             return true;
         } else {
             return false;
         }
-
     }
 
 }

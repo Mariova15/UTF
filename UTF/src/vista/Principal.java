@@ -699,27 +699,26 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonVerGoogleFontsActionPerformed
 
     private void jButtonVerFuentesLocalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerFuentesLocalesActionPerformed
-        jComboBoxFiltro.setVisible(false);
-        jComboBoxStyles.setVisible(false);
-        /*jMenuItemRenombrar.setVisible(false);
-        jMenuItemMover.setVisible(false);*/
-        jButtonDescargar.setText("Instalar fuente");
 
         if (dirDestino == null) {
             JOptionPane.showMessageDialog(this, "Elija el directorio a partir del que buscar las fuentes");
             String seleccionarDirectorio = seleccionarDirectorio(this);
             dirDestino = new File(seleccionarDirectorio);
         }
-
-        listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
-
-        if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
-            rellenarTablaLocalFonts();
+        if (dirDestino.isDirectory()) {
+            listaFuentesLocales = cgf.generarListaFuentesLocales(dirDestino);
+            if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
+                jComboBoxFiltro.setVisible(false);
+                jComboBoxStyles.setVisible(false);
+                jButtonDescargar.setText("Instalar fuente");
+                rellenarTablaLocalFonts();
+            } else {
+                JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
+                listaFuentesLocales = null;
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Limite es" + cgf.getLimiteFuentes() + " y estas intentando cargar " + listaFuentesLocales.size());
-            listaFuentesLocales = null;
+            JOptionPane.showMessageDialog(this, "Tiene que escoger un proyecto");
         }
-
         dirDestino = null;
 
     }//GEN-LAST:event_jButtonVerFuentesLocalesActionPerformed
