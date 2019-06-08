@@ -59,7 +59,7 @@ public class Instalacion {
                 }
                 dirDestino = new File(dirDestino.getAbsolutePath() + File.separator + font.getName());
                 Files.copy(font.toPath(), dirDestino.toPath());
-                limpiarCacheFuentesLinux();
+                //limpiarCacheFuentesLinux();
             } catch (IOException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             }
