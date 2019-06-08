@@ -7,6 +7,7 @@ package vista;
 
 import controlador.ControladorGestorFuentes;
 import controlador.GestorFicherosObjetos;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -19,6 +20,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import static java.awt.image.ImageObserver.ERROR;
+import static java.awt.image.ImageObserver.WIDTH;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -41,6 +44,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import mdlaf.MaterialLookAndFeel;
+import mdlaf.animation.MaterialUIMovement;
+import mdlaf.utils.MaterialColors;
 import modelo.GoogleFont;
 import modelo.LocalFont;
 import utils.DescargaRecursos;
@@ -78,13 +83,7 @@ public class Principal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
         setTitle("Use that font");
-        /*try {
-            UIManager.setLookAndFeel(new MaterialLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        SwingUtilities.updateComponentTreeUI(this);
-        pack();*/
+        //cargarLook();
         gfo = new GestorFicherosObjetos();
         //Cambiar String file por System.getProperty("user.home")+File.separator+"AppData"+File.separator+"UTF"+File.separator+"Datos"
         if (new File("Datos" + File.separator + "configuracion.conf").exists()) {
@@ -180,6 +179,26 @@ public class Principal extends javax.swing.JFrame {
 
         });
 
+    }
+
+    private void cargarLook() {
+        try {
+            UIManager.setLookAndFeel(new MaterialLookAndFeel());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+        
+        jButtonPreview.setForeground(MaterialColors.LIGHT_BLUE_A200);
+        jButtonPreview.setBackground(MaterialColors.WHITE);
+        
+        /*buttonSingup.setForeground(MaterialColors.LIGHT_BLUE_A200);
+        buttonSingup.setBackground(MaterialColors.WHITE);
+        buttonLogin.setBackground(MaterialColors.LIGHT_BLUE_A200);
+
+        MaterialUIMovement.add(buttonSingup, MaterialColors.LIGHT_BLUE_100, WIDTH, ERROR);
+        MaterialUIMovement.add(buttonLogin, MaterialColors.BLUE_200, 5, 100 / 30);*/
     }
 
     private void rellenarTablaGoogleFonts() {

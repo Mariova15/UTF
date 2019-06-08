@@ -17,8 +17,14 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.animation.MaterialUIMovement;
+import mdlaf.utils.MaterialColors;
 import utils.Filtros;
 
 /**
@@ -26,9 +32,9 @@ import utils.Filtros;
  * @author Mario
  */
 public class Configuracion extends javax.swing.JDialog {
-    
+
     private static final String RUTA_LOGO = "/img/logo.png";
-    
+
     private ControladorGestorFuentes cgf;
 
     /**
@@ -40,12 +46,12 @@ public class Configuracion extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
         setTitle("Use that font");
-        
+
         this.cgf = cgf;
-        
+
         jSliderLimite.setValue(cgf.getLimiteFuentes());
         jLabelValorSlider.setText(jSliderLimite.getValue() + "");
-        
+
         jSliderLimite.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -53,7 +59,7 @@ public class Configuracion extends javax.swing.JDialog {
                 jLabelValorSlider.setText(jSliderLimite.getValue() + "");
             }
         });
-        
+
     }
 
     /**
@@ -66,7 +72,7 @@ public class Configuracion extends javax.swing.JDialog {
         File file = null;
         JFileChooser jc = new JFileChooser();
         jc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
+
         int seleccion = jc.showOpenDialog(pantalla);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             if (jc.getSelectedFile().exists()) {

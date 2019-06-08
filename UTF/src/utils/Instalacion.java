@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import modelo.FuenteInstalada;
 import utils.WinRegistry;
 
@@ -100,9 +101,12 @@ public class Instalacion {
 
     private static void limpiarCacheFuentesLinux() {
         try {
-            /*String[] cmd = {"/bin/bash","-c","echo password| sudo -S fc-cache -fv"};
-            Runtime.getRuntime().exec(cmd);*/
-            Runtime.getRuntime().exec("sudo fc-cache -fv");
+            String pass = JOptionPane.showInputDialog("Escriba su contraseña de administrador");
+            if (pass != null) {
+                String[] cmd = {"/bin/bash", "-c", "echo " + pass + "| sudo -S fc-cache -fv"};
+                Runtime.getRuntime().exec(cmd);
+            }
+            //Runtime.getRuntime().exec("sudo fc-cache -fv");
         } catch (IOException ex) {
             Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
         }
