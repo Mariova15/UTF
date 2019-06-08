@@ -135,12 +135,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemBuackupGDSubirActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemBuackupGDCargar">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemBuackupGDDescargar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Descarga desde Google Drive"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemBuackupGDCargarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemBuackupGDDescargarActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

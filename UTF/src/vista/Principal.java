@@ -202,7 +202,7 @@ public class Principal extends javax.swing.JFrame {
             jMenuItemLogin.setVisible(true);
         }
         jMenuItemBuackupGDSubir.setVisible(visible);
-        jMenuItemBuackupGDCargar.setVisible(visible);
+        jMenuItemBuackupGDDescargar.setVisible(visible);
         jMenuItemCerrarSesion.setVisible(visible);
         jMenuItemCambiar.setVisible(visible);
         jMenuItemGestionar.setVisible(visible);
@@ -389,7 +389,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemBackupCrear = new javax.swing.JMenuItem();
         jMenuItemBackupCargar = new javax.swing.JMenuItem();
         jMenuItemBuackupGDSubir = new javax.swing.JMenuItem();
-        jMenuItemBuackupGDCargar = new javax.swing.JMenuItem();
+        jMenuItemBuackupGDDescargar = new javax.swing.JMenuItem();
 
         jMenuItemCrear.setText("Crear");
         jMenuItemCrear.addActionListener(new java.awt.event.ActionListener() {
@@ -616,13 +616,13 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuBackup.add(jMenuItemBuackupGDSubir);
 
-        jMenuItemBuackupGDCargar.setText("Descarga desde Google Drive");
-        jMenuItemBuackupGDCargar.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemBuackupGDDescargar.setText("Descarga desde Google Drive");
+        jMenuItemBuackupGDDescargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemBuackupGDCargarActionPerformed(evt);
+                jMenuItemBuackupGDDescargarActionPerformed(evt);
             }
         });
-        jMenuBackup.add(jMenuItemBuackupGDCargar);
+        jMenuBackup.add(jMenuItemBuackupGDDescargar);
 
         jMenuBar.add(jMenuBackup);
 
@@ -742,7 +742,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemBackupCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBackupCrearActionPerformed
         if (misFuentes.listFiles().length > 0) {
-            
             cgf.crearBackup();
             JOptionPane.showMessageDialog(this, "Backup creado");
         } else {
@@ -780,14 +779,30 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCambiarActionPerformed
 
     private void jMenuItemBuackupGDSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDSubirActionPerformed
-        cgf.subirBackupGoogleDrive();
-        JOptionPane.showMessageDialog(this, "Subida completa");
+        /*cgf.subirBackupGoogleDrive();
+        JOptionPane.showMessageDialog(this, "Subida completa");*/
+        Loading loading = new Loading(this, true,"Subida");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                cgf.subirBackupGoogleDrive();
+                loading.dispose();
+            }
+        }).start();
+        loading.setVisible(true);
     }//GEN-LAST:event_jMenuItemBuackupGDSubirActionPerformed
 
-    private void jMenuItemBuackupGDCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDCargarActionPerformed
-        cgf.descargaBackupGoogleDrive();
-        JOptionPane.showMessageDialog(this, "Descarga completa");
-    }//GEN-LAST:event_jMenuItemBuackupGDCargarActionPerformed
+    private void jMenuItemBuackupGDDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDDescargarActionPerformed
+        Loading loading = new Loading(this, true,"Descarga");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                cgf.descargaBackupGoogleDrive();
+                loading.dispose();
+            }
+        }).start();
+        loading.setVisible(true);
+    }//GEN-LAST:event_jMenuItemBuackupGDDescargarActionPerformed
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
         if (dirDestino != null && !dirDestino.equals(misFuentes)) {
@@ -952,7 +967,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemBackupCargar;
     private javax.swing.JMenuItem jMenuItemBackupCrear;
     private javax.swing.JMenuItem jMenuItemBorrar;
-    private javax.swing.JMenuItem jMenuItemBuackupGDCargar;
+    private javax.swing.JMenuItem jMenuItemBuackupGDDescargar;
     private javax.swing.JMenuItem jMenuItemBuackupGDSubir;
     private javax.swing.JMenuItem jMenuItemCambiar;
     private javax.swing.JMenuItem jMenuItemCerrarSesion;
