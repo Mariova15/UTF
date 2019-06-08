@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -53,7 +54,9 @@ import vista.tablemodels.TableModelLocalFonts;
  */
 public class Principal extends javax.swing.JFrame {
 
-    GestorFicherosObjetos gfo;
+    private static final String RUTA_LOGO = "/img/logo.png";
+
+    private GestorFicherosObjetos gfo;
 
     private ControladorGestorFuentes cgf;
     private Font createFont = null;
@@ -73,6 +76,8 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
+        setTitle("Use that font");
         /*try {
             UIManager.setLookAndFeel(new MaterialLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {
@@ -386,6 +391,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemCambiar = new javax.swing.JMenuItem();
         jMenuItemConfApp = new javax.swing.JMenuItem();
         jMenuBackup = new javax.swing.JMenu();
+        jMenuItemGestionBackup = new javax.swing.JMenuItem();
         jMenuItemBackupCrear = new javax.swing.JMenuItem();
         jMenuItemBackupCargar = new javax.swing.JMenuItem();
         jMenuItemBuackupGDSubir = new javax.swing.JMenuItem();
@@ -592,6 +598,14 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBackup.setText("Backup");
 
+        jMenuItemGestionBackup.setText("Gestionar");
+        jMenuItemGestionBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGestionBackupActionPerformed(evt);
+            }
+        });
+        jMenuBackup.add(jMenuItemGestionBackup);
+
         jMenuItemBackupCrear.setText("Crear");
         jMenuItemBackupCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -779,9 +793,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCambiarActionPerformed
 
     private void jMenuItemBuackupGDSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDSubirActionPerformed
-        /*cgf.subirBackupGoogleDrive();
-        JOptionPane.showMessageDialog(this, "Subida completa");*/
-        Loading loading = new Loading(this, true,"Subida");
+        Loading loading = new Loading(this, true, "Subida");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -793,7 +805,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBuackupGDSubirActionPerformed
 
     private void jMenuItemBuackupGDDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuackupGDDescargarActionPerformed
-        Loading loading = new Loading(this, true,"Descarga");
+        Loading loading = new Loading(this, true, "Descarga");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -904,9 +916,14 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCerrarSesionActionPerformed
 
     private void jMenuItemGestionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionarActionPerformed
-        GestionGD gestionGD = new GestionGD(this, true, cgf);
+        GestionGD gestionGD = new GestionGD(this, true, cgf, false);
         gestionGD.setVisible(true);
     }//GEN-LAST:event_jMenuItemGestionarActionPerformed
+
+    private void jMenuItemGestionBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGestionBackupActionPerformed
+        GestionGD gestionGD = new GestionGD(this, true, cgf, true);
+        gestionGD.setVisible(true);
+    }//GEN-LAST:event_jMenuItemGestionBackupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -973,6 +990,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCerrarSesion;
     private javax.swing.JMenuItem jMenuItemConfApp;
     private javax.swing.JMenuItem jMenuItemCrear;
+    private javax.swing.JMenuItem jMenuItemGestionBackup;
     private javax.swing.JMenuItem jMenuItemGestionar;
     private javax.swing.JMenuItem jMenuItemImportar;
     private javax.swing.JMenuItem jMenuItemLogin;

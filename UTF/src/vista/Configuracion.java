@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -26,6 +27,8 @@ import utils.Filtros;
  */
 public class Configuracion extends javax.swing.JDialog {
     
+    private static final String RUTA_LOGO = "/img/logo.png";
+    
     private ControladorGestorFuentes cgf;
 
     /**
@@ -35,6 +38,9 @@ public class Configuracion extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
+        setTitle("Use that font");
+        
         this.cgf = cgf;
         
         jSliderLimite.setValue(cgf.getLimiteFuentes());

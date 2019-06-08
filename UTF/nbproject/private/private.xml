@@ -5,9 +5,8 @@
         <group name="UTF">
             <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/controlador/GestorGoogleDrive.java</file>
             <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/vista/GestionGD.java</file>
-            <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/utils/Instalacion.java</file>
+            <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/vista/Loading.java</file>
             <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/vista/Principal.java</file>
-            <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/controlador/ControladorGestorFuentes.java</file>
         </group>
     </open-files>
 </project-private>

@@ -111,6 +111,14 @@
             <Property name="text" type="java.lang.String" value="Backup"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemGestionBackup">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gestionar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemGestionBackupActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemBackupCrear">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Crear"/>

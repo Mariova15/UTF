@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -325,6 +326,11 @@ public class ControladorGestorFuentes implements Serializable {
 
     public void borrarArchivoDrive(String fileId) {
         cgd.borrarArchivoDrive(fileId);
+    }
+
+    public List<File> listaArchivosBackup() {
+        List<File> listaBackupFiles = new ArrayList<>(Arrays.asList(backup.listFiles()));
+        return listaBackupFiles;
     }
 
     public String instalarFuente(File fuenteInstalar, String nombreFuente) {

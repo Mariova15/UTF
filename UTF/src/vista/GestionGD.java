@@ -6,7 +6,10 @@
 package vista;
 
 import controlador.ControladorGestorFuentes;
+import java.io.File;
 import java.util.List;
+import javax.swing.ImageIcon;
+import vista.tablemodels.TableModelBackupFiles;
 import vista.tablemodels.TableModelDriveFiles;
 
 /**
@@ -15,23 +18,46 @@ import vista.tablemodels.TableModelDriveFiles;
  */
 public class GestionGD extends javax.swing.JDialog {
 
+    private static final String RUTA_LOGO = "/img/logo.png";
+
     private ControladorGestorFuentes cgf;
-    private List<com.google.api.services.drive.model.File> listarArchivosDrive;
+    private List<com.google.api.services.drive.model.File> listaArchivosDrive;
+    private List<File> listaBackupFiles;
+
+    private boolean local;
 
     /**
      * Creates new form GestionGD
      */
-    public GestionGD(java.awt.Frame parent, boolean modal, ControladorGestorFuentes cgf) {
+    public GestionGD(java.awt.Frame parent, boolean modal, ControladorGestorFuentes cgf, boolean local) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
+        setTitle("Use that font");
+
+        this.local = local;
+
         this.cgf = cgf;
-        this.listarArchivosDrive = cgf.listarArchivosGoogleDrive();
-        rellenarTablaDriveFiles();
+
+        if (local) {
+            jLabelTitle.setText("Gestión backup");
+            this.listaBackupFiles = cgf.listaArchivosBackup();
+            rellenarTablaBackupFiles();
+        } else {
+            jLabelTitle.setText("Gestión Google drive");
+            this.listaArchivosDrive = cgf.listarArchivosGoogleDrive();
+            rellenarTablaDriveFiles();
+        }
+
     }
 
     private void rellenarTablaDriveFiles() {
-        jTableDriveFiles.setModel(new TableModelDriveFiles(listarArchivosDrive));
+        jTableDriveFiles.setModel(new TableModelDriveFiles(listaArchivosDrive));
+    }
+
+    private void rellenarTablaBackupFiles() {
+        jTableDriveFiles.setModel(new TableModelBackupFiles(listaBackupFiles));
     }
 
     /**
@@ -122,9 +148,15 @@ public class GestionGD extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-        cgf.borrarArchivoDrive(listarArchivosDrive.get(jTableDriveFiles.getSelectedRow()).getId());
-        listarArchivosDrive.remove(jTableDriveFiles.getSelectedRow());
-        rellenarTablaDriveFiles();
+        if (local) {
+            listaBackupFiles.get(jTableDriveFiles.getSelectedRow()).delete();
+            listaBackupFiles.remove(jTableDriveFiles.getSelectedRow());
+            rellenarTablaBackupFiles();
+        } else {
+            cgf.borrarArchivoDrive(listaArchivosDrive.get(jTableDriveFiles.getSelectedRow()).getId());
+            listaArchivosDrive.remove(jTableDriveFiles.getSelectedRow());
+            rellenarTablaDriveFiles();
+        }
     }//GEN-LAST:event_jButtonBorrarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

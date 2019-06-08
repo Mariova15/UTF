@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 public class Loading extends javax.swing.JDialog {
 
     private static final String RUTA_LOADING = "/img/loading.gif";
+    private static final String RUTA_LOGO = "/img/logo.png";
 
     /**
      * Creates new form Loading
@@ -24,11 +25,11 @@ public class Loading extends javax.swing.JDialog {
     public Loading(java.awt.Frame parent, boolean modal, String mensaje) {
         super(parent, modal);
         initComponents();
+        this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
         this.setLocationRelativeTo(null);
         jLabelAccion.setText(mensaje+" en curso");
-        /*jLabelIcono.setIcon(new ImageIcon(getClass().getResource(RUTA_LOGO)));
         setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
-        setTitle("Aplicación ejemplo");*/
+        setTitle("Use that font");
         jLabelLoading.setIcon(new ImageIcon(getClass().getResource(RUTA_LOADING)));
         this.addWindowListener(new WindowAdapter() {
             @Override
