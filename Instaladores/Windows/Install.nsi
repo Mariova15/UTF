@@ -61,6 +61,9 @@ section "uninstall"
     # borramos el acceso directo del menu de inicio
     delete "$INSTDIR\UTF.exe"
     RmDir /r "$INSTDIR\lib"
+    RmDir /r "$INSTDIR\Datos"
+    RmDir /r "$INSTDIR\Backup"
+    RmDir /r "$INSTDIR\Mis Fuentes"
     delete "$SMPROGRAMS\Use that font.lnk"
     delete "$DESKTOP\Use that font.lnk"
 	
