@@ -1,0 +1,3 @@
+# List of generated media files. The columns are tab-separated:
+# id | media file type | display name | media file path
+60	unix	Unix Installer	C:\Users\Mario\Desktop\UTF\Instaladores\Linux\Utf_unix_0_1.sh
