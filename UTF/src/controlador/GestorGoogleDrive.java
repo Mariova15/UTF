@@ -100,13 +100,11 @@ public class GestorGoogleDrive implements Serializable {
      * @throws Exception
      */
     private Credential authorize() throws Exception {
-
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(getClass().getResourceAsStream(RUTA_CLIENT_SECRET)));
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets, Collections.singleton(DriveScopes.DRIVE_FILE)).setDataStoreFactory(dataStoreFactory).build();
 
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
-
     }
 
     /**
@@ -125,13 +123,10 @@ public class GestorGoogleDrive implements Serializable {
             com.google.api.services.drive.model.File archivoSubir = new com.google.api.services.drive.model.File();
 
             archivoSubir.setName(archivoLocal.getName());
-
-            //archivoSubir.setParents(Collections.singletonList("1s93eDS_QKIIiplMcgv0RtZGnN4aZT5S4"));
             archivoSubir.setParents(Collections.singletonList(gDBackupDirID));
 
             FileContent mediaContent = new FileContent("file/.zip", archivoLocal);
-            //FileContent mediaContent = new FileContent("image/.png", archivoLocal);
-
+            
             execute = drive.files().create(archivoSubir, mediaContent).setFields("id").execute();
         } catch (IOException ex) {
             Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,11 +189,10 @@ public class GestorGoogleDrive implements Serializable {
     /**
      * Método que lista los archivos de google drive.
      *
-     * @return
+     * @return devuelve una lista con los archivos de google drive.
      */
     public List<com.google.api.services.drive.model.File> listarArchivosDrive() {
-
-        //Falta hacer método recursivo        
+ 
         List<com.google.api.services.drive.model.File> result = new ArrayList<>();
         if (drive == null) {
             generarObjetoDrive();
@@ -208,7 +202,6 @@ public class GestorGoogleDrive implements Serializable {
             do {
                 try {
                     FileList files = request.execute();
-                    //System.out.println(files.getFiles().size());
                     result.addAll(files.getFiles());
                     request.setPageToken(files.getNextPageToken());
                 } catch (IOException e) {

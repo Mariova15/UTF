@@ -139,8 +139,8 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     /**
-     * Método que descarga que hace la petición a google para descargar el
-     * archivo json con las fuentes y genera una lista con ellas.
+     * Método que hace la petición a Google fonts para descargar el archivo json
+     * con las fuentes y genera una lista de las mismas.
      */
     public void descargaJsonFuentes() {
         DescargaRecursos.descargarArchivo(JSON_GOOGLE_FONTS, "GoogleFonts.json", datosApp.getAbsolutePath());
@@ -150,8 +150,8 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     /**
-     * Método que lee el archivo json con las fuentes y las convierte y añade a
-     * una lista en forma de objetos GoogleFont.
+     * Método que lee el archivo json con las fuentes convirtiendolas y
+     * añadiendolas una lista en forma de objetos GoogleFont.
      */
     private void lecturaJson() {
         JsonReader jsonReader;
@@ -189,7 +189,7 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     /**
-     * Método que genera una lista de fuentes en base al directorio por
+     * Método que genera una lista de LocalFont en base al directorio por
      * parámetro.
      *
      * @param raiz directorio en base al que se genera la lista.
@@ -236,9 +236,10 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     /**
-     * Método que descoprime archivo zip pasado por parámetro
+     * Método que descoprime archivo zip pasado por parámetro borrando antes el
+     * contenido del directorio Mis fuentes.
      *
-     * @param backupCarga
+     * @param backupCarga archivo zip a cargar.
      */
     public void cargarBackup(File backupCarga) {
         if (misFuentes.listFiles().length > 0) {
@@ -261,6 +262,10 @@ public class ControladorGestorFuentes implements Serializable {
         cgd = new GestorGoogleDrive(datosApp);
     }
 
+    /**
+     * Método que borra el archivo StoredCredential para poder hacer un nuevo
+     * login.
+     */
     public void cerrarGoogleDrive() {
         for (File fileToDelete : datosApp.listFiles()) {
             if (fileToDelete.getName().equals("StoredCredential")) {
@@ -274,16 +279,13 @@ public class ControladorGestorFuentes implements Serializable {
      * del usuario de google drive.
      */
     public void cambiarCuentaGoogleDrive() {
-        for (File fileToDelete : datosApp.listFiles()) {
-            if (fileToDelete.getName().equals("StoredCredential")) {
-                fileToDelete.delete();
-            }
-        }
+        cerrarGoogleDrive();
         iniciarGoogleDrive();
     }
 
     /**
-     * Método que sube los zip dentro del direcotio backup a google drive.
+     * Método que sube los zip dentro del direcotio backup a google drive
+     * comprobando si ya existen en Drive.
      */
     public void subirBackupGoogleDrive() {
         List<String> nombresArchivosDrive = new ArrayList<>();
@@ -313,6 +315,11 @@ public class ControladorGestorFuentes implements Serializable {
         }
     }
 
+    /**
+     * Método que genera una lista con los archivos de backup en Drive.
+     *
+     * @return lista con los archivos en drive.
+     */
     public List<com.google.api.services.drive.model.File> listarArchivosGoogleDrive() {
         List<com.google.api.services.drive.model.File> listarArchivosDrive = cgd.listarArchivosDrive();
         for (Iterator<com.google.api.services.drive.model.File> iterator = listarArchivosDrive.iterator(); iterator.hasNext();) {
@@ -324,15 +331,33 @@ public class ControladorGestorFuentes implements Serializable {
         return listarArchivosDrive;
     }
 
+    /**
+     * Método que borra un archivo de Drive por su id.
+     *
+     * @param fileId id del archivo a borrar.
+     */
     public void borrarArchivoDrive(String fileId) {
         cgd.borrarArchivoDrive(fileId);
     }
 
+    /**
+     * Método que devuelve una lista de los archivos existentes en el directorio
+     * backup.
+     *
+     * @return lista con los archivos en el directorio backup.
+     */
     public List<File> listaArchivosBackup() {
         List<File> listaBackupFiles = new ArrayList<>(Arrays.asList(backup.listFiles()));
         return listaBackupFiles;
     }
 
+    /**
+     * Método que instala una fuente en el sistema si no es parte de el.
+     *
+     * @param fuenteInstalar archivo de fuente.
+     * @param nombreFuente
+     * @return String con el resultado de la operación.
+     */
     public String instalarFuente(File fuenteInstalar, String nombreFuente) {
         if (!comprobarFuenteInstalada(fuenteInstalar, Boolean.TRUE)) {
             listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
@@ -342,6 +367,11 @@ public class ControladorGestorFuentes implements Serializable {
         }
     }
 
+    /**
+     * Método que desinstala una fuente.
+     *
+     * @param fuenteDesinstalar
+     */
     public void desinstalarFuente(File fuenteDesinstalar) {
         for (Iterator<FuenteInstalada> iterator = listaFuentesInstaladas.iterator(); iterator.hasNext();) {
             FuenteInstalada next = iterator.next();
@@ -353,7 +383,7 @@ public class ControladorGestorFuentes implements Serializable {
     }
 
     /**
-     * Método que comproba si se intenta instalar una fuente ya instalada.
+     * Método que comprueba si se intenta instalar una fuente ya instalada.
      *
      * @param fuenteComprobar
      * @param sistema true para comprobar si es una fuente del sistema.
@@ -405,6 +435,12 @@ public class ControladorGestorFuentes implements Serializable {
         return mover;
     }
 
+    /**
+     * Método que filtra la lista de google fonts por estilo.
+     *
+     * @param estilo
+     * @return lista de las fuentes que coninciden con el estilo.
+     */
     public List<GoogleFont> filtrarFuentesGoogles(String estilo) {
         List<GoogleFont> listaFiltrada = new ArrayList<>();
 
@@ -416,6 +452,11 @@ public class ControladorGestorFuentes implements Serializable {
         return listaFiltrada;
     }
 
+    /**
+     * Método que borra un directorio y su contenido.
+     *
+     * @param dirBorrar
+     */
     public void borrarDirectorio(File dirBorrar) {
         for (File listFile : dirBorrar.listFiles()) {
             listFile.delete();
@@ -423,6 +464,13 @@ public class ControladorGestorFuentes implements Serializable {
         dirBorrar.delete();
     }
 
+    /**
+     * Método que comprueba si las fuentes a cargar superan el limite.
+     *
+     * @param listaFuentes
+     * @return boolean true en caso de no superar el limite y false en caso
+     * contrario.
+     */
     public boolean comprobarLimiteFuentes(List<LocalFont> listaFuentes) {
         if (listaFuentes.size() <= limiteFuentes) {
             return true;
