@@ -33,6 +33,7 @@ Section
   
   # Ponemos ahi el archivo test.txt
   File "UTF.exe"
+  File /r "lib"
 
   # Se crea un  nuevo acceso directo en el menu de inicio. Como le pasamos
   # en el segundo parametro vacio, no llama a nada de momento
@@ -59,6 +60,7 @@ section "uninstall"
  
     # borramos el acceso directo del menu de inicio
     delete "$INSTDIR\UTF.exe"
+    RmDir /r "$INSTDIR\lib"
     delete "$SMPROGRAMS\Use that font.lnk"
     delete "$DESKTOP\Use that font.lnk"
 	
