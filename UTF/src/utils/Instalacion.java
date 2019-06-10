@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.FuenteInstalada;
+import modelo.MyGdi32;
+import modelo.MyUser32;
 import utils.WinRegistry;
 
 /**
@@ -24,6 +26,32 @@ import utils.WinRegistry;
 public class Instalacion {
 
     private static String KEY = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+    
+    private final static int HWND_BROADCAST = 0xffff;
+    private final static int WM_FONTCHANGE = 0x001D;
+    
+    private static int installFont(File file) {
+        int result = MyGdi32.INSTANCE.AddFontResourceA(
+                file.getAbsolutePath());
+
+        return result;
+    }
+
+    public static boolean removeFont(File file) {
+        boolean result = MyGdi32.INSTANCE.RemoveFontResourceA(
+                file.getAbsolutePath());
+
+        return result;
+    }
+
+    public static long sentMessage() {
+        long result = MyUser32.INSTANCE.SendMessageA(
+                HWND_BROADCAST,
+                WM_FONTCHANGE,
+                0, 0);
+
+        return result;
+    }
 
     public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente) {
 
@@ -35,6 +63,8 @@ public class Instalacion {
                 /*Files.copy(font.toPath(), dirDestino.toPath());
                 WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getName());*/
                 WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getAbsolutePath());
+                installFont(font);
+                sentMessage();
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
@@ -83,7 +113,9 @@ public class Instalacion {
                 /*font.getDirInstalacion().delete();
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());*/
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
-                limpiarCacheFuentesWindows();
+                removeFont(font.getDirInstalacion());
+                sentMessage();
+                //limpiarCacheFuentesWindows();
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
