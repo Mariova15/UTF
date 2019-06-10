@@ -42,6 +42,7 @@ public class ControladorGestorFuentes implements Serializable {
             = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBCg_A6NZYHLU-bSlpS92dOIBmurELni_Q";
     private List<GoogleFont> listaFuentesGoogle;
     private List<FuenteInstalada> listaFuentesInstaladas;
+    private List<FuenteInstalada> listaFuentesActivadas;
     private List<String> listaTiposGoogle;
 
     private File misFuentes, backup, datosApp, dirInstalacion;
@@ -99,6 +100,7 @@ public class ControladorGestorFuentes implements Serializable {
         }
 
         listaFuentesInstaladas = new ArrayList<>();
+        listaFuentesActivadas = new ArrayList<>();
 
     }
 
@@ -360,7 +362,7 @@ public class ControladorGestorFuentes implements Serializable {
      */
     public String instalarFuente(File fuenteInstalar, String nombreFuente, boolean activar) {
         if (!comprobarFuenteInstalada(fuenteInstalar, Boolean.TRUE)) {
-            listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente, activar));
+            listaFuentesActivadas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente, activar));
             if (activar) {
                 return "Fuente activada";
             } else {
@@ -377,11 +379,21 @@ public class ControladorGestorFuentes implements Serializable {
      * @param fuenteDesinstalar
      */
     public void desinstalarFuente(File fuenteDesinstalar, boolean activar) {
-        for (Iterator<FuenteInstalada> iterator = listaFuentesInstaladas.iterator(); iterator.hasNext();) {
-            FuenteInstalada next = iterator.next();
-            if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
-                Instalacion.desinstalarFuente(next, activar);
-                iterator.remove();
+        if (activar) {
+            for (Iterator<FuenteInstalada> iterator = listaFuentesActivadas.iterator(); iterator.hasNext();) {
+                FuenteInstalada next = iterator.next();
+                if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
+                    Instalacion.desinstalarFuente(next, activar);
+                    iterator.remove();
+                }
+            }
+        } else {
+            for (Iterator<FuenteInstalada> iterator = listaFuentesInstaladas.iterator(); iterator.hasNext();) {
+                FuenteInstalada next = iterator.next();
+                if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
+                    Instalacion.desinstalarFuente(next, activar);
+                    iterator.remove();
+                }
             }
         }
     }
@@ -405,6 +417,32 @@ public class ControladorGestorFuentes implements Serializable {
         } else {
             for (FuenteInstalada listafuenteInstalada : listaFuentesInstaladas) {
                 if (listafuenteInstalada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
+                    instalada = true;
+                }
+            }
+        }
+        return instalada;
+    }
+
+    /**
+     * Método que comprueba si se intenta instalar una fuente ya instalada.
+     *
+     * @param fuenteComprobar
+     * @param sistema true para comprobar si es una fuente del sistema.
+     * @return True si la fuente esta instalada o false en caso contrario.
+     */
+    public boolean comprobarFuenteActivada(File fuenteComprobar, Boolean sistema) {
+        boolean instalada = false;
+
+        if (sistema) {
+            for (File systemFont : systemFonts) {
+                if (systemFont.getName().equals(fuenteComprobar.getName())) {
+                    instalada = true;
+                }
+            }
+        } else {
+            for (FuenteInstalada listafuenteActivada : listaFuentesActivadas) {
+                if (listafuenteActivada.getDirInstalacion().getName().equals(fuenteComprobar.getName())) {
                     instalada = true;
                 }
             }
