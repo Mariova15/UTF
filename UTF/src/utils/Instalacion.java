@@ -26,10 +26,10 @@ import utils.WinRegistry;
 public class Instalacion {
 
     private static String KEY = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
-    
+
     private final static int HWND_BROADCAST = 0xffff;
     private final static int WM_FONTCHANGE = 0x001D;
-    
+
     private static int installFont(File file) {
         int result = MyGdi32.INSTANCE.AddFontResourceA(
                 file.getAbsolutePath());
@@ -53,7 +53,7 @@ public class Instalacion {
         return result;
     }
 
-    public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente) {
+    public static FuenteInstalada instalarFuente(File installDir, File font, String nombreFuente, boolean activar) {
 
         File dirDestino = new File(installDir.getAbsolutePath() + File.separator + font.getName());
 
@@ -62,9 +62,14 @@ public class Instalacion {
             try {
                 /*Files.copy(font.toPath(), dirDestino.toPath());
                 WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getName());*/
-                WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getAbsolutePath());
-                installFont(font);
-                sentMessage();
+                //WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getAbsolutePath());
+                if (activar) {
+                    dirDestino = font;
+                    installFont(font);
+                    sentMessage();
+                } else {
+                    WinRegistry.writeStringValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, nombreFuente, font.getAbsolutePath());
+                }
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
@@ -100,7 +105,7 @@ public class Instalacion {
 
     }
 
-    public static void desinstalarFuente(FuenteInstalada font) {
+    public static void desinstalarFuente(FuenteInstalada font, boolean activar) {
 
         if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 
@@ -112,10 +117,14 @@ public class Instalacion {
                 }
                 /*font.getDirInstalacion().delete();
                 WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());*/
-                WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
-                removeFont(font.getDirInstalacion());
-                sentMessage();
-                //limpiarCacheFuentesWindows();
+                //WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
+                if (activar) {
+                    removeFont(font.getDirInstalacion());
+                    sentMessage();
+                } else {
+                    WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, KEY, font.getValorRegistro());
+                    //limpiarCacheFuentesWindows();
+                }                
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(Instalacion.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {

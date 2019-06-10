@@ -104,7 +104,7 @@ public class Principal extends javax.swing.JFrame {
         }
 
         cgf.descargaJsonFuentes();
-
+        jButtonActivar.setVisible(false);
         jComboBoxStyles.setVisible(false);
         jComboBoxFiltro.setModel(new DefaultComboBoxModel<>(cgf.getListaTiposGoogle().toArray(new String[cgf.getListaTiposGoogle().size()])));
 
@@ -189,10 +189,10 @@ public class Principal extends javax.swing.JFrame {
         }
         SwingUtilities.updateComponentTreeUI(this);
         pack();
-        
+
         jButtonPreview.setForeground(MaterialColors.LIGHT_BLUE_A200);
         jButtonPreview.setBackground(MaterialColors.WHITE);
-        
+
         /*buttonSingup.setForeground(MaterialColors.LIGHT_BLUE_A200);
         buttonSingup.setBackground(MaterialColors.WHITE);
         buttonLogin.setBackground(MaterialColors.LIGHT_BLUE_A200);
@@ -401,6 +401,7 @@ public class Principal extends javax.swing.JFrame {
         jButtonVerGoogleFonts = new javax.swing.JButton();
         jButtonVerFuentesLocales = new javax.swing.JButton();
         jComboBoxFiltro = new javax.swing.JComboBox<>();
+        jButtonActivar = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuConf = new javax.swing.JMenu();
         jMenuGD = new javax.swing.JMenu();
@@ -515,6 +516,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButtonActivar.setText("Activar fuente");
+        jButtonActivar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonActivarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFondoLayout = new javax.swing.GroupLayout(jPanelFondo);
         jPanelFondo.setLayout(jPanelFondoLayout);
         jPanelFondoLayout.setHorizontalGroup(
@@ -534,6 +542,8 @@ public class Principal extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonDescargar))
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
                                 .addComponent(jButtonVerGoogleFonts)
@@ -561,7 +571,8 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonPreview)
                     .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonDescargar))
+                    .addComponent(jButtonDescargar)
+                    .addComponent(jButtonActivar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPaneTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addContainerGap())
@@ -695,7 +706,7 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarActionPerformed
         if (listaFuentesLocales != null) {
             if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
-                cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile());
+                cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false);
                 JOptionPane.showMessageDialog(this, "Fuente desinstalada");
                 jButtonDescargar.setText("Instalar fuente");
             } else {
@@ -703,7 +714,7 @@ public class Principal extends javax.swing.JFrame {
                 listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());*/
                 //JOptionPane.showMessageDialog(this, "Fuente instalada");
                 String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());
+                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName(), false);
 
                 JOptionPane.showMessageDialog(this, mensaje);
                 if (mensaje.equals("Fuente instalada")) {
@@ -733,8 +744,7 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonVerGoogleFontsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerGoogleFontsActionPerformed
         listaFuentesLocales = null;
         jComboBoxFiltro.setVisible(true);
-        /*jMenuItemRenombrar.setVisible(true);
-        jMenuItemMover.setVisible(true);*/
+        jButtonActivar.setVisible(false);
         jButtonDescargar.setText("Descargar fuente");
         jComboBoxStyles.setVisible(true);
         jButtonDescargar.setVisible(true);
@@ -753,6 +763,7 @@ public class Principal extends javax.swing.JFrame {
             if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
                 jComboBoxFiltro.setVisible(false);
                 jComboBoxStyles.setVisible(false);
+                jButtonActivar.setVisible(true);
                 jButtonDescargar.setText("Instalar fuente");
                 rellenarTablaLocalFonts();
             } else {
@@ -944,6 +955,21 @@ public class Principal extends javax.swing.JFrame {
         gestionGD.setVisible(true);
     }//GEN-LAST:event_jMenuItemGestionBackupActionPerformed
 
+    private void jButtonActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActivarActionPerformed
+        if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
+                cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), true);
+                JOptionPane.showMessageDialog(this, "Fuente desinstalada");
+                jButtonDescargar.setText("Activar fuente");
+            } else {
+                String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName(), true);
+                JOptionPane.showMessageDialog(this, mensaje);
+                if (mensaje.equals("Activar instalada")) {
+                    jButtonDescargar.setText("Desactivar fuente");
+                }
+            }
+    }//GEN-LAST:event_jButtonActivarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -989,6 +1015,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonActivar;
     private javax.swing.JButton jButtonDescargar;
     private javax.swing.JButton jButtonPreview;
     private javax.swing.JButton jButtonVerFuentesLocales;

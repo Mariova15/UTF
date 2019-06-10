@@ -223,6 +223,8 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jComboBoxStyles" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jButtonActivar" min="-2" pref="103" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButtonDescargar" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
@@ -260,6 +262,7 @@
                       <Component id="jButtonPreview" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBoxStyles" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonDescargar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonActivar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jScrollPaneTextArea" pref="138" max="32767" attributes="0"/>
@@ -403,6 +406,14 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonActivar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Activar fuente"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonActivarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

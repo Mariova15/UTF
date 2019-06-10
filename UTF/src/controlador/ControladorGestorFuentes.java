@@ -358,10 +358,14 @@ public class ControladorGestorFuentes implements Serializable {
      * @param nombreFuente
      * @return String con el resultado de la operación.
      */
-    public String instalarFuente(File fuenteInstalar, String nombreFuente) {
+    public String instalarFuente(File fuenteInstalar, String nombreFuente, boolean activar) {
         if (!comprobarFuenteInstalada(fuenteInstalar, Boolean.TRUE)) {
-            listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente));
-            return "Fuente instalada";
+            listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente, activar));
+            if (activar) {
+                return "Fuente activada";
+            } else {
+                return "Fuente instalada";
+            }
         } else {
             return "La fuente ya esta instalada en el sistema";
         }
@@ -372,11 +376,11 @@ public class ControladorGestorFuentes implements Serializable {
      *
      * @param fuenteDesinstalar
      */
-    public void desinstalarFuente(File fuenteDesinstalar) {
+    public void desinstalarFuente(File fuenteDesinstalar, boolean activar) {
         for (Iterator<FuenteInstalada> iterator = listaFuentesInstaladas.iterator(); iterator.hasNext();) {
             FuenteInstalada next = iterator.next();
             if (next.getDirInstalacion().getName().equals(fuenteDesinstalar.getName())) {
-                Instalacion.desinstalarFuente(next);
+                Instalacion.desinstalarFuente(next, activar);
                 iterator.remove();
             }
         }
