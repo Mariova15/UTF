@@ -134,7 +134,7 @@ public class Principal extends javax.swing.JFrame {
                     } else {
                         jButtonDescargar.setText("Instalar fuente");
                     }
-                    if (cgf.comprobarFuenteInstalada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
+                    if (cgf.comprobarFuenteActivada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
                         jButtonActivar.setText("Desactivar fuente");
                     } else {
                         jButtonActivar.setText("Activar fuente");

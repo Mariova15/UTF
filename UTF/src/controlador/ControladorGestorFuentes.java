@@ -362,10 +362,11 @@ public class ControladorGestorFuentes implements Serializable {
      */
     public String instalarFuente(File fuenteInstalar, String nombreFuente, boolean activar) {
         if (!comprobarFuenteInstalada(fuenteInstalar, Boolean.TRUE)) {
-            listaFuentesActivadas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente, activar));
             if (activar) {
+                listaFuentesActivadas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente, activar));
                 return "Fuente activada";
             } else {
+                listaFuentesInstaladas.add(Instalacion.instalarFuente(dirInstalacion, fuenteInstalar, nombreFuente, activar));
                 return "Fuente instalada";
             }
         } else {
