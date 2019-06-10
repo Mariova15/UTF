@@ -5,7 +5,8 @@
         <group name="UTF">
             <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/modelo/MyUser32.java</file>
             <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/utils/Instalacion.java</file>
-            <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/test/PruebaJNA.java</file>
+            <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/vista/Principal.java</file>
+            <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/controlador/ControladorGestorFuentes.java</file>
             <file>file:/D:/Proyectos/Code/Git/UTF/UTF/src/modelo/MyGdi32.java</file>
         </group>
     </open-files>

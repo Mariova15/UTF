@@ -542,7 +542,7 @@ public class Principal extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonDescargar))
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
@@ -763,7 +763,9 @@ public class Principal extends javax.swing.JFrame {
             if (cgf.comprobarLimiteFuentes(listaFuentesLocales)) {
                 jComboBoxFiltro.setVisible(false);
                 jComboBoxStyles.setVisible(false);
+                if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
                 jButtonActivar.setVisible(true);
+                }
                 jButtonDescargar.setText("Instalar fuente");
                 rellenarTablaLocalFonts();
             } else {
@@ -877,9 +879,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearActionPerformed
-        String showInputDialog = JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio");
-        if (showInputDialog != null) {
-            File nuevoDirectorio = new File(cgf.getMisFuentes().getAbsolutePath() + File.separator + JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio"));
+        String nombreProyecto = JOptionPane.showInputDialog("Escribe el nombre del nuevo directorio");
+        if (nombreProyecto != null) {
+            File nuevoDirectorio = new File(cgf.getMisFuentes().getAbsolutePath() + File.separator + nombreProyecto);
             nuevoDirectorio.mkdir();
             actualizarNodos();
         }
@@ -956,18 +958,18 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemGestionBackupActionPerformed
 
     private void jButtonActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActivarActionPerformed
-        if (jButtonDescargar.getText().equals("Desinstalar fuente")) {
-                cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), true);
-                JOptionPane.showMessageDialog(this, "Fuente desinstalada");
-                jButtonDescargar.setText("Activar fuente");
-            } else {
-                String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                        listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName(), true);
-                JOptionPane.showMessageDialog(this, mensaje);
-                if (mensaje.equals("Activar instalada")) {
-                    jButtonDescargar.setText("Desactivar fuente");
-                }
+        if (jButtonActivar.getText().equals("Desactivar fuente")) {
+            cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), true);
+            JOptionPane.showMessageDialog(this, "Fuente desinstalada");
+            jButtonActivar.setText("Activar fuente");
+        } else {
+            String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
+                    listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName(), true);
+            JOptionPane.showMessageDialog(this, mensaje);
+            if (mensaje.equals("Fuente activada")) {
+                jButtonActivar.setText("Desactivar fuente");
             }
+        }
     }//GEN-LAST:event_jButtonActivarActionPerformed
 
     /**
