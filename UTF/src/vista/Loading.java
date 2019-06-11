@@ -27,17 +27,17 @@ public class Loading extends javax.swing.JDialog {
         initComponents();
         this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        jLabelAccion.setText(mensaje+" en curso");
+        jLabelAccion.setText(mensaje + " en curso");
         setIconImage(new ImageIcon(getClass().getResource(RUTA_LOGO)).getImage());
         setTitle("Use that font");
         jLabelLoading.setIcon(new ImageIcon(getClass().getResource(RUTA_LOADING)));
-        this.addWindowListener(new WindowAdapter() {
+        /*this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowDeactivated(WindowEvent e) {
                 super.windowDeactivated(e);
                 JOptionPane.showMessageDialog(e.getComponent().getParent(), "Operación completa");
-            }           
-        });
+            }
+        });*/
     }
 
     /**

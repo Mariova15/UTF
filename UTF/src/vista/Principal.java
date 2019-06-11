@@ -769,7 +769,7 @@ public class Principal extends javax.swing.JFrame {
                 jComboBoxFiltro.setVisible(false);
                 jComboBoxStyles.setVisible(false);
                 if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
-                jButtonActivar.setVisible(true);
+                    jButtonActivar.setVisible(true);
                 }
                 jButtonDescargar.setText("Instalar fuente");
                 rellenarTablaLocalFonts();
@@ -836,6 +836,7 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 cgf.subirBackupGoogleDrive();
                 loading.dispose();
+                JOptionPane.showMessageDialog(loading.getParent(), "Operación completa");
             }
         }).start();
         loading.setVisible(true);
@@ -848,6 +849,7 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 cgf.descargaBackupGoogleDrive();
                 loading.dispose();
+                JOptionPane.showMessageDialog(loading.getParent(), "Operación completa");
             }
         }).start();
         loading.setVisible(true);

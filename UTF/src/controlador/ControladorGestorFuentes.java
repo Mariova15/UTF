@@ -232,8 +232,13 @@ public class ControladorGestorFuentes implements Serializable {
      * del directorio misfuentes.
      */
     public void crearBackup() {
+        File filebackup = new File(backup.getAbsolutePath() + File.separator + "UTF-" + Fecha.formatearFecha(new Date().getTime()) + ".zip");
+        if (filebackup.exists()) {
+            filebackup = new File(backup.getAbsolutePath() + File.separator + "UTF-" + Fecha.formatearFecha(new Date().getTime()) + "-" + new Date().getTime() + ".zip");
+        }
+
         Backup.zipDirectory(misFuentes,
-                backup.getAbsolutePath() + File.separator + "UTF-" + Fecha.formatearFecha(new Date().getTime()) + ".zip",
+                filebackup.getAbsolutePath(),
                 Backup.populateFilesList(misFuentes, new ArrayList<>()));
     }
 
