@@ -292,7 +292,7 @@ public class ControladorGestorFuentes implements Serializable {
      * comprobando si ya existen en Drive.
      */
     public void subirBackupGoogleDrive() {
-        List<String> nombresArchivosDrive = new ArrayList<>();
+        List<String> nombresArchivosDrive = new ArrayList<>();        
         for (com.google.api.services.drive.model.File fileDrive : cgd.listarArchivosDrive()) {
             nombresArchivosDrive.add(fileDrive.getName());
         }
@@ -325,6 +325,7 @@ public class ControladorGestorFuentes implements Serializable {
      * @return lista con los archivos en drive.
      */
     public List<com.google.api.services.drive.model.File> listarArchivosGoogleDrive() {
+        cgd.comprobarDirBackup();
         List<com.google.api.services.drive.model.File> listarArchivosDrive = cgd.listarArchivosDrive();
         for (Iterator<com.google.api.services.drive.model.File> iterator = listarArchivosDrive.iterator(); iterator.hasNext();) {
             com.google.api.services.drive.model.File next = iterator.next();

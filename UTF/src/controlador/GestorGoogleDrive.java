@@ -126,7 +126,7 @@ public class GestorGoogleDrive implements Serializable {
             archivoSubir.setParents(Collections.singletonList(gDBackupDirID));
 
             FileContent mediaContent = new FileContent("application/x-zip-compressed", archivoLocal);
-            
+
             execute = drive.files().create(archivoSubir, mediaContent).setFields("id").execute();
         } catch (IOException ex) {
             Logger.getLogger(GestorGoogleDrive.class.getName()).log(Level.SEVERE, null, ex);
@@ -192,7 +192,7 @@ public class GestorGoogleDrive implements Serializable {
      * @return devuelve una lista con los archivos de google drive.
      */
     public List<com.google.api.services.drive.model.File> listarArchivosDrive() {
- 
+
         List<com.google.api.services.drive.model.File> result = new ArrayList<>();
         if (drive == null) {
             generarObjetoDrive();
@@ -223,4 +223,20 @@ public class GestorGoogleDrive implements Serializable {
         }
     }
 
+    public void comprobarDirBackup() {
+        if (drive == null) {
+            generarObjetoDrive();
+        }
+
+        if (listarArchivosDrive().size() > 0) {
+            for (com.google.api.services.drive.model.File dirBackup : listarArchivosDrive()) {
+                if (dirBackup.getName().equals("Backup")) {
+                    gDBackupDirID = dirBackup.getId();
+                }
+            }
+        } else {
+            crearDirectorio("Backup");
+        }
+
+    }
 }
