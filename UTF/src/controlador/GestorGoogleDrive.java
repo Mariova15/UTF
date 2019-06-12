@@ -125,7 +125,7 @@ public class GestorGoogleDrive implements Serializable {
             archivoSubir.setName(archivoLocal.getName());
             archivoSubir.setParents(Collections.singletonList(gDBackupDirID));
 
-            FileContent mediaContent = new FileContent("file/.zip", archivoLocal);
+            FileContent mediaContent = new FileContent("application/x-zip-compressed", archivoLocal);
             
             execute = drive.files().create(archivoSubir, mediaContent).setFields("id").execute();
         } catch (IOException ex) {

@@ -22,7 +22,8 @@ public class Fecha {
      * @return String con la fecha en formato dd/MM/yy.
      */
     public static String formatearFecha(Long fechaFormatear) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
         Date fecha = new Date(fechaFormatear);
         String fechaFormateada = sdf.format(fecha);
         return fechaFormateada;

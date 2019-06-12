@@ -135,9 +135,9 @@ public class Principal extends javax.swing.JFrame {
                         jButtonDescargar.setText("Instalar fuente");
                     }
                     if (cgf.comprobarFuenteActivada(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), false)) {
-                        jButtonActivar.setText("Desactivar fuente");
+                        jButtonActivar.setText("Desactivar");
                     } else {
-                        jButtonActivar.setText("Activar fuente");
+                        jButtonActivar.setText("Activar");
                     }
                 } else {
                     jComboBoxStyles.setVisible(true);
@@ -521,7 +521,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButtonActivar.setText("Activar fuente");
+        jButtonActivar.setText("Activar");
         jButtonActivar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonActivarActionPerformed(evt);
@@ -547,7 +547,7 @@ public class Principal extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonDescargar))
                             .addGroup(jPanelFondoLayout.createSequentialGroup()
@@ -769,6 +769,7 @@ public class Principal extends javax.swing.JFrame {
                 jComboBoxFiltro.setVisible(false);
                 jComboBoxStyles.setVisible(false);
                 if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
+                    jButtonActivar.setText("Activar");
                     jButtonActivar.setVisible(true);
                 }
                 jButtonDescargar.setText("Instalar fuente");
@@ -859,7 +860,10 @@ public class Principal extends javax.swing.JFrame {
         if (dirDestino != null && !dirDestino.equals(misFuentes)) {
             if (cgf.comprobarAccion(dirDestino)) {
                 if (dirDestino.isDirectory() && dirDestino.listFiles().length == 0) {
-                    dirDestino.delete();
+                    //dirDestino.delete();
+                    if (!dirDestino.delete()) {
+                        JOptionPane.showMessageDialog(this, "Archivo en uso");
+                    }
                 } else {
                     if (dirDestino.listFiles() != null) {
                         int showConfirmDialog = JOptionPane.showConfirmDialog(this, "El directorio no esta vacio ¿quieres borrarlo al completo?");
@@ -867,7 +871,10 @@ public class Principal extends javax.swing.JFrame {
                             cgf.borrarDirectorio(dirDestino);
                         }
                     } else {
-                        dirDestino.delete();
+                        //dirDestino.delete();
+                        if (!dirDestino.delete()) {
+                            JOptionPane.showMessageDialog(this, "Archivo en uso");
+                        }
                     }
                 }
                 if (listaFuentesLocales != null) {
@@ -965,16 +972,16 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemGestionBackupActionPerformed
 
     private void jButtonActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActivarActionPerformed
-        if (jButtonActivar.getText().equals("Desactivar fuente")) {
+        if (jButtonActivar.getText().equals("Desactivar")) {
             cgf.desinstalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(), true);
-            JOptionPane.showMessageDialog(this, "Fuente desinstalada");
-            jButtonActivar.setText("Activar fuente");
+            JOptionPane.showMessageDialog(this, "Fuente desactivada");
+            jButtonActivar.setText("Activar");
         } else {
             String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
                     listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName(), true);
             JOptionPane.showMessageDialog(this, mensaje);
             if (mensaje.equals("Fuente activada")) {
-                jButtonActivar.setText("Desactivar fuente");
+                jButtonActivar.setText("Desactivar");
             }
         }
     }//GEN-LAST:event_jButtonActivarActionPerformed

@@ -232,10 +232,7 @@ public class ControladorGestorFuentes implements Serializable {
      * del directorio misfuentes.
      */
     public void crearBackup() {
-        File filebackup = new File(backup.getAbsolutePath() + File.separator + "UTF-" + Fecha.formatearFecha(new Date().getTime()) + ".zip");
-        if (filebackup.exists()) {
-            filebackup = new File(backup.getAbsolutePath() + File.separator + "UTF-" + Fecha.formatearFecha(new Date().getTime()) + "-" + new Date().getTime() + ".zip");
-        }
+        File filebackup = new File(backup.getAbsolutePath() + File.separator + "UTF_" + Fecha.formatearFecha(new Date().getTime()) + ".zip");
 
         Backup.zipDirectory(misFuentes,
                 filebackup.getAbsolutePath(),
@@ -316,7 +313,7 @@ public class ControladorGestorFuentes implements Serializable {
             nombresArchivosLocal.add(archivoLocal.getName());
         }
         for (com.google.api.services.drive.model.File backupDescargar : cgd.listarArchivosDrive()) {
-            if (backupDescargar.getMimeType().equals("file/.zip") && !nombresArchivosLocal.contains(backupDescargar.getName())) {
+            if (backupDescargar.getMimeType().equals("application/x-zip-compressed") && !nombresArchivosLocal.contains(backupDescargar.getName())) {
                 cgd.descargaArchivo(backup.getAbsolutePath(), backupDescargar.getId());
             }
         }
@@ -331,7 +328,7 @@ public class ControladorGestorFuentes implements Serializable {
         List<com.google.api.services.drive.model.File> listarArchivosDrive = cgd.listarArchivosDrive();
         for (Iterator<com.google.api.services.drive.model.File> iterator = listarArchivosDrive.iterator(); iterator.hasNext();) {
             com.google.api.services.drive.model.File next = iterator.next();
-            if (!next.getMimeType().equals("file/.zip")) {
+            if (!next.getMimeType().equals("application/x-zip-compressed")) {
                 iterator.remove();
             }
         }
