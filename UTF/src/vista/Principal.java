@@ -395,7 +395,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelFondo = new javax.swing.JPanel();
         jScrollPaneTable = new javax.swing.JScrollPane();
         jTableGoogleFonts = new javax.swing.JTable();
-        jLabel1TituloPrueba = new javax.swing.JLabel();
+        jLabelTituloPrueba = new javax.swing.JLabel();
         jScrollPaneTextArea = new javax.swing.JScrollPane();
         jTextAreaLorem = new javax.swing.JTextArea();
         jButtonPreview = new javax.swing.JButton();
@@ -480,8 +480,8 @@ public class Principal extends javax.swing.JFrame {
         jTableGoogleFonts.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPaneTable.setViewportView(jTableGoogleFonts);
 
-        jLabel1TituloPrueba.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1TituloPrueba.setText("ASDFGHJKL");
+        jLabelTituloPrueba.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelTituloPrueba.setText("ASDFGHJKL");
 
         jTextAreaLorem.setColumns(20);
         jTextAreaLorem.setLineWrap(true);
@@ -538,7 +538,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jScrollPaneTextArea)
                     .addGroup(jPanelFondoLayout.createSequentialGroup()
                         .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelTituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPaneTree, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -573,7 +573,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1TituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTituloPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonPreview)
                     .addComponent(jComboBoxStyles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonDescargar)
@@ -700,10 +700,12 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviewActionPerformed
         if (listaFuentesLocales == null) {
             crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
-            jLabel1TituloPrueba.setFont(createFont.deriveFont(24F));
+            jLabelTituloPrueba.setText(createFont.getFamily());
+            jLabelTituloPrueba.setFont(createFont.deriveFont(24F));
             jTextAreaLorem.setFont(createFont.deriveFont(14F));
         } else {
-            jLabel1TituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
+            jLabelTituloPrueba.setText(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFamily());
+            jLabelTituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
             jTextAreaLorem.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(14F));
         }
     }//GEN-LAST:event_jButtonPreviewActionPerformed
@@ -750,6 +752,7 @@ public class Principal extends javax.swing.JFrame {
         listaFuentesLocales = null;
         jComboBoxFiltro.setVisible(true);
         jButtonActivar.setVisible(false);
+        jLabelTituloPrueba.setText("ASDFGHJKL");
         jButtonDescargar.setText("Descargar fuente");
         jComboBoxStyles.setVisible(true);
         jButtonDescargar.setVisible(true);
@@ -772,6 +775,7 @@ public class Principal extends javax.swing.JFrame {
                     jButtonActivar.setText("Activar");
                     jButtonActivar.setVisible(true);
                 }
+                jLabelTituloPrueba.setText("ASDFGHJKL");
                 jButtonDescargar.setText("Instalar fuente");
                 rellenarTablaLocalFonts();
             } else {
@@ -1038,7 +1042,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonVerGoogleFonts;
     private javax.swing.JComboBox<String> jComboBoxFiltro;
     private javax.swing.JComboBox<String> jComboBoxStyles;
-    private javax.swing.JLabel jLabel1TituloPrueba;
+    private javax.swing.JLabel jLabelTituloPrueba;
     private javax.swing.JMenu jMenuBackup;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuConf;
