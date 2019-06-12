@@ -699,10 +699,24 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButtonPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviewActionPerformed
         if (listaFuentesLocales == null) {
-            crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
+            /*crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
             jLabelTituloPrueba.setText(createFont.getFamily());
             jLabelTituloPrueba.setFont(createFont.deriveFont(24F));
-            jTextAreaLorem.setFont(createFont.deriveFont(14F));
+            jTextAreaLorem.setFont(createFont.deriveFont(14F));*/            
+            Loading loading = new Loading(this, true, "Descarga");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
+                    jLabelTituloPrueba.setText(createFont.getFamily());
+                    jLabelTituloPrueba.setFont(createFont.deriveFont(24F));
+                    jTextAreaLorem.setFont(createFont.deriveFont(14F));
+
+                    loading.dispose();
+                    //JOptionPane.showMessageDialog(loading.getParent(), "Operación completa");
+                }
+            }).start();
+            loading.setVisible(true);
         } else {
             jLabelTituloPrueba.setText(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFamily());
             jLabelTituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
@@ -717,9 +731,6 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Fuente desinstalada");
                 jButtonDescargar.setText("Instalar fuente");
             } else {
-                /*cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
-                listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName());*/
-                //JOptionPane.showMessageDialog(this, "Fuente instalada");
                 String mensaje = cgf.instalarFuente(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFontFile(),
                         listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFontName(), false);
 
@@ -735,15 +746,26 @@ public class Principal extends javax.swing.JFrame {
                 dirDestino = new File(seleccionarDirectorio);
             }
 
-            String url = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
+            Loading loading = new Loading(this, true, "Descarga");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-            GoogleFont fontDescargar = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow());
+                    String url = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString());
 
-            DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
+                    GoogleFont fontDescargar = listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow());
 
-            dirDestino = null;
-            jComboBoxStyles.setVisible(false);
-            actualizarNodos();
+                    DescargaRecursos.descargarArchivo(url, fontDescargar.getFamily() + "-" + jComboBoxStyles.getSelectedItem().toString() + ".ttf", dirDestino.getAbsolutePath());
+
+                    dirDestino = null;
+                    jComboBoxStyles.setVisible(false);
+                    actualizarNodos();
+
+                    loading.dispose();
+                    JOptionPane.showMessageDialog(loading.getParent(), "Operación completa");
+                }
+            }).start();
+            loading.setVisible(true);
         }
 
     }//GEN-LAST:event_jButtonDescargarActionPerformed
