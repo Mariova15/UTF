@@ -702,21 +702,24 @@ public class Principal extends javax.swing.JFrame {
             /*crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
             jLabelTituloPrueba.setText(createFont.getFamily());
             jLabelTituloPrueba.setFont(createFont.deriveFont(24F));
-            jTextAreaLorem.setFont(createFont.deriveFont(14F));*/            
-            Loading loading = new Loading(this, true, "Descarga");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
-                    jLabelTituloPrueba.setText(createFont.getFamily());
-                    jLabelTituloPrueba.setFont(createFont.deriveFont(24F));
-                    jTextAreaLorem.setFont(createFont.deriveFont(14F));
-
-                    loading.dispose();
-                    //JOptionPane.showMessageDialog(loading.getParent(), "Operación completa");
-                }
-            }).start();
-            loading.setVisible(true);
+            jTextAreaLorem.setFont(createFont.deriveFont(14F));*/
+            if (jTableGoogleFonts.getSelectedRow() != -1) {
+                Loading loading = new Loading(this, true, "Descarga");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        crearFuente(listaFuentesGoogle.get(jTableGoogleFonts.getSelectedRow()).getFiles().get(jComboBoxStyles.getSelectedItem().toString()));
+                        jLabelTituloPrueba.setText(createFont.getFamily());
+                        jLabelTituloPrueba.setFont(createFont.deriveFont(24F));
+                        jTextAreaLorem.setFont(createFont.deriveFont(14F));
+                        loading.dispose();
+                        //JOptionPane.showMessageDialog(loading.getParent(), "Operación completa");
+                    }
+                }).start();
+                loading.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione una fuente");
+            }
         } else {
             jLabelTituloPrueba.setText(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().getFamily());
             jLabelTituloPrueba.setFont(listaFuentesLocales.get(jTableGoogleFonts.getSelectedRow()).getFont().deriveFont(24F));
